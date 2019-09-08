@@ -1,0 +1,61 @@
+﻿{
+    "@context": {
+        "hydra": "http://www.w3.org/ns/hydra/core#",
+        "schema": "http://schema.org/",
+        "api": "http://temp.uri/vocab/",
+        "api:closed-events": {
+            "@id": "api:closed-events",
+            "@type": "@id"
+        },
+        "hydra:first": { "@type": "@id" },
+        "hydra:last": { "@type": "@id" },
+        "hydra:mapping": { "@type": "@id" }
+    },
+    "@graph": [
+        {
+            "@id": "http://temp.uri/api",
+            "hydra:collection": [
+                {
+                    "@id": "http://temp.uri/api/people"
+                },
+                {
+                    "@id": "http://temp.uri/api/events",
+                    "@type": "hydra:Collection",
+                    "api:closed-events": "http://temp.uri/api/events/closed",
+                    "hydra:search": {
+                        "@type": "hydra:IriTemplate",
+                        "hydra:template": "http://temp.uri/api/events{?searchPhrase}",
+                        "hydra:mapping": {
+                            "@type": "hydra:IriTemplateMapping",
+                            "hydra:variable": "searchPhrase",
+                            "hydra:property": { "@id": "hydra:freetextQuery" },
+                            "hydra:variableRepresentation": { "@id": "hydra:BasicRepresentation" },
+                            "hydra:required": false
+                        }
+                    },
+                    "hydra:view": {
+                        "@id": "http://temp.uri/api/events?page=1",
+                        "@type": "hydra:PartialCollectionView",
+                        "hydra:first": "http://temp.uri/api/events?page=1",
+                        "hydra:last": "http://temp.uri/api/events?page=9"
+                    },
+                    "hydra:totalItems": 1,
+                    "hydra:member": [
+                        { "@id": "http://temp.uri/api/events/1" }
+                    ]
+                }
+            ]
+        },
+        {
+            "@id": "http://temp.uri/api/events/1",
+            "schema:eventName": "Event 1",
+            "schema:eventDescription": "Some event 1",
+            "schema:startDate": "2017-04-19",
+            "schema:endDate": "2017-04-19"
+        },
+        {
+            "@id": "api:closed-events",
+            "@type": "hydra:Link"
+        }
+    ]
+}

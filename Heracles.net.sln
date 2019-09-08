@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heracles.net", "Heracles.net\Heracles.net.csproj", "{503E547A-97B7-489D-987A-F1EBD7F0318C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heracles.net.Tests", "Heracles.net.Tests\Heracles.net.Tests.csproj", "{5395B668-60A1-48B1-BFDA-74F7083D155E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{503E547A-97B7-489D-987A-F1EBD7F0318C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{503E547A-97B7-489D-987A-F1EBD7F0318C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{503E547A-97B7-489D-987A-F1EBD7F0318C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{503E547A-97B7-489D-987A-F1EBD7F0318C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5395B668-60A1-48B1-BFDA-74F7083D155E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5395B668-60A1-48B1-BFDA-74F7083D155E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5395B668-60A1-48B1-BFDA-74F7083D155E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5395B668-60A1-48B1-BFDA-74F7083D155E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {182C4047-32F8-4DDE-94A5-9BD7450CCF66}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,35 @@
+﻿{
+    "@context": {
+        "hydra": "http://www.w3.org/ns/hydra/core#",
+        "schema": "http://schema.org/",
+        "foaf": "http://xmlns.com/foaf/0.1/",
+        "homepage": {
+            "@id": "foaf:homepage",
+            "@type": "@id"
+        },
+        "knows": {
+            "@id": "schema:knows",
+            "@type": "@id"
+        }
+    },
+    "@graph": [
+        {
+            "@id": "http://temp.uri/api/people/markus",
+            "@type": "schema:Person",
+            "homepage": "http://temp.uri/api/people/markus/home-page",
+            "knows": {
+                "@id": "http://temp.uri/api/people/karol",
+                "@type": "schema:Person",
+                "homepage": "http://temp.uri/api/people/karol/home-page"
+            }
+        },
+        {
+            "@id": "foaf:homepage",
+            "@type": "hydra:Link"
+        },
+        {
+            "@id": "schema:knows",
+            "@type": "hydra:Link"
+        }
+    ]
+}

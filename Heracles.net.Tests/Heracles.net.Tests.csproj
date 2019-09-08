@@ -1,0 +1,77 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.0</TargetFramework>
+        <RootNamespace>Heracles</RootNamespace>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <ApplicationIcon />
+        <OutputType>Exe</OutputType>
+        <StartupObject />
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\collectionsInput.json" />
+      <None Remove="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\context.json" />
+      <None Remove="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\input.json" />
+      <None Remove="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\nestedResourcesInput.json" />
+      <None Remove="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\operationInput.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\collectionsInput.json" />
+      <EmbeddedResource Include="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\context.json" />
+      <EmbeddedResource Include="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\input.json" />
+      <EmbeddedResource Include="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\nestedResourcesInput.json" />
+      <EmbeddedResource Include="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\operationInput.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="json-ld.net" Version="1.0.6" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+        <PackageReference Include="NUnit" Version="3.12.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
+        <PackageReference Include="Castle.Core" Version="4.4.0" />
+        <PackageReference Include="FluentAssertions" Version="5.7.0" />
+        <PackageReference Include="Moq" Version="4.12.0" />
+        <PackageReference Include="RDeF.Contracts" Version="0.1.0" />
+        <PackageReference Include="Tavis.UriTemplates" Version="1.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Heracles.net\Heracles.net.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Server\api.jsonld">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Server\api\context.jsonld">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Server\api\documentation.jsonld">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Server\api\events.jsonld">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Server\api\people.jsonld">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Server\api\people\page1.jsonld">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Server\api\people\page2.jsonld">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Server\resource.headers">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Server\resource.ttl">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Server\root.headers">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+</Project>
