@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using FluentAssertions;
 using Heracles;
 using Heracles.DataModel;
@@ -17,7 +18,7 @@ namespace Given_instance_of.HydraClient_class.when_obtaining_an_API_documentatio
             base.ScenarioSetup();
             var hypermedia = new Mock<IHypermediaContainer>(MockBehavior.Strict);
             hypermedia.Setup(_ => _.GetEnumerator()).Returns(new List<IResource>().GetEnumerator());
-            HttpCall.Setup(_ => _.HttpCall(new Uri(BaseUrl, "api/documentation"), It.IsAny<IHttpOptions>()))
+            HttpCall.Setup(_ => _.HttpCall(new Uri(BaseUrl, "api/documentation"), It.IsAny<IHttpOptions>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Return.Ok());
             HypermediaProcessor
                 .Setup(_ => _.Process(It.IsAny<IResponse>(), It.IsAny<IHydraClient>(), It.IsAny<IHypermediaProcessingOptions>()))

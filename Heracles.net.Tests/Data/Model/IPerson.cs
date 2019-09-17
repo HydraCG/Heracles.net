@@ -4,7 +4,7 @@ using RDeF.Mapping.Attributes;
 namespace Heracles.Data.Model
 {
     [Class(Iri = "http://schema.org/Event")]
-    public interface IEvent : IResource
+    public interface IPerson : IResource
     {
         [Property(Iri = "http://schema.org/description")]
         string Description { get; set; }

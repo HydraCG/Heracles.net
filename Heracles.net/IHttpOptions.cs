@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 
 namespace Heracles
 {
@@ -9,7 +10,7 @@ namespace Heracles
         IDictionary<string, string> Headers { get; }
         
         /// <summary>Gets request body.</summary>
-        object Body { get; }
+        Stream Body { get; }
         
         /// <summary>Gets request method.</summary>
         string Method { get; }

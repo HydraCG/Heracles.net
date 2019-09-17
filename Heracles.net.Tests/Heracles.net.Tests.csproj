@@ -42,6 +42,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Update="appsettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="Server\api.jsonld">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>

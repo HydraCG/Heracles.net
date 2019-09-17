@@ -2,7 +2,7 @@
 using Heracles.DataModel;
 using Heracles.Testing;
 
-namespace Having_a_Hydra_client.while_browsing_the_test_website
+namespace Having_a_Hydra_client.while_browsing_a_website
 {
     public abstract class ScenarioTest : IntegrationTest
     {

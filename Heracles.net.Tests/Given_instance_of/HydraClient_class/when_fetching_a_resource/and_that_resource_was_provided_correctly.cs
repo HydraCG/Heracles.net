@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Heracles;
@@ -22,7 +23,7 @@ namespace Given_instance_of.HydraClient_class.when_fetching_a_resource
         {
             base.ScenarioSetup();
             Resource = new Mock<IHypermediaContainer>(MockBehavior.Strict);
-            HttpCall.Setup(_ => _.HttpCall(ResourceUrl, It.IsAny<IHttpOptions>()))
+            HttpCall.Setup(_ => _.HttpCall(ResourceUrl, It.IsAny<IHttpOptions>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(ResourceResponse = Return.Ok(
                     ResourceUrl,
                     new MemoryStream(),

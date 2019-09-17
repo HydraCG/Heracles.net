@@ -61,7 +61,7 @@ namespace Heracles
         /// <summary>Crawls partial collection views starting with a given one.</summary>
         /// <param name="options">Crawling options.</param>
         /// <returns>Collection of resources from the collection.</returns>
-        public async Task<IEnumerable<IResource>> GetMembers(ICrawlingOptions options)
+        public async Task<IEnumerable<IResource>> GetMembers(ICrawlingOptions options = null)
         {
             var result = new List<IResource>();
             var memberLimit = options?.MemberLimit ?? Int32.MaxValue;

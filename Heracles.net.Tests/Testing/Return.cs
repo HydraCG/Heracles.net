@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Heracles.DataModel;
 using Moq;
@@ -47,7 +48,7 @@ namespace Heracles.Testing
             result.SetupGet(_ => _.Url).Returns(url);
             result.SetupGet(_ => _.Status).Returns(status);
             result.SetupGet(_ => _.Headers).Returns(responseHeaders.Object);
-            result.Setup(_ => _.GetBody()).Returns(Task.FromResult(body));
+            result.Setup(_ => _.GetBody(It.IsAny<CancellationToken>())).Returns(Task.FromResult(body));
             return result.Object;
         }
     }

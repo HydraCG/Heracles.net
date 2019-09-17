@@ -26,9 +26,9 @@ namespace Heracles.DataModel.Collections
         /// <summary>Obtains a collection of operations being an Hydra TemplatedLink.</summary>
         /// <param name="links">Collection to be filteded.</param>
         /// <returns>Filtered collection.</returns>
-        public static IEnumerable<IDerefencableLink> WithTemplate(this IEnumerable<IDerefencableLink> links)
+        public static IEnumerable<ITemplatedLink> WithTemplate(this IEnumerable<IDerefencableLink> links)
         {
-            return links.OfType(hydra.TemplatedLink);
+            return links.OfType(hydra.TemplatedLink).Cast<ITemplatedLink>();
         }
     }
 }

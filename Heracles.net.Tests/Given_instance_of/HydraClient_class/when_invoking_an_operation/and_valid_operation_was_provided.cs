@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Heracles;
 using Moq;
 using NUnit.Framework;
@@ -24,7 +25,7 @@ namespace Given_instance_of.HydraClient_class.when_invoking_an_operation
         [Test]
         public void should_execute_the_request()
         {
-            HttpCall.Verify(_ => _.HttpCall(TargetIri, It.IsAny<IHttpOptions>()), Times.Once);
+            HttpCall.Verify(_ => _.HttpCall(TargetIri, It.IsAny<IHttpOptions>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

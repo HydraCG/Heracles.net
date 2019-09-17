@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Heracles.DataModel;
 using Heracles.Namespaces;
@@ -16,7 +18,7 @@ using RollerCaster.Reflection;
 
 namespace Heracles.JsonLd
 {
-    /// <summary>Provides a JSON-LD based implementation of the {@link IHypermediaProcessor} interface.</summary>
+    /// <summary>Provides a JSON-LD based implementation of the <see cref="IHypermediaProcessor" /> interface.</summary>
     public partial class JsonLdHypermediaProcessor : IHypermediaProcessor
     {
         private const string JsonLdContext = "http://www.w3.org/ns/json-ld#context";
@@ -33,8 +35,8 @@ namespace Heracles.JsonLd
 
         private static readonly Regex LinkPattern = new Regex("\\<(?<Uri>[^>]+)\\>;(.*rel=\"?(?<Relation>[^ \";]+)\"?;.*type=\"?(?<Type>[^ \";]+)\"?.*|.*type=\"?(?<Type>[^ \";]+)\"?;.*rel=\"?(?<Relation>[^ \";]+)\"?.*)");
         
-        private static readonly IDictionary<Iri, Func<ITypedEntity, IHydraClient, ProcessingState, IResource>> Initializers
-            = new Dictionary<Iri, Func<ITypedEntity, IHydraClient, ProcessingState, IResource>>()
+        private static readonly IDictionary<Iri, Func<ITypedEntity, IHydraClient, ProcessingState, CancellationToken, Task<IResource>>> Initializers
+            = new Dictionary<Iri, Func<ITypedEntity, IHydraClient, ProcessingState, CancellationToken, Task<IResource>>>()
             {
                 { Untyped, ResourceInitializer },
                 { hydra.ApiDocumentation, ClientInitializer },
@@ -66,6 +68,10 @@ namespace Heracles.JsonLd
                 .ImplementationOf<IApiDocumentation>()
                     .ForFunction(_ => _.GetEntryPoint())
                     .ImplementedBy(_ => ApiDocumentation.GetEntryPoint(_));
+            MulticastObject
+                .ImplementationOf<IApiDocumentation>()
+                    .ForFunction(_ => _.GetEntryPoint(CancellationToken.None))
+                    .ImplementedBy(_ => ApiDocumentation.GetEntryPoint(_, CancellationToken.None));
             MulticastObject
                 .ImplementationOf<ICollection>()
                     .ForFunction(_ => _.GetIterator())
@@ -129,10 +135,29 @@ namespace Heracles.JsonLd
         }
 
         /// <inheritdoc />
-        public async Task<IHypermediaContainer> Process(
+        public Task<IHypermediaContainer> Process(
             IResponse response,
             IHydraClient hydraClient,
             IHypermediaProcessingOptions options = null)
+        {
+            return Process(response, hydraClient, options, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public Task<IHypermediaContainer> Process(
+            IResponse response,
+            IHydraClient hydraClient,
+            CancellationToken cancellationToken)
+        {
+            return Process(response, hydraClient, null, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public async Task<IHypermediaContainer> Process(
+            IResponse response,
+            IHydraClient hydraClient,
+            IHypermediaProcessingOptions options,
+            CancellationToken cancellationToken)
         {
             if (response == null)
             {
@@ -150,26 +175,64 @@ namespace Heracles.JsonLd
             var hypermedia = new List<IResource>();
             using (var processingState = new ProcessingState(context, _ontologyProvider, responseIri, options?.LinksPolicy ?? LinksPolicy.Strict))
             {
-                var jsonLdReader = new JsonLdReader(await CreateJsonLdOptionsFor(response));
+                var jsonLdReader = new JsonLdReader(await CreateJsonLdOptionsFor(response, cancellationToken));
                 var serializableSource = (ISerializableEntitySource)context.EntitySource;
-                using (processingState.StartGatheringStatementsFor(serializableSource))
-                using (var reader = new StreamReader(await response.GetBody()))
+                using (processingState.StartGatheringStatementsFor(serializableSource, _ => _.Object != null && !IsStandaloneControl(_.Predicate)))
+                using (var reader = new StreamReader(await response.GetBody(cancellationToken)))
                 {
-                    await serializableSource.Read(reader, jsonLdReader);
+                    await serializableSource.Read(reader, jsonLdReader, cancellationToken);
                 }
 
-                resource = ProcessResources(processingState, hydraClient, hypermedia);
+                resource = await ProcessResources(processingState, hydraClient, hypermedia, cancellationToken);
             }
 
             return new HypermediaContainer(response, resource, hypermedia);
         }
 
-        private IResource ProcessResources(ProcessingState processingState, IHydraClient hydraClient, List<IResource> hypermedia)
+        /// <inheritdoc />
+        public Task<Stream> Serialize(IResource body)
         {
-            var resource = processingState.Context.Load<IResource>(processingState.BaseUrl);
+            return Serialize(body, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public async Task<Stream> Serialize(IResource body, CancellationToken cancellationToken)
+        {
+            if (body == null)
+            {
+                throw new ArgumentNullException(nameof(body));
+            }
+
+            if (body.Iri == null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(body));
+            }
+
+            var statements =
+                from statement in await body.Context.EntitySource.Load(body.Iri)
+                group statement by statement.Graph into graphs
+                select new KeyValuePair<Iri, IEnumerable<Statement>>(graphs.Key, graphs);
+            var jsonLdWriter = new JsonLdWriter();
+            var buffer = new MemoryStream();
+            using (var writer = new StreamWriter(buffer, Encoding.UTF8, 4096, true))
+            {
+                await jsonLdWriter.Write(writer, statements);
+            }
+
+            buffer.Seek(0, SeekOrigin.Begin);
+            return buffer;
+        }
+
+        private async Task<IResource> ProcessResources(
+            ProcessingState processingState,
+            IHydraClient hydraClient,
+            List<IResource> hypermedia,
+            CancellationToken cancellationToken)
+        {
+            var resource = await processingState.Context.Load<IResource>(processingState.BaseUrl, cancellationToken);
             foreach (var entity in processingState.Context.AsQueryable<ITypedEntity>())
             {
-                Func<ITypedEntity, IHydraClient, ProcessingState, IResource> initializer = Initializers[Untyped];
+                Func<ITypedEntity, IHydraClient, ProcessingState, CancellationToken, Task<IResource>> initializer = Initializers[Untyped];
                 foreach (var type in entity.Type.Where(item => item.ToString().StartsWith(hydra.Namespace)))
                 {
                     if (!Initializers.TryGetValue(type, out initializer))
@@ -181,7 +244,7 @@ namespace Heracles.JsonLd
                     break;
                 }
 
-                var currentResource = initializer(entity, hydraClient, processingState);
+                var currentResource = await initializer(entity, hydraClient, processingState, cancellationToken);
                 if (currentResource != null)
                 {
                     if (processingState.AllHypermedia.Contains(currentResource.Iri))
@@ -202,14 +265,15 @@ namespace Heracles.JsonLd
 
         private static IEntityContextFactory CreateEntityContextFactory()
         {
-            return new DefaultEntityContextFactory()
+            return RDeF.Entities.EntityContextFactory
+                .FromConfiguration("heracles.net")
                 .WithQIri("hydra", hydra.Namespace)
                 .WithQIri("rdf", rdf.Namespace)
                 .WithQIri("rdfs", rdfs.Namespace)
                 .WithMappings(_ => _.FromAssemblyOf<JsonLdHypermediaProcessor>());
         }
 
-        private async Task<JsonLdOptions> CreateJsonLdOptionsFor(IResponse response)
+        private async Task<JsonLdOptions> CreateJsonLdOptionsFor(IResponse response, CancellationToken cancellationToken)
         {
             JsonLdOptions result = new JsonLdOptions(response.Url.ToString());
             result.documentLoader = new JsonLdDocumentLoader(_httpCall);
@@ -220,8 +284,8 @@ namespace Heracles.JsonLd
                     let pattern = LinkPattern.Match(item)
                     where pattern.Success && pattern.Groups["Relation"].Value == JsonLdContext
                     select new { Url = new Uri(response.Url, pattern.Groups["Uri"].Value), Type = pattern.Groups["Type"].Value }).First();
-                var contextResponse = await _httpCall(link.Url, new HttpOptions() { Headers = { { "Accept", link.Type } } });
-                using (var reader = new StreamReader(await contextResponse.GetBody()))
+                var contextResponse = await _httpCall(link.Url, new HttpOptions() { Headers = { { "Accept", link.Type } } }, cancellationToken);
+                using (var reader = new StreamReader(await contextResponse.GetBody(cancellationToken)))
                 using (var jsonReader = new JsonTextReader(reader))
                 {
                     result.SetExpandContext((JObject)JsonSerializer.CreateDefault().Deserialize(jsonReader));

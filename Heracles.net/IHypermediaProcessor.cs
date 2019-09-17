@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Heracles.DataModel;
 
@@ -27,5 +29,38 @@ namespace Heracles
             IResponse response,
             IHydraClient hydraClient,
             IHypermediaProcessingOptions options = null);
+
+        /// <summary>Parses a given raw response.</summary>
+        /// <param name="response">Raw fetch response holding data to be parsed.</param>
+        /// <param name="hydraClient">Hydra client.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Processed hypermedia with embedded response.</returns>
+        Task<IHypermediaContainer> Process(
+            IResponse response,
+            IHydraClient hydraClient,
+            CancellationToken cancellationToken);
+
+        /// <summary>Parses a given raw response.</summary>
+        /// <param name="response">Raw fetch response holding data to be parsed.</param>
+        /// <param name="hydraClient">Hydra client.</param>
+        /// <param name="options">Optional additional processing options.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Processed hypermedia with embedded response.</returns>
+        Task<IHypermediaContainer> Process(
+            IResponse response,
+            IHydraClient hydraClient,
+            IHypermediaProcessingOptions options,
+            CancellationToken cancellationToken);
+
+        /// <summary>Serializes a given <paramref name="body" />.</summary>
+        /// <param name="body">Resource to be serialized.</param>
+        /// <returns>Stream with serizlied <paramref name="body" />.</returns>
+        Task<Stream> Serialize(IResource body);
+
+        /// <summary>Serializes a given <paramref name="body" />.</summary>
+        /// <param name="body">Resource to be serialized.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Stream with serizlied <paramref name="body" />.</returns>
+        Task<Stream> Serialize(IResource body, CancellationToken cancellationToken);
     }
 }

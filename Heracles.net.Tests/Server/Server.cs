@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -150,14 +151,21 @@ namespace Heracles.Server
                             using (var jsonReader = new JsonTextReader(fileReader))
                             {
                                 var resource = (JObject)Json.Deserialize(jsonReader);
-                                var matchingResource = resource["@graph"] != null
-                                    ? resource["@graph"].AsJEnumerable().OfType<JObject>().FirstOrDefault(_ => (string)_["@id"] == path)
-                                    : resource;
-                                matchingResource["@id"] = path + query;
+                                JObject matchingResource = resource;
+                                if (resource["@graph"] != null)
+                                {
+                                    matchingResource = resource["@graph"].AsJEnumerable().OfType<JObject>().FirstOrDefault(_ => (string)_["@id"] == path);
+                                    matchingResource["@id"] = path + query;
+                                    matchingResource = new JObject(new JProperty("@graph", matchingResource));
+                                    matchingResource["@context"] = resource["@context"];
+                                }
+
                                 result = new MemoryStream();
-                                var fileWriter = new StreamWriter(result);
-                                var jsonWriter = new JsonTextWriter(fileWriter);
-                                Json.Serialize(jsonWriter, resource);
+                                using (var fileWriter = new StreamWriter(result, Encoding.UTF8, 4096, true))
+                                using (var jsonWriter = new JsonTextWriter(fileWriter))
+                                {
+                                    Json.Serialize(jsonWriter, matchingResource);
+                                }
                             }
                         }
                         else

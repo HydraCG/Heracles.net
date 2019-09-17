@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Heracles.Collections.Generic;
 using Heracles.DataModel;
 using Heracles.Entities;
@@ -35,8 +37,16 @@ namespace Heracles.JsonLd
             hydra.subject,
             hydra.property,
             hydra.@object,
-            hydra.operation,
+            hydra.operation
         };
+
+        private static readonly IDictionary<Iri, Func<IHydraResource, IEnumerable<IOperation>>> OperationContainers =
+            new Dictionary<Iri, Func<IHydraResource, IEnumerable<IOperation>>>()
+            {
+                { hydra.Class, _ => _.ActLike<IClass>().SupportedOperations },
+                { hydra.Link, _ => _.ActLike<ILink>().SupportedOperations },
+                { hydra.TemplatedLink, _ => _.ActLike<ITemplatedLink>().SupportedOperations }
+            };
 
         private static readonly Iri[] HydraIndependentTypes = { hydra.Collection, hydra.PartialCollectionView };
 
@@ -47,20 +57,33 @@ namespace Heracles.JsonLd
             return resource.Type.Any(_ => _.ToString().StartsWith(hydra.Namespace) && !HydraIndependentTypes.Contains(_));
         }
 
-        private static IResource ResourceInitializer(ITypedEntity resource, IHydraClient client, ProcessingState processingState)
+        private static async Task<IResource> ResourceInitializer(
+            ITypedEntity resource,
+            IHydraClient client,
+            ProcessingState processingState,
+            CancellationToken cancellationToken)
         {
             IHydraResource hydraResource = resource as IHydraResource
                 ?? (resource.Is(hydra.Resource) ? resource.ActLike<IHydraResource>() : null);
 
-            var resourceStatementsCount = 0;
-            foreach (var statement in processingState.StatementsOf(resource.Iri).Where(_ => _.Object != null && !IsStandaloneControl(_.Predicate)))
+            bool hasView = false;
+            foreach (var statement in processingState.StatementsOf(resource.Iri))
             {
-                GatherLinks(resource, statement, processingState, ref hydraResource);
-                resourceStatementsCount++;
+                hydraResource = await GatherLinks(resource, statement, processingState, hydraResource, cancellationToken);
+                if (statement.Predicate == hydra.view)
+                {
+                    hasView = true;
+                }
             }
 
-            if (hydraResource != null && resourceStatementsCount > 0)
+            if (hydraResource != null && processingState.NumberOfStatementsOf(resource.Iri) > 0)
             {
+                GatherOperationTargets(hydraResource);
+                if (hasView)
+                {
+                    hydraResource = hydraResource.ActLike<IResourceView>();
+                }
+
                 var addToHypermedia = !processingState.ForbiddenHypermeda.Contains(hydraResource.Iri)
                     && (!hydraResource.Iri.IsBlank || IsHydraDependent(hydraResource));
                 if (addToHypermedia)
@@ -72,10 +95,33 @@ namespace Heracles.JsonLd
             return hydraResource;
         }
 
-        private static void GatherLinks(ITypedEntity resource, Statement statement, ProcessingState processingState, ref IHydraResource hydraResource)
+        private static void GatherOperationTargets(IHydraResource resource)
         {
-            var relationResource = resource.Context.Load<IDerefencableLink>(statement.Predicate);
-            var @object = resource.Context.Load<IResource>(statement.Object);
+            if (resource != null)
+            {
+                IEnumerable<IOperation> operations = resource.Operations;
+                var supportedOperationsContainer = OperationContainers.Where(_ => resource.Type.Contains(_.Key)).Select(_ => _.Value).FirstOrDefault();
+                if (supportedOperationsContainer != null)
+                {
+                    operations = operations.Concat(supportedOperationsContainer(resource));
+                }
+
+                foreach (var operation in operations)
+                {
+                    operation.Unwrap().SetProperty(ResourceExtensions.TargetPropertyInfo, resource);
+                }
+            }
+        }
+
+        private static async Task<IHydraResource> GatherLinks(
+            ITypedEntity resource,
+            Statement statement,
+            ProcessingState processingState,
+            IHydraResource hydraResource,
+            CancellationToken cancellationToken)
+        {
+            var relationResource = await resource.Context.Load<IDerefencableLink>(statement.Predicate, cancellationToken);
+            var @object = await resource.Context.Load<IResource>(statement.Object, cancellationToken);
             var linkType = relationResource.GetLinkType() ?? @object.GetLinkType(processingState.LinksPolicy, processingState.Root);
             if (linkType != null)
             {
@@ -86,6 +132,8 @@ namespace Heracles.JsonLd
                 processingState.ProcessingCompleted +=
                     (sender, e) => CreateRelationHandler((ProcessingState)sender, owner, relationResource, @object, linkType);
             }
+
+            return hydraResource;
         }
 
         private static Iri GetNextIri(string type)

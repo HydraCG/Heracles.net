@@ -10,7 +10,7 @@ namespace Given_instance_of.HydraClient_class.when_invoking_an_operation
 
         protected Mock<IOperation> Operation { get; private set; }
 
-        protected Mock<IWebResource> Body { get; private set; }
+        protected Mock<IResource> Body { get; private set; }
 
         protected Mock<IResource> Parameters { get; private set; }
 
@@ -22,7 +22,7 @@ namespace Given_instance_of.HydraClient_class.when_invoking_an_operation
             Operation = new Mock<IOperation>(MockBehavior.Strict);
             Operation.SetupGet(_ => _.Target).Returns(target.Object);
             Operation.SetupGet(_ => _.Method).Returns("GET");
-            Body = new Mock<IWebResource>(MockBehavior.Strict);
+            Body = new Mock<IResource>(MockBehavior.Strict);
             Parameters = new Mock<IResource>(MockBehavior.Strict);
             IriTemplateExpansionStrategy
                 .Setup(_ => _.CreateRequest(It.IsAny<IOperation>(), It.IsAny<IResource>(), It.IsAny<IResource>()))

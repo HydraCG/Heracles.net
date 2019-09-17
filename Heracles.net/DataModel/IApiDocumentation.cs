@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using RDeF.Mapping.Attributes;
 
@@ -27,5 +28,10 @@ namespace Heracles.DataModel
         /// <summary>Retrieves an API's entry point resource.</summary>
         /// <returns>Task with entry point obtained as an instance of the <see cref="IHypermediaContainer" />.</returns>
         Task<IHypermediaContainer> GetEntryPoint();
+
+        /// <summary>Retrieves an API's entry point resource.</summary>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Task with entry point obtained as an instance of the <see cref="IHypermediaContainer" />.</returns>
+        Task<IHypermediaContainer> GetEntryPoint(CancellationToken cancellationToken);
     }
 }

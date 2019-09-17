@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Heracles.DataModel;
 
@@ -37,6 +38,12 @@ namespace Heracles.Net
 
         /// <inheritdoc />
         public Task<Stream> GetBody()
+        {
+            return GetBody(CancellationToken.None);
+        }
+        
+        /// <inheritdoc />
+        public Task<Stream> GetBody(CancellationToken cancellationToken)
         {
             return Task.FromResult(_response.GetResponseStream());
         }

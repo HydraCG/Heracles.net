@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 
 namespace Heracles
 {
@@ -11,7 +12,7 @@ namespace Heracles
         /// <param name="method">Request method.</param>
         /// <param name="body">Request body.</param>
         /// <param name="headers">Request headers.</param>
-        public HttpOptions(string method = HttpGetMethod, object body = null, IDictionary<string, string> headers = null)
+        public HttpOptions(string method = HttpGetMethod, Stream body = null, IDictionary<string, string> headers = null)
         {
             Body = body;
             Method = method ?? HttpGetMethod;
@@ -22,7 +23,7 @@ namespace Heracles
         public IDictionary<string, string> Headers { get; }
         
         /// <inheritdoc />
-        public object Body { get; }
+        public Stream Body { get; }
         
         /// <inheritdoc />
         public string Method { get; }

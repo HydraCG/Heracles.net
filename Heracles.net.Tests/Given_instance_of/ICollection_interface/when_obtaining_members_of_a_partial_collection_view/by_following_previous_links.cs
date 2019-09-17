@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Heracles.Namespaces;
@@ -32,13 +33,13 @@ namespace Given_instance_of.ICollection_interface.when_obtaining_members_of_a_pa
         [Test]
         public void should_call_the_client_for_second_part()
         {
-            Client.Verify(_ => _.GetResource(SecondPage.Iri), Times.Once);
+            Client.Verify(_ => _.GetResource(SecondPage.Iri, It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Test]
         public void should_call_the_client_for_first_part()
         {
-            Client.Verify(_ => _.GetResource(FirstPage.Iri), Times.Once);
+            Client.Verify(_ => _.GetResource(FirstPage.Iri, It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Test]
@@ -54,8 +55,8 @@ namespace Given_instance_of.ICollection_interface.when_obtaining_members_of_a_pa
             base.ScenarioSetup();
             InitialMembers.Add(LastBatch.Members.First());
             var calls = 0;
-            Client.Setup(_ => _.GetResource(It.IsAny<Uri>()))
-                .Returns<Uri>(_ => Task.FromResult(++calls == 1 ? SecondBatch : FirstBatch));
+            Client.Setup(_ => _.GetResource(It.IsAny<Uri>(), It.IsAny<CancellationToken>()))
+                .Returns<Uri, CancellationToken>((uri, token) => Task.FromResult(++calls == 1 ? SecondBatch : FirstBatch));
         }
     }
 }

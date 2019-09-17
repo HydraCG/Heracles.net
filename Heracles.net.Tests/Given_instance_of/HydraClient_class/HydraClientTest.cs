@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Heracles;
@@ -43,7 +44,8 @@ namespace Given_instance_of.HydraClient_class
                 .Returns<IResponse>(_ => _.Headers["Content-Type"].Contains("application/ld+json") ? Level.FullSupport : Level.None);
             IriTemplateExpansionStrategy = new Mock<IIriTemplateExpansionStrategy>(MockBehavior.Strict);
             HttpCall = new Mock<IHttpInfrastructure>(MockBehavior.Strict);
-            HttpCall.Setup(_ => _.HttpCall(It.IsAny<Uri>(), It.IsAny<IHttpOptions>())).ReturnsAsync(Return.Ok());
+            HttpCall.Setup(_ => _.HttpCall(It.IsAny<Uri>(), It.IsAny<IHttpOptions>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Return.Ok());
             Client = new HydraClient(
                 new [] { HypermediaProcessor.Object },
                 IriTemplateExpansionStrategy.Object,

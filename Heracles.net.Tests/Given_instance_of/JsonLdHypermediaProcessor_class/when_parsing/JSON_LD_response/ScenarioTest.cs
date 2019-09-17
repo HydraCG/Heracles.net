@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using FluentAssertions.Equivalency;
 using Heracles.DataModel;
 using Heracles.Namespaces;
@@ -37,7 +38,7 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing.JSON_LD
         {
             base.ScenarioSetup();
             ResponseHeaders.SetupGet(_ => _["Content-Type"]).Returns(new[] { "application/ld+json" });
-            Response.Setup(_ => _.GetBody()).ReturnsAsync(InputJsonLd);
+            Response.Setup(_ => _.GetBody(It.IsAny<CancellationToken>())).ReturnsAsync(InputJsonLd);
             OntologyProvider.Setup(_ => _.GetDomainFor(It.IsAny<Iri>()))
                 .Returns<Iri>(predicate => Domains.ContainsKey(predicate) ? Domains[predicate] : null);
             OntologyProvider.Setup(_ => _.GetRangeFor(It.IsAny<Iri>()))

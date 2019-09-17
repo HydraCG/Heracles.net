@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Heracles;
 using Heracles.DataModel;
@@ -28,7 +29,7 @@ namespace Given_instance_of.HydraClient_class.when_obtaining_an_API_documentatio
             var hypermedia = new Mock<IHypermediaContainer>(MockBehavior.Strict);
             hypermedia.Setup(_ => _.GetEnumerator())
                 .Returns(new List<IResource>(new[] { apiDocumentation.Object }).GetEnumerator());
-            HttpCall.Setup(_ => _.HttpCall(ApiDocumentationUrl, It.IsAny<IHttpOptions>()))
+            HttpCall.Setup(_ => _.HttpCall(ApiDocumentationUrl, It.IsAny<IHttpOptions>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Response = Return.Ok());
             HypermediaProcessor
                 .Setup(_ => _.Process(It.IsAny<IResponse>(), It.IsAny<IHydraClient>(), It.IsAny<IHypermediaProcessingOptions>()))
@@ -43,13 +44,15 @@ namespace Given_instance_of.HydraClient_class.when_obtaining_an_API_documentatio
         [Test]
         public void should_call_the_given_site_url()
         {
-            HttpCall.Verify(_ => _.HttpCall(BaseUrl, It.IsAny<IHttpOptions>()), Times.Once);
+            HttpCall.Verify(_ => _.HttpCall(BaseUrl, It.IsAny<IHttpOptions>(), It.IsAny<CancellationToken>()), Times.Once);
         }
         
         [Test]
         public void should_fetch_the_API_documentation()
         {
-            HttpCall.Verify(_ => _.HttpCall(new Uri(BaseUrl, "api/documentation"), It.IsAny<IHttpOptions>()), Times.Once);
+            HttpCall.Verify(
+                _ => _.HttpCall(new Uri(BaseUrl, "api/documentation"), It.IsAny<IHttpOptions>(), It.IsAny<CancellationToken>()),
+                Times.Once);
         }
                 
         [Test]

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Heracles.DataModel;
 using Heracles.DataModel.Collections;
@@ -71,16 +73,29 @@ namespace Heracles
         /// <inheritdoc />
         public Task<IApiDocumentation> GetApiDocumentation(IResource resource)
         {
-            return GetApiDocumentation(resource?.Iri);
+            return GetApiDocumentation(resource, CancellationToken.None);
         }
 
         /// <inheritdoc />
-        public async Task<IApiDocumentation> GetApiDocumentation(Uri url)
+        public Task<IApiDocumentation> GetApiDocumentation(IResource resource, CancellationToken cancellationToken)
+        {
+            return GetApiDocumentation(resource?.Iri, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<IApiDocumentation> GetApiDocumentation(Uri url)
+        {
+            return GetApiDocumentation(url, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public async Task<IApiDocumentation> GetApiDocumentation(Uri url, CancellationToken cancellationToken)
         {
             var apiDocumentation = await GetApiDocumentationUrl(
-                url ?? throw new ArgumentNullException(nameof(url), NoUrlProvided));
+                url ?? throw new ArgumentNullException(nameof(url), NoUrlProvided),
+                cancellationToken);
             var options = new HypermediaProcessingOptions(apiDocumentation.Response, url);
-            var resource = await GetResourceFrom(apiDocumentation.Url, options);
+            var resource = await GetResourceFrom(apiDocumentation.Url, options, cancellationToken);
             var result = resource.OfType(hydra.ApiDocumentation).FirstOrDefault() as IApiDocumentation;
             if (result == null)
             {
@@ -93,13 +108,35 @@ namespace Heracles
         /// <inheritdoc />
         public Task<IHypermediaContainer> GetResource(IResource resource)
         {
-            return GetResource(resource?.Iri);
+            return GetResource(resource, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public Task<IHypermediaContainer> GetResource(IResource resource, CancellationToken cancellationToken)
+        {
+            return GetResource((resource as IPointingResource)?.Target?.Iri ?? resource?.Iri, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<IResponse> Invoke(IOperation operation, IResource body = null, IResource parameters = null)
+        {
+            return Invoke(operation, body, parameters, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public Task<IResponse> Invoke(IOperation operation, CancellationToken cancellationToken)
+        {
+            return Invoke(operation, null, null, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<IResponse> Invoke(IOperation operation, IResource body, CancellationToken cancellationToken)
+        {
+            return Invoke(operation, body, null, cancellationToken);
         }
         
-        public async Task<IResponse> Invoke(
-            IOperation operation, 
-            IWebResource body = null, 
-            IResource parameters = null)
+        /// <inheritdoc />
+        public async Task<IResponse> Invoke(IOperation operation, IResource body, IResource parameters, CancellationToken cancellationToken)
         {
             if (operation == null)
             {
@@ -109,23 +146,44 @@ namespace Heracles
             var targetOperation = _iriTemplateExpansionStrategy.CreateRequest(operation, body, parameters);
             // TODO: move Content-Type header to some specialized component.
             // TODO: move body serialization to some specialized component.
+            Stream serializedBody = null;
+            if (body != null)
+            {
+                var hypermediaProcessor = (
+                    from processor in _hypermediaProcessors
+                    from supportedMediaType in processor.SupportedMediaTypes
+                    where StringComparer.InvariantCultureIgnoreCase.Equals(supportedMediaType, "application/ld+json")
+                    select processor).First();
+                serializedBody = await hypermediaProcessor.Serialize(body, cancellationToken);
+            }
+
             return await MakeRequestTo(
                 targetOperation.Target.Iri,
                 new HttpOptions(
                     targetOperation.Method,
-                    body,
-                    new Dictionary<string, string>() { { "Content-Type", "application/ld+json" } }));
+                    serializedBody,
+                    new Dictionary<string, string>() { { "Content-Type", "application/ld+json" } }),
+                cancellationToken);
         }
 
         /// <inheritdoc />
-        public async Task<IHypermediaContainer> GetResource(Uri url)
+        public Task<IHypermediaContainer> GetResource(Uri url)
         {
-            return await GetResourceFrom(url);
+            return GetResource(url, CancellationToken.None);
         }
 
-        private async Task<IHypermediaContainer> GetResourceFrom(Uri url, IHypermediaProcessingOptions options = null)
+        /// <inheritdoc />
+        public Task<IHypermediaContainer> GetResource(Uri url, CancellationToken cancellationToken)
         {
-            var response = await MakeRequestTo(url ?? throw new ArgumentNullException(nameof(url), NoUrlProvided));
+            return GetResourceFrom(url, null, cancellationToken);
+        }
+
+        private async Task<IHypermediaContainer> GetResourceFrom(Uri url, IHypermediaProcessingOptions options, CancellationToken cancellationToken)
+        {
+            var response = await MakeRequestTo(
+                url ?? throw new ArgumentNullException(nameof(url), NoUrlProvided),
+                null,
+                cancellationToken);
             if (response.Status != 200)
             {
                 throw new InvalidResponseException(response.Status);
@@ -141,9 +199,9 @@ namespace Heracles
             return await hypermediaProcessor.Process(response, this, options);
         }
         
-        private async Task<ApiDocumentationDetails> GetApiDocumentationUrl(Uri url)
+        private async Task<ApiDocumentationDetails> GetApiDocumentationUrl(Uri url, CancellationToken cancellationToken)
         {
-            var response = await MakeRequestTo(url);
+            var response = await MakeRequestTo(url, null, cancellationToken);
             if (response.Status != 200)
             {
                 throw new InvalidResponseException(response.Status);
@@ -166,9 +224,9 @@ namespace Heracles
                     : new Uri(result.Groups[1].Value));
         }
 
-        private async Task<IResponse> MakeRequestTo(Uri url, IHttpOptions options = null)
+        private async Task<IResponse> MakeRequestTo(Uri url, IHttpOptions options, CancellationToken cancellationToken)
         {
-            return await _httpCall(url, options);
+            return await _httpCall(url, options, cancellationToken);
         }
 
         private class ApiDocumentationDetails

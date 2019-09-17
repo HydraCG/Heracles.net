@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Heracles.Net.Http
@@ -9,33 +9,23 @@ namespace Heracles.Net.Http
     {
         private static readonly HttpClient Client = new HttpClient();
 
-        private static readonly IDictionary<string, HttpMethod> HttpMethods = new Dictionary<string, HttpMethod>()
+        public async Task<IResponse> Call(Uri url, IHttpOptions options, CancellationToken cancellationTokenn)
         {
-            { "GET", HttpMethod.Get },
-            { "PUT", HttpMethod.Put },
-            { "POST", HttpMethod.Post },
-            { "DELETE", HttpMethod.Delete },
-            { "HEAD", HttpMethod.Head },
-            { "OPTIONS", HttpMethod.Options },
-            { "TRACE", HttpMethod.Trace },
-            { String.Empty, HttpMethod.Get } 
-        };
-
-        public async Task<IResponse> Call(Uri url, IHttpOptions options = null)
-        {
-            var httpRequest = new HttpRequestMessage(
-                HttpMethods.TryGetValue(options?.Method ?? String.Empty, out HttpMethod method) ? method : new HttpMethod(options.Method),
-                url);
+            var httpRequest = new HttpRequestMessage(new HttpMethod(options?.Method ?? "GET"), url);
             if (options != null)
             {
                 foreach (var header in options.Headers)
                 {
-                    httpRequest.Headers.Add(header.Key, header.Value);
+                    if (!httpRequest.Headers.TryAddWithoutValidation(header.Key, header.Value))
+                    {
+                        httpRequest.EnsureContentFrom(options.Body).Headers.Add(header.Key, header.Value);
+                    }
                 }
             }
 
-            var httpResponse = await Client.SendAsync(httpRequest, HttpCompletionOption.ResponseContentRead);
+            var httpResponse = await Client.SendAsync(httpRequest, HttpCompletionOption.ResponseContentRead, cancellationTokenn);
             return new HttpResponse(url, httpResponse);
         }
+
     }
 }

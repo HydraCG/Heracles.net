@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 using FluentAssertions;
 using Heracles;
 using NUnit.Framework;
@@ -18,7 +18,7 @@ namespace Given_instance_of.HttpOptions_class
         [Test]
         public void Should_provide_correct_body()
         {
-            new HttpOptions("GET", String.Empty).Body.Should().Be(String.Empty);
+            new HttpOptions("GET", new MemoryStream()).Body.Should().BeOfType<MemoryStream>();
         }
 
         [Test]

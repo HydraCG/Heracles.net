@@ -5,10 +5,10 @@ using Heracles.Namespaces;
 using NUnit.Framework;
 using RDeF.Entities;
 
-namespace Having_a_Hydra_client.while_browsing_the_test_website
+namespace Having_a_Hydra_client.while_browsing_a_website.and_obtaining_its_API_documentation
 {
-    [TestFixture]
-    public class and_obtaining_its_API_documentation_as_in_use_case_2 : ScenarioTest
+    /// <summary>Use case 2. API documentation.</summary>
+    public abstract class ScenarioTest : while_browsing_a_website.ScenarioTest
     {
         [Test]
         public void should_obtain_an_API_documentation()
@@ -23,8 +23,9 @@ namespace Having_a_Hydra_client.while_browsing_the_test_website
             ApiDocumentation.EntryPoint.Iri.ToString().Should().MatchRegex(".*/api$");
         }
 
+        /// <summary>Use case 2.1. API documentation data structures.</summary>
         [Test]
-        public void should_provide_class_of_schema_Event_as_in_use_case_2_1()
+        public void should_provide_class_of_schema_Event()
         {
             ApiDocumentation.SupportedClasses.OfIri(new Iri("http://schema.org/Event")).Should().BeEquivalentTo(
                 new object[]

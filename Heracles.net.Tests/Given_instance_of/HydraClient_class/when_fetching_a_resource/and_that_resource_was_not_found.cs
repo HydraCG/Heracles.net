@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Threading;
+using FluentAssertions;
 using Heracles;
 using Heracles.DataModel;
 using Heracles.Testing;
@@ -13,13 +14,14 @@ namespace Given_instance_of.HydraClient_class.when_fetching_a_resource
         protected override void ScenarioSetup()
         {
             base.ScenarioSetup();
-            HttpCall.Setup(_ => _.HttpCall(ResourceUrl, It.IsAny<IHttpOptions>())).ReturnsAsync(Return.NotFound());
+            HttpCall.Setup(_ => _.HttpCall(ResourceUrl, It.IsAny<IHttpOptions>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Return.NotFound());
         }
 
         [Test]
         public void should_throw()
         {
-            Client.Awaiting(_ => _.GetResource(Resource.Of<IWebResource>(ResourceUrl).Object))
+            Client.Awaiting(_ => _.GetResource(Resource.Of<IResource>(ResourceUrl).Object))
                 .Should().Throw<InvalidResponseException>()
                 .Which.Status.Should().Be(404);
         }

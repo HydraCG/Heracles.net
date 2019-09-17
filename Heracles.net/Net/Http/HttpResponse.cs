@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
 using Heracles.DataModel;
 
@@ -38,6 +39,12 @@ namespace Heracles.Net.Http
 
         /// <inheritdoc />
         public Task<Stream> GetBody()
+        {
+            return GetBody(CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public Task<Stream> GetBody(CancellationToken cancellationToken)
         {
             return _response.Content.ReadAsStreamAsync();
         }

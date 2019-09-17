@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using JsonLD.Core;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -18,7 +19,7 @@ namespace Heracles.JsonLd
         /// <inheritdoc />
         public override RemoteDocument LoadDocument(string url)
         {
-            var result = _httpCall(new Uri(url)).Result.GetBody().Result;
+            var result = _httpCall(new Uri(url), null, CancellationToken.None).Result.GetBody().Result;
             using (var reader = new StreamReader(result))
             using (var jsonReader = new JsonTextReader(reader))
             {

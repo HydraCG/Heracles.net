@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading;
 using Heracles;
 using Heracles.Namespaces;
 using Heracles.Testing;
@@ -13,7 +14,7 @@ namespace Given_instance_of.HydraClient_class.when_obtaining_an_API_documentatio
         protected override void ScenarioSetup()
         {
             base.ScenarioSetup();
-            HttpCall.Setup(_ => _.HttpCall(BaseUrl, It.IsAny<IHttpOptions>()))
+            HttpCall.Setup(_ => _.HttpCall(BaseUrl, It.IsAny<IHttpOptions>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(UrlResponse = Return.Ok(
                     BaseUrl,
                     new MemoryStream(),

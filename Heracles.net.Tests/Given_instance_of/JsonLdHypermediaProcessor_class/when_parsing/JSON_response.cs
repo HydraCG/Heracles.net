@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Heracles;
 using Heracles.Testing;
@@ -20,7 +21,8 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing
             HttpCall.Verify(
                 _ => _.HttpCall(
                     new Uri(new Uri("http://temp.uri/api", UriKind.Absolute), "context.jsonld"),
-                    It.Is<IHttpOptions>(opts => opts.Headers["Accept"] == "application/ld+json")),
+                    It.Is<IHttpOptions>(opts => opts.Headers["Accept"] == "application/ld+json"),
+                    It.IsAny<CancellationToken>()),
                 Times.Once);
         }
 
@@ -29,8 +31,8 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing
             base.ScenarioSetup();
             JsonLdContext = GetResourceNamed("context.json");
             HttpCall
-                .Setup(_ => _.HttpCall(It.IsAny<Uri>(), It.IsAny<IHttpOptions>()))
-                .Returns<Uri, IHttpOptions>((uri, options) => Task.FromResult(Return.Ok(uri, JsonLdContext)));
+                .Setup(_ => _.HttpCall(It.IsAny<Uri>(), It.IsAny<IHttpOptions>(), It.IsAny<CancellationToken>()))
+                .Returns<Uri, IHttpOptions, CancellationToken>((uri, options, token) => Task.FromResult(Return.Ok(uri, JsonLdContext)));
             ResponseHeaders.SetupGet(_ => _["Content-Type"])
                 .Returns(new[] { "application/json" });
             ResponseHeaders.SetupGet(_ => _["Link"])
@@ -38,7 +40,7 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing
             var responseBody = new MemoryStream(Encoding.UTF8.GetBytes("{}"));
             responseBody.Seek(0, SeekOrigin.Begin);
             Response.Setup(_ => _.Url).Returns(new Uri("http://temp.uri/api", UriKind.Absolute));
-            Response.Setup(_ => _.GetBody()).ReturnsAsync(responseBody);
+            Response.Setup(_ => _.GetBody(It.IsAny<CancellationToken>())).ReturnsAsync(responseBody);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Heracles.Collections.Generic;
 using RDeF.Entities;
@@ -36,11 +37,17 @@ namespace Heracles.DataModel
                 Operations = hydraResource.Operations;
                 Links = hydraResource.Links;
             }
-            
+
+            if (rootResource is IResourceView resourceView)
+            {
+                View = resourceView.View;
+            }
+
             if (rootResource is ICollection collection)
             {
                 Members = collection.Members;
-                View = collection.View;
+                TotalItems = collection.TotalItems;
+                Manages = collection.Manages;
                 _getIterator = collection.GetIterator;
             }
         }
@@ -104,13 +111,19 @@ namespace Heracles.DataModel
         {
             get { return _rootResource.UnmappedRelations; }
         }
-        
+
+        /// <inheritdoc />
+        public int TotalItems { get; }
+
         /// <inheritdoc />
         public IPartialCollectionView View { get; }
 
         /// <inheritdoc />
         public ISet<IResource> Members { get; }
-        
+
+        /// <inheritdoc />
+        public ISet<IStatement> Manages { get; }
+
         /// <inheritdoc />
         public ISet<ICollection> Collections { get; }
 
@@ -128,7 +141,13 @@ namespace Heracles.DataModel
         /// <inheritdoc />
         public Task<Stream> GetBody()
         {
-            return _response.GetBody();
+            return GetBody(CancellationToken.None);
+        }
+        
+        /// <inheritdoc />
+        public Task<Stream> GetBody(CancellationToken cancellationToken)
+        {
+            return _response.GetBody(cancellationToken);
         }
 
         /// <inheritdoc />

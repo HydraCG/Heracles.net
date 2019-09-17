@@ -13,7 +13,7 @@ namespace Given_instance_of.HydraClient_class.when_fetching_a_resource
         [Test]
         public void should_throw()
         {
-            Client.Awaiting(_ => _.GetResource(Resource.Of<IWebResource>(Resource.Null).Object))
+            Client.Awaiting(_ => _.GetResource(Resource.Of<IResource>(Resource.Null).Object))
                 .Should().Throw<ArgumentNullException>()
                 .Which.Message.Should().StartWith(HydraClient.NoUrlProvided);
         }

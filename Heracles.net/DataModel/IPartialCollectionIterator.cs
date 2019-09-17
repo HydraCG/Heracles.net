@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using RDeF.Entities;
 
@@ -36,16 +37,36 @@ namespace Heracles.DataModel
         /// <returns>Collection of resources.</returns>
         Task<IEnumerable<IResource>> GetFirstPart();
 
+        /// <summary>Retrieves a first part of the partial collection view.</summary>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Collection of resources.</returns>
+        Task<IEnumerable<IResource>> GetFirstPart(CancellationToken cancellationToken);
+
         /// <summary>Retrieves a next part of the partial collection view.</summary>
         /// <returns>Collection of resources.</returns>
         Task<IEnumerable<IResource>> GetNextPart();
+
+        /// <summary>Retrieves a next part of the partial collection view.</summary>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Collection of resources.</returns>
+        Task<IEnumerable<IResource>> GetNextPart(CancellationToken cancellationToken);
 
         /// <summary>Retrieves a previous part of the partial collection view.</summary>
         /// <returns>Collection of resources.</returns>
         Task<IEnumerable<IResource>> GetPreviousPart();
 
+        /// <summary>Retrieves a previous part of the partial collection view.</summary>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Collection of resources.</returns>
+        Task<IEnumerable<IResource>> GetPreviousPart(CancellationToken cancellationToken);
+
         /// <summary>Retrieves a last part of the partial collection view.</summary>
         /// <returns>Collection of resources.</returns>
         Task<IEnumerable<IResource>> GetLastPart();
+
+        /// <summary>Retrieves a last part of the partial collection view.</summary>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Collection of resources.</returns>
+        Task<IEnumerable<IResource>> GetLastPart(CancellationToken cancellationToken);
     }
 }

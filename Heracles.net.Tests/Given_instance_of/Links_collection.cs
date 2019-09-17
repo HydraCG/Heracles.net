@@ -17,13 +17,13 @@ namespace Given_instance_of
 
         protected Mock<ILink> Link1 { get; private set; }
 
-        protected Mock<ILink> Link2 { get; private set; }
+        protected Mock<ITemplatedLink> Link2 { get; private set; }
 
         protected Mock<ILink> Link3 { get; private set; }
 
         protected Mock<ILink> Link4 { get; private set; }
 
-        protected ICollection<ILink> Links { get; private set; }
+        protected ICollection<IDerefencableLink> Links { get; private set; }
 
         [Test]
         public void should_provide_only_links_matching_required_relation()
@@ -44,9 +44,9 @@ namespace Given_instance_of
                 .With(_ => _.Relation, "some:resource-url")
                 .With<ILink, IPointingResource, IResource>(_ => _.Target, Target.Object)
                 .With(_ => _.Type, new HashSet<Iri>() { hydra.Link });
-            Link2 = Resource.Of<ILink>()
+            Link2 = Resource.Of<ITemplatedLink>()
                 .With(_ => _.Relation, "some:other-url")
-                .With<ILink, IPointingResource, IResource>(_ => _.Target, Target.Object)
+                .With<ITemplatedLink, IPointingResource, IResource>(_ => _.Target, Target.Object)
                 .With(_ => _.Type, new HashSet<Iri>() { hydra.TemplatedLink });
             Link3 = Resource.Of<ILink>()
                 .With(_ => _.Relation, "yet:another-url")
@@ -56,7 +56,7 @@ namespace Given_instance_of
                 .With(_ => _.Relation, "yet:another-other-url")
                 .With<ILink, IPointingResource, IResource>(_ => _.Target, Target.Object)
                 .With(_ => _.Type, new HashSet<Iri>() { hydra.Link });
-            Links = new List<ILink>() { Link1.Object, Link2.Object, Link3.Object, Link4.Object };
+            Links = new List<IDerefencableLink>() { Link1.Object, Link2.Object, Link3.Object, Link4.Object };
         }
     }
 }

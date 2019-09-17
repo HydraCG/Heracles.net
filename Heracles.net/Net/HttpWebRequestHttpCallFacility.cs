@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Heracles.Net
 {
     internal class HttpWebRequestHttpCallFacility
     {
-        public async Task<IResponse> Call(Uri url, IHttpOptions options = null)
+        public async Task<IResponse> Call(Uri url, IHttpOptions options, CancellationToken cancellationToken)
         {
             var request = WebRequest.Create(url);
             var httpRequest = request as HttpWebRequest;
@@ -19,13 +20,32 @@ namespace Heracles.Net
                 }
             }
 
-            var response = await httpRequest.GetResponseAsync();
-            if (response is HttpWebResponse httpResponse)
+            IDisposable registration = null;
+            registration = cancellationToken.Register(() =>
             {
-                return new HttpResponse(response.ResponseUri, httpResponse);
-            }
+                httpRequest.Abort();
+                registration?.Dispose();
+            });
 
-            return null;
+            try
+            {
+                var response = await httpRequest.GetResponseAsync();
+                if (response is HttpWebResponse httpResponse)
+                {
+                    return new HttpResponse(response.ResponseUri, httpResponse);
+                }
+
+                return null;
+            }
+            catch (WebException error)
+            {
+                if (error.Status == WebExceptionStatus.RequestCanceled)
+                {
+                    throw new OperationCanceledException(cancellationToken);
+                }
+
+                throw;
+            }
         }
     }
 }

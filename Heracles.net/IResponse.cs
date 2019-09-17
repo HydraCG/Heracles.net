@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Heracles.DataModel;
 
@@ -20,5 +21,10 @@ namespace Heracles
         /// <summary>Gets the body of the response.</summary>
         /// <returns>Task of this operation.</returns>
         Task<Stream> GetBody();
+
+        /// <summary>Gets the body of the response.</summary>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Task of this operation.</returns>
+        Task<Stream> GetBody(CancellationToken cancellationToken);
     }
 }

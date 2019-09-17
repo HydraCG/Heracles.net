@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading;
 using FluentAssertions;
 using Heracles;
 using Heracles.DataModel;
@@ -14,7 +15,7 @@ namespace Given_instance_of.HydraClient_class.when_fetching_a_resource
         protected override void ScenarioSetup()
         {
             base.ScenarioSetup();
-            HttpCall.Setup(_ => _.HttpCall(ResourceUrl, It.IsAny<IHttpOptions>()))
+            HttpCall.Setup(_ => _.HttpCall(ResourceUrl, It.IsAny<IHttpOptions>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Return.Ok(
                     ResourceUrl,
                     new MemoryStream(),
@@ -24,7 +25,7 @@ namespace Given_instance_of.HydraClient_class.when_fetching_a_resource
         [Test]
         public void should_throw()
         {
-            Client.Awaiting(_ => _.GetResource(Resource.Of<IWebResource>(ResourceUrl).Object))
+            Client.Awaiting(_ => _.GetResource(Resource.Of<IResource>(ResourceUrl).Object))
                 .Should().Throw<ResponseFormatNotSupportedException>();
         }
     }
