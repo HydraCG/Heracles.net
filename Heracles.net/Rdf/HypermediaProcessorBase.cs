@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -135,7 +136,12 @@ namespace Heracles.Rdf
             var context = EntityContextFactory.Value.Create();
             IResource resource;
             var hypermedia = new List<IResource>();
-            using (var processingState = new ProcessingState(context, _ontologyProvider, responseIri, options?.LinksPolicy ?? LinksPolicy.Strict))
+            using (var processingState = new ProcessingState(
+                context,
+                _ontologyProvider,
+                responseIri,
+                options?.LinksPolicy ?? LinksPolicy.Strict,
+                response.Headers[HydraClient.ContentType].FirstOrDefault()))
             {
                 var rdfReader = await CreateRdfReader(response, cancellationToken);
                 var serializableSource = (ISerializableEntitySource)context.EntitySource;

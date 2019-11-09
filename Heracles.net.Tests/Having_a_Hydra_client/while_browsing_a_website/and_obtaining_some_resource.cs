@@ -36,6 +36,15 @@ namespace Having_a_Hydra_client.while_browsing_a_website
         }
 
         [Test]
+        public void should_provide_originating_media_type_for_operation()
+        {
+            Resource.OfType<IHydraResource>()
+                .First(_ => _.Operations.OfType(new Iri("http://schema.org/AddAction")).Any())
+                .Operations.OfType(new Iri("http://schema.org/AddAction")).First()
+                .OriginatingMediaType.Should().Be("text/turtle");
+        }
+
+        [Test]
         public void should_obtain_a_collection_of_events()
         {
             Resource.Collections.Where(item => Regex.IsMatch(item.Iri.ToString(), "/api/events$"))

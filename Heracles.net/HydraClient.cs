@@ -18,11 +18,13 @@ namespace Heracles
     /// </remarks>
     public class HydraClient : IHydraClient
     {
+        internal const string ContentType = "Content-Type";
         internal const string NoUrlProvided = "There was no Url provided.";
         internal const string NoHypermediaProcessors = "No valid hypermedia processor instances were provided.";
         private const string NoOperationProvided = "There was no operation provided.";
         private const string NoIriTemplateExpansionStrategy = "No IRI template expansion strategy was provided.";
         private const string NoHttpFacility = "No HTTP facility provided.";
+
 
         private static readonly Regex LinkHeaderPattern = new Regex($"<([^>]+)>; rel=\"{hydra.apiDocumentation}\"");
 
@@ -144,24 +146,29 @@ namespace Heracles
             }
 
             var targetOperation = _iriTemplateExpansionStrategy.CreateRequest(operation, body, parameters);
-            // TODO: move Content-Type header to some specialized component.
             Stream serializedBody = null;
+            var headers = new Dictionary<string, string>() { { ContentType, _hypermediaProcessors.First().SupportedMediaTypes.First() } };
             if (body != null)
             {
+                var mediaTypeCandidates = new Dictionary<string, int>() { { headers[ContentType], 0 } };
+                if (!String.IsNullOrEmpty(operation.OriginatingMediaType))
+                {
+                    mediaTypeCandidates[operation.OriginatingMediaType] = Int32.MaxValue;
+                }
+
                 var hypermediaProcessor = (
+                    from mediaType in mediaTypeCandidates
                     from processor in _hypermediaProcessors
                     from supportedMediaType in processor.SupportedMediaTypes
-                    where StringComparer.InvariantCultureIgnoreCase.Equals(supportedMediaType, "application/ld+json")
+                    where StringComparer.InvariantCultureIgnoreCase.Equals(supportedMediaType, mediaType.Key)
+                    orderby mediaType.Value descending 
                     select processor).First();
                 serializedBody = await hypermediaProcessor.Serialize(body, cancellationToken);
             }
 
             return await MakeRequestTo(
                 targetOperation.Target.Iri,
-                new HttpOptions(
-                    targetOperation.Method,
-                    serializedBody,
-                    new Dictionary<string, string>() { { "Content-Type", "application/ld+json" } }),
+                new HttpOptions(targetOperation.Method, serializedBody, headers),
                 cancellationToken);
         }
 

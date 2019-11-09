@@ -22,6 +22,7 @@ namespace Given_instance_of.HydraClient_class.when_invoking_an_operation
             Operation = new Mock<IOperation>(MockBehavior.Strict);
             Operation.SetupGet(_ => _.Target).Returns(target.Object);
             Operation.SetupGet(_ => _.Method).Returns("GET");
+            Operation.SetupGet(_ => _.OriginatingMediaType).Returns("application/ld+json");
             Body = new Mock<IResource>(MockBehavior.Strict);
             Parameters = new Mock<IResource>(MockBehavior.Strict);
             IriTemplateExpansionStrategy

@@ -14,6 +14,7 @@ namespace Heracles.DataModel
         internal static readonly PropertyInfo RelationPropertyInfo = typeof(IDerefencableLink).GetProperty(nameof(IDerefencableLink.Relation));
         internal static readonly PropertyInfo TargetPropertyInfo = typeof(IPointingResource).GetProperty(nameof(IPointingResource.Target));
         internal static readonly PropertyInfo MethodPropertyInfo = typeof(IOperation).GetProperty(nameof(IOperation.Method));
+        internal static readonly PropertyInfo OriginatingMediaTypeProperty = typeof(IOperation).GetProperty(nameof(IOperation.OriginatingMediaType));
 
         private static readonly IDictionary<Iri, Func<IResource, string>> DisplayNameCandidates =
             new Dictionary<Iri, Func<IResource, string>>()

@@ -12,7 +12,12 @@ namespace Heracles.Rdf
         private readonly IDictionary<Iri, ISet<Statement>> _statements;
         private readonly IDictionary<Iri, int> _statementsStatistics;
 
-        internal ProcessingState(IEntityContext context, IOntologyProvider ontologyProvider, Iri rootResource, LinksPolicy linksPolicy)
+        internal ProcessingState(
+            IEntityContext context,
+            IOntologyProvider ontologyProvider,
+            Iri rootResource,
+            LinksPolicy linksPolicy,
+            string originatingMediaType)
         {
             _ontologyProvider = ontologyProvider;
             _statements = new Dictionary<Iri, ISet<Statement>>();
@@ -23,6 +28,7 @@ namespace Heracles.Rdf
             BaseUrl = rootResource;
             Root = rootResource.ToRoot();
             LinksPolicy = linksPolicy;
+            OriginatingMediaType = originatingMediaType;
         }
 
         internal event EventHandler<EventArgs> ProcessingCompleted;
@@ -34,6 +40,8 @@ namespace Heracles.Rdf
         internal Iri BaseUrl { get; }
 
         internal Iri Root { get; }
+
+        internal string OriginatingMediaType { get; }
 
         internal ISet<Iri> ForbiddenHypermeda { get; }
 

@@ -26,5 +26,8 @@ namespace Heracles.DataModel
         ///Gets the returned headers.
         [Collection("hydra", "returnsHeader")]
         ISet<string> ReturnedHeaders { get; }
+
+        /// <summary>Gets the media type of a resource that provided this operation.</summary>
+        string OriginatingMediaType { get; }
     }
 }

@@ -78,7 +78,7 @@ namespace Heracles.Rdf
 
             if (hydraResource != null && processingState.NumberOfStatementsOf(resource.Iri) > 0)
             {
-                GatherOperationTargets(hydraResource);
+                GatherOperationTargets(hydraResource, processingState);
                 if (hasView)
                 {
                     hydraResource = hydraResource.ActLike<IResourceView>();
@@ -95,21 +95,20 @@ namespace Heracles.Rdf
             return hydraResource;
         }
 
-        private static void GatherOperationTargets(IHydraResource resource)
+        private static void GatherOperationTargets(IHydraResource resource, ProcessingState processingState)
         {
-            if (resource != null)
+            IEnumerable<IOperation> operations = resource.Operations;
+            var supportedOperationsContainer = OperationContainers.Where(_ => resource.Type.Contains(_.Key)).Select(_ => _.Value).FirstOrDefault();
+            if (supportedOperationsContainer != null)
             {
-                IEnumerable<IOperation> operations = resource.Operations;
-                var supportedOperationsContainer = OperationContainers.Where(_ => resource.Type.Contains(_.Key)).Select(_ => _.Value).FirstOrDefault();
-                if (supportedOperationsContainer != null)
-                {
-                    operations = operations.Concat(supportedOperationsContainer(resource));
-                }
+                operations = operations.Concat(supportedOperationsContainer(resource));
+            }
 
-                foreach (var operation in operations)
-                {
-                    operation.Unwrap().SetProperty(ResourceExtensions.TargetPropertyInfo, resource);
-                }
+            foreach (var operation in operations)
+            {
+                var proxy = operation.Unwrap();
+                proxy.SetProperty(ResourceExtensions.TargetPropertyInfo, resource);
+                proxy.SetProperty(ResourceExtensions.OriginatingMediaTypeProperty, processingState.OriginatingMediaType);
             }
         }
 
