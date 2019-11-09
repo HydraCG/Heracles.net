@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Heracles;
 using Heracles.DataModel;
-using Heracles.JsonLd;
+using Heracles.Rdf;
 using Heracles.Testing;
 using Moq;
 using NUnit.Framework;
@@ -29,7 +29,7 @@ namespace Given_instance_of.IApiDocumentation_interface
             Client = new Mock<IHydraClient>(MockBehavior.Strict);
             Client.Setup(_ => _.GetResource(It.IsAny<IResource>())).ReturnsAsync(EntryPoint.Object);
             var proxy = new MulticastObject();
-            proxy.SetProperty(JsonLdHypermediaProcessor.ClientPropertyInfo, Client.Object);
+            proxy.SetProperty(HypermediaProcessorBase.ClientPropertyInfo, Client.Object);
             ApiDocumentation = proxy.ActLike<IApiDocumentation>();
             ApiDocumentation.EntryPoint = Resource.Of<IResource>(new Uri("http://temp.uri/api")).Object;
             await TheTest();

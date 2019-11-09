@@ -1,22 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using FluentAssertions;
-using Heracles.JsonLd;
 using Heracles.Namespaces;
-using JsonLD.Core;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using Heracles.Rdf;
 using NUnit.Framework;
 using RDeF.Entities;
+using RDeF.Serialization;
 
 namespace Given_instance_of
 {
     [TestFixture]
     public class StaticOntologyProvider_class
     {
-        private static readonly string ResourceName = typeof(StaticOntologyProvider).Assembly.GetManifestResourceNames().First(_ => _.EndsWith("hydra.json"));
+        private static readonly string ResourceName =
+            typeof(StaticOntologyProvider).Assembly.GetManifestResourceNames().First(_ => _.EndsWith("hydra.json"));
 
         private static readonly IDictionary<Iri, Iri> PropertyDomain = new Dictionary<Iri, Iri>()
         {
@@ -62,12 +60,8 @@ namespace Given_instance_of
             { hydra.mapping, hydra.IriTemplateMapping },
         };
 
-        private static readonly JToken Hydra = (JToken)new JsonSerializer().Deserialize(
-            new JsonTextReader(new StreamReader(typeof(StaticOntologyProvider).Assembly.GetManifestResourceStream(ResourceName))));
-
         private static readonly StaticOntologyProvider Provider = new StaticOntologyProvider(
-            new JsonLdApi(new JsonLdApi().Expand(new Context(), Hydra), new JsonLdOptions(String.Empty))
-                    .ToRDF().AsStatements());
+            new JsonLdReader().Read(new StreamReader(typeof(StaticOntologyProvider).Assembly.GetManifestResourceStream(ResourceName))).Result.First().Statements);
 
         [Test]
         public void should_get_a_correct_domain()

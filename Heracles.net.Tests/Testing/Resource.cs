@@ -25,9 +25,7 @@ namespace Heracles.Testing
                 var graphs =
                     from statement in await entity.Context.EntitySource.Load(entity.Iri)
                     group statement by statement.Graph into graphStatements
-                    select new KeyValuePair<Iri, IEnumerable<Statement>>(
-                        graphStatements.Key,
-                        graphStatements);
+                    select new Graph(graphStatements.Key, graphStatements);
                 await serializer.Write(writer, graphs);
             }
 

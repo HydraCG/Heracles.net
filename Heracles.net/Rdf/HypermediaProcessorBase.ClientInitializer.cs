@@ -5,10 +5,10 @@ using Heracles.Namespaces;
 using RDeF.Entities;
 using RollerCaster;
 
-namespace Heracles.JsonLd
+namespace Heracles.Rdf
 {
     /// <summary>Contains a <see cref="IHydraClient" /> initializer.</summary>
-    public partial class JsonLdHypermediaProcessor
+    public partial class HypermediaProcessorBase
     {
         private static Task<IResource> ClientInitializer(
             ITypedEntity resource,

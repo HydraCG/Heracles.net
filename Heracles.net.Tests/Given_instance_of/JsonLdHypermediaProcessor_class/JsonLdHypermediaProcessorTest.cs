@@ -5,6 +5,7 @@ using FluentAssertions;
 using Heracles;
 using Heracles.DataModel;
 using Heracles.JsonLd;
+using Heracles.Rdf;
 using Heracles.Testing;
 using Moq;
 using NUnit.Framework;

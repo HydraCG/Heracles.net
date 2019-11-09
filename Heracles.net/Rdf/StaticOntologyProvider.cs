@@ -2,7 +2,7 @@
 using Heracles.Namespaces;
 using RDeF.Entities;
 
-namespace Heracles.JsonLd
+namespace Heracles.Rdf
 {
     /// <summary>Provides a simple implementation of the RDF predicate range-domain provider that uses statically provided ontology.</summary>
     public class StaticOntologyProvider : IOntologyProvider

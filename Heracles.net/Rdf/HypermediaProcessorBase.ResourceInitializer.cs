@@ -11,10 +11,10 @@ using Heracles.Namespaces;
 using RDeF.Entities;
 using RollerCaster;
 
-namespace Heracles.JsonLd
+namespace Heracles.Rdf
 {
     /// <summary>Contains links initializer.</summary>
-    public partial class JsonLdHypermediaProcessor
+    public partial class HypermediaProcessorBase
     {
         private static readonly ISet<Iri> StandaloneControls = new HashSet<Iri>()
         {

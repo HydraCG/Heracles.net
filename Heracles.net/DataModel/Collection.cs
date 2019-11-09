@@ -1,4 +1,4 @@
-using Heracles.JsonLd;
+using Heracles.Rdf;
 using RollerCaster;
 
 namespace Heracles.DataModel
@@ -14,7 +14,7 @@ namespace Heracles.DataModel
                 ? null
                 : new PartialCollectionIterator(
                     collection,
-                    (IHydraClient)collection.Unwrap().GetProperty(JsonLdHypermediaProcessor.ClientPropertyInfo));
+                    (IHydraClient)collection.Unwrap().GetProperty(HypermediaProcessorBase.ClientPropertyInfo));
         }
     }
 }

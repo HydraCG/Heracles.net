@@ -1,6 +1,6 @@
 ﻿using RDeF.Entities;
 
-namespace Heracles.JsonLd
+namespace Heracles.Rdf
 {
     /// <summary>Provides an abstraction over ontology.</summary>
     public interface IOntologyProvider

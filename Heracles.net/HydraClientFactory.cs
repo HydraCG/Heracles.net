@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using Heracles.JsonLd;
 using Heracles.Net.Http;
-using JsonLD.Core;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using RDeF.Entities;
+using Heracles.Rdf;
+using RDeF.Serialization;
 
 namespace Heracles
 {
@@ -20,13 +18,10 @@ namespace Heracles
         private static readonly string HydraVocabularyResourceName =
             typeof(HydraClientFactory).Assembly.GetManifestResourceNames().First(_ => _.Contains("hydra.json"));
 
-        private static readonly JToken HydraVocabulary = (JToken)JsonSerializer.Create().Deserialize(
-            new JsonTextReader(
-                new StreamReader(
-                    typeof(HydraClientFactory).Assembly.GetManifestResourceStream(HydraVocabularyResourceName))));
+        private static readonly ManualResetEvent Sync = new ManualResetEvent(true);
+        private static bool _isInitialized;
 
-        private static readonly IEnumerable<Statement> Hydra =
-            new JsonLdApi(new JsonLdApi().Expand(new Context(), HydraVocabulary), new JsonLdOptions(String.Empty)).ToRDF().AsStatements();
+        private static IOntologyProvider _ontologyProvider;
 
         private readonly IDictionary<HypermediaProcessorFactory, IHypermediaProcessor> _hypermediaProcessorInstances;
         private readonly ICollection<HypermediaProcessorFactory> _hypermediaProcessorFactories;
@@ -59,36 +54,39 @@ namespace Heracles
             get { return _linksPolicy; }
         }
 
+        /// <inheritdoc />
+        IOntologyProvider IHydraClientFactory.OntologyProvider
+        {
+            get
+            {
+                Sync.WaitOne();
+                return _ontologyProvider;
+            }
+        }
+
         /// <summary>Starts the factory configuration.</summary>
         /// <returns>Instance of the <see cref="HydraClientFactory" />.</returns>
         public static HydraClientFactory Configure()
         {
+            Sync.WaitOne();
+            Sync.Reset();
+            if (!_isInitialized)
+            {
+                _isInitialized = true;
+                Initialize();
+            }
+            else
+            {
+                Sync.Set();
+            }
+
             return new HydraClientFactory();
         }
         
         private static IHypermediaProcessor CreateJsonLdHypermediaProcessor(HttpCallFacility httpCall)
         {
-            return new JsonLdHypermediaProcessor(new StaticOntologyProvider(Hydra), httpCall);
-        }
-
-        /// <inheritdoc />
-        public IHypermediaProcessor CreateProcessorToHandle(string mediaType)
-        {
-            if (!String.IsNullOrEmpty(mediaType))
-            {
-                foreach (var hypermediaProcessor in ResolveProcessors())
-                {
-                    foreach (var supportedMediaType in hypermediaProcessor.SupportedMediaTypes)
-                    {
-                        if (supportedMediaType == mediaType)
-                        {
-                            return hypermediaProcessor;
-                        }
-                    }
-                }
-            }
-
-            throw new ArgumentNullException(HydraClient.NoHypermediaProcessors);
+            Sync.WaitOne();
+            return new JsonLdHypermediaProcessor(_ontologyProvider, httpCall);
         }
 
         /// <summary>
@@ -195,6 +193,16 @@ namespace Heracles
                 _iriTemplateExpansionStrategy,
                 _linksPolicy,
                 _httpCall);
+        }
+
+        private static async void Initialize()
+        {
+            var jsonLdReader = new JsonLdReader();
+            using (var streamReader = new StreamReader(typeof(HydraClientFactory).Assembly.GetManifestResourceStream(HydraVocabularyResourceName)))
+            {
+                _ontologyProvider = new StaticOntologyProvider((await jsonLdReader.Read(streamReader)).First().Statements);
+                Sync.Set();
+            }
         }
 
         private IEnumerable<IHypermediaProcessor> ResolveProcessors()

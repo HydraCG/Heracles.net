@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Heracles.JsonLd;
+using Heracles.Rdf;
 using RollerCaster;
 
 namespace Heracles.DataModel
@@ -23,7 +23,7 @@ namespace Heracles.DataModel
         public static async Task<IHypermediaContainer> GetEntryPoint(IApiDocumentation apiDocumentation, CancellationToken cancellationToken)
         {
             return await ((IHydraClient)apiDocumentation.Unwrap()
-                    .GetProperty(JsonLdHypermediaProcessor.ClientPropertyInfo))
+                    .GetProperty(HypermediaProcessorBase.ClientPropertyInfo))
                 .GetResource(apiDocumentation.EntryPoint);
         }
     }

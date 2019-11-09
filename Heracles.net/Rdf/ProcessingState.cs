@@ -4,7 +4,7 @@ using Heracles.Entities;
 using Heracles.Namespaces;
 using RDeF.Entities;
 
-namespace Heracles.JsonLd
+namespace Heracles.Rdf
 {
     internal sealed class ProcessingState : IDisposable
     {

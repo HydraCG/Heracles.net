@@ -75,7 +75,7 @@ namespace Heracles.Server
                             break;
                         case "GET":
                             var path = context.Request.Url.AbsolutePath == "/" ? "/root" : context.Request.Url.AbsolutePath;
-                            var output = LoadBody(path, context.Request.Url.Query);
+                            var output = LoadBody(context.Request.Url, path, context.Request.Url.Query);
                             if (SetHeaders(path, context.Response, output.MediaType) || output.Body != null)
                             {
                                 context.Response.StatusCode = 200;
@@ -135,7 +135,7 @@ namespace Heracles.Server
             return true;
         }
 
-        private static Output LoadBody(string path, string query)
+        private static Output LoadBody(Uri baseUri, string path, string query)
         {
             foreach (var extension in Extensions)
             {
@@ -145,28 +145,16 @@ namespace Heracles.Server
                     Stream result;
                     using (var fileStream = File.Open(file, FileMode.Open))
                     {
-                        if (!String.IsNullOrEmpty(query) && extension.Key == ".jsonld")
+                        if (extension.Key == ".jsonld")
                         {
-                            using (var fileReader = new StreamReader(fileStream))
-                            using (var jsonReader = new JsonTextReader(fileReader))
-                            {
-                                var resource = (JObject)Json.Deserialize(jsonReader);
-                                JObject matchingResource = resource;
-                                if (resource["@graph"] != null)
-                                {
-                                    matchingResource = resource["@graph"].AsJEnumerable().OfType<JObject>().FirstOrDefault(_ => (string)_["@id"] == path);
-                                    matchingResource["@id"] = path + query;
-                                    matchingResource = new JObject(new JProperty("@graph", matchingResource));
-                                    matchingResource["@context"] = resource["@context"];
-                                }
-
-                                result = new MemoryStream();
-                                using (var fileWriter = new StreamWriter(result, Encoding.UTF8, 4096, true))
-                                using (var jsonWriter = new JsonTextWriter(fileWriter))
-                                {
-                                    Json.Serialize(jsonWriter, matchingResource);
-                                }
-                            }
+                            result = ProcessJsonLdBody(baseUri, path, query, fileStream);
+                        }
+                        else if (extension.Key == ".ttl")
+                        {
+                            var buffer = new MemoryStream();
+                            var data = $"@BASE <{baseUri}> .\r\n" + new StreamReader(fileStream).ReadToEnd();
+                            buffer.Write(Encoding.UTF8.GetBytes(data), 0, data.Length);
+                            result = buffer;
                         }
                         else
                         {
@@ -182,6 +170,42 @@ namespace Heracles.Server
             }
 
             return new Output() { MediaType = "text/plain" };
+        }
+
+        private static Stream ProcessJsonLdBody(Uri baseUri, string path, string query, FileStream fileStream)
+        {
+            Stream result;
+            using (var fileReader = new StreamReader(fileStream))
+            using (var jsonReader = new JsonTextReader(fileReader))
+            {
+                var resource = (JObject)Json.Deserialize(jsonReader);
+                var context = resource["@context"];
+                if (context != null && context.Type == JTokenType.String)
+                {
+                    resource["@context"] = new Uri(baseUri, (string)context).ToString();
+                }
+
+                JObject matchingResource = resource;
+                if (!String.IsNullOrEmpty(query))
+                {
+                    if (resource["@graph"] != null)
+                    {
+                        matchingResource = resource["@graph"].AsJEnumerable().OfType<JObject>().FirstOrDefault(_ => (string)_["@id"] == path);
+                        matchingResource["@id"] = path + query;
+                        matchingResource = new JObject(new JProperty("@graph", matchingResource));
+                        matchingResource["@context"] = resource["@context"];
+                    }
+                }
+
+                result = new MemoryStream();
+                using (var fileWriter = new StreamWriter(result, Encoding.UTF8, 4096, true))
+                using (var jsonWriter = new JsonTextWriter(fileWriter))
+                {
+                    Json.Serialize(jsonWriter, matchingResource);
+                }
+            }
+
+            return result;
         }
 
         private void Stop()

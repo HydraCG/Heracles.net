@@ -145,7 +145,6 @@ namespace Heracles
 
             var targetOperation = _iriTemplateExpansionStrategy.CreateRequest(operation, body, parameters);
             // TODO: move Content-Type header to some specialized component.
-            // TODO: move body serialization to some specialized component.
             Stream serializedBody = null;
             if (body != null)
             {

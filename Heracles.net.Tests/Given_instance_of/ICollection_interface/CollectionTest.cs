@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Heracles;
 using Heracles.DataModel;
-using Heracles.JsonLd;
+using Heracles.Rdf;
 using Moq;
 using NUnit.Framework;
 using RollerCaster;
@@ -28,7 +28,7 @@ namespace Given_instance_of.ICollection_interface
             Result = new List<IResource>();
             Client = new Mock<IHydraClient>(MockBehavior.Strict);
             var proxy = new MulticastObject();
-            proxy.SetProperty(JsonLdHypermediaProcessor.ClientPropertyInfo, Client.Object);
+            proxy.SetProperty(HypermediaProcessorBase.ClientPropertyInfo, Client.Object);
             Collection = proxy.ActLike<ICollection>();
             ScenarioSetup();
             await TheTest();

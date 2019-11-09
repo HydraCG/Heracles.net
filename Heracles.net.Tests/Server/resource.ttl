@@ -1,9 +1,9 @@
-﻿PREFIX hydra: <http://www.w3.org/ns/hydra/core#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX schema: <http://schema.org/>
+﻿@PREFIX hydra: <http://www.w3.org/ns/hydra/core#> .
+@PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> .
+@PREFIX owl: <http://www.w3.org/2002/07/owl#> .
+@PREFIX schema: <http://schema.org/> .
 
 <http://example.com/vocab#addPerson> rdf:type hydra:TemplatedLink;
   hydra:supportedOperation [
