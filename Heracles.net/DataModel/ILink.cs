@@ -4,7 +4,7 @@ namespace Heracles.DataModel
 {
     /// <summary>Describes a link to another resource.</summary>
     [Class("hydra", "Link")]
-    public interface ILink : IDerefencableLink
+    public interface ILink : IDereferencableLink
     {
     }
 }

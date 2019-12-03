@@ -16,6 +16,6 @@ namespace Heracles.DataModel
         ISet<IOperation> Operations { get; }
         
         /// <summary>Gets links related to that resource.</summary>
-        ISet<IDerefencableLink> Links { get; }
+        ISet<IDereferencableLink> Links { get; }
     }
 }

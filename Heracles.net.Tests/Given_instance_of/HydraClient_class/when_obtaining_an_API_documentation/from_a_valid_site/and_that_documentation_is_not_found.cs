@@ -12,7 +12,7 @@ namespace Given_instance_of.HydraClient_class.when_obtaining_an_API_documentatio
     [TestFixture]
     public class and_that_documentation_is_not_found : ScenarioTest
     {
-        protected override void ScenarioSetup()
+        public override void ScenarioSetup()
         {
             base.ScenarioSetup();
             HttpCall.Setup(_ => _.HttpCall(new Uri(BaseUrl, "api/documentation"), It.IsAny<IHttpOptions>(), It.IsAny<CancellationToken>()))

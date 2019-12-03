@@ -19,7 +19,7 @@ namespace Given_instance_of.HydraClient_class.when_obtaining_an_API_documentatio
 
         private Uri ApiDocumentationUrl { get; set; }
 
-        protected override void ScenarioSetup()
+        public override void ScenarioSetup()
         {
             base.ScenarioSetup();
             ApiDocumentationUrl = new Uri(BaseUrl, "api/documentation");

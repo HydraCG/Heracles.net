@@ -11,7 +11,7 @@ namespace Heracles.Testing
         private static HttpServer _server;
         private static CancellationTokenSource _cancellationTokenSource;
 
-        protected Uri Url = new Uri($"http://localhost:{HttpServer.ServerPort}/");
+        protected Uri Url { get; } = new Uri($"http://localhost:{HttpServer.ServerPort}/");
 
         protected IHydraClient Client { get; private set; }
 

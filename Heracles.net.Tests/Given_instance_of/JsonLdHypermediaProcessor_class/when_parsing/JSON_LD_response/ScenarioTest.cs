@@ -34,7 +34,7 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing.JSON_LD
 
         protected abstract Stream InputJsonLd { get; }
 
-        protected override void ScenarioSetup()
+        public override void ScenarioSetup()
         {
             base.ScenarioSetup();
             ResponseHeaders.SetupGet(_ => _["Content-Type"]).Returns(new[] { "application/ld+json" });

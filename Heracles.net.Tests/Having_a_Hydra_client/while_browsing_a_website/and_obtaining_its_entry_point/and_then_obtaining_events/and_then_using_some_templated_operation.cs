@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Heracles.DataModel;
 using Heracles.DataModel.Collections;
+using Heracles.Testing;
 using NUnit.Framework;
 using RDeF.Entities;
-using Heracles.Testing;
 
 namespace Having_a_Hydra_client.while_browsing_a_website.and_obtaining_its_entry_point.and_then_obtaining_events
 {

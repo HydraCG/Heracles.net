@@ -5,11 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Heracles;
-using Heracles.DataModel;
 using Heracles.Testing;
 using Moq;
 using NUnit.Framework;
-using RDeF.Entities;
 
 namespace Given_instance_of.HydraClient_class
 {
@@ -47,7 +45,7 @@ namespace Given_instance_of.HydraClient_class
             HttpCall.Setup(_ => _.HttpCall(It.IsAny<Uri>(), It.IsAny<IHttpOptions>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Return.Ok());
             Client = new HydraClient(
-                new [] { HypermediaProcessor.Object },
+                new[] { HypermediaProcessor.Object },
                 IriTemplateExpansionStrategy.Object,
                 LinksPolicy.Strict,
                 HttpCall.Object.HttpCall);
@@ -55,7 +53,7 @@ namespace Given_instance_of.HydraClient_class
             await TheTest();
         }
 
-        protected virtual void ScenarioSetup()
+        public virtual void ScenarioSetup()
         {
         }
 

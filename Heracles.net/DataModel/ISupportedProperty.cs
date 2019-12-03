@@ -10,15 +10,15 @@ namespace Heracles.DataModel
         [Property("hydra", "property")]
         IProperty Property { get; }
 
-        /// <summary>Gets the value indicating whether this property is required.</summary>
+        /// <summary>Gets a value indicating whether this property is required.</summary>
         [Property("hydra", "required")]
         bool Required { get; }
 
-        /// <summary>Gets the value indicating whether this property is readable.</summary
+        /// <summary>Gets a value indicating whether this property is readable.</summary>
         [Property("hydra", "readable")]
         bool Readable { get; }
 
-        /// <summary>Gets the value indicating whether this property is writable.</summary>
+        /// <summary>Gets a value indicating whether this property is writable.</summary>
         [Property("hydra", "writeable")]
         bool Writable { get; }
     }

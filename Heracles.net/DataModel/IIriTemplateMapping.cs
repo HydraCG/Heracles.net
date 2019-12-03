@@ -8,14 +8,14 @@ namespace Heracles.DataModel
     {
         /// <summary>Gets a variable name being mapped.</summary>
         [Property("hydra", "variable")]
-        string Variable { get; set; }
+        string Variable { get; }
 
         /// <summary>Gets a property used for this variable mapping.</summary>
         [Property("hydra", "property")]
-        IResource Property { get; set; }
+        IResource Property { get; }
 
-        /// <summary>Gets the value indicating whether the mapping is required or no.</summary>
+        /// <summary>Gets a value indicating whether the mapping is required or no.</summary>
         [Property("hydra", "required")]
-        bool Required { get; set; }
+        bool Required { get; }
     }
 }

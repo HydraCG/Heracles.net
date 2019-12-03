@@ -50,7 +50,7 @@ namespace Given_instance_of.TemplatedLink_interface
             var proxy = new MulticastObject();
             proxy.SetProperty(typeof(IPointingResource).GetProperty(nameof(IPointingResource.BaseUrl)), new Uri("http://temp.uri/"));
             proxy.SetProperty(typeof(IPointingResource).GetProperty(nameof(IPointingResource.Target)), target.Object);
-            proxy.SetProperty(typeof(IDerefencableLink).GetProperty(nameof(IDerefencableLink.Relation)), "test");
+            proxy.SetProperty(typeof(IDereferencableLink).GetProperty(nameof(IDereferencableLink.Relation)), "test");
             proxy.SetProperty(JsonLdHypermediaProcessor.IriTemplatePropertyInfo, Template.Object);
             proxy.SetProperty(typeof(IEntity).GetProperty(nameof(IEntity.Context)), context.Object);
             Link = proxy.ActLike<ITemplatedLink>();

@@ -15,9 +15,9 @@ namespace Heracles
         /// <summary>Gets supported media types.</summary>
         IEnumerable<string> SupportedMediaTypes { get; }
         
-        ///<summary>Determines level of support of a this {@link IHypermediaProcessor} for given response.</summary>
-        ///<param name="response">Response to check support for.</param>
-        ///<returns>Support level of this processor.</returns>
+        /// <summary>Determines level of support of a this {@link IHypermediaProcessor} for given response.</summary>
+        /// <param name="response">Response to check support for.</param>
+        /// <returns>Support level of this processor.</returns>
         Level Supports(IResponse response);
         
         /// <summary>Parses a given raw response.</summary>

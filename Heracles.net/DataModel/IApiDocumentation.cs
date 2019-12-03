@@ -11,11 +11,11 @@ namespace Heracles.DataModel
     {
         /// <summary>Gets a title of this API documentation.</summary>
         [Property("hydra", "title")]
-        string Title { get; set; }
+        string Title { get; }
 
         /// <summary>Gets a description of this API documentation.</summary>
         [Property("hydra", "description")]
-        string Description { get; set; }
+        string Description { get; }
 
         /// <summary>Gets the supported classes by this API.</summary>
         [Collection("hydra", "supportedClass")]
@@ -23,7 +23,7 @@ namespace Heracles.DataModel
 
         /// <summary>Gets the Url of the entry point of the API.</summary>
         [Property("hydra", "entrypoint")]
-        IResource EntryPoint { get; set; }
+        IResource EntryPoint { get; }
 
         /// <summary>Retrieves an API's entry point resource.</summary>
         /// <returns>Task with entry point obtained as an instance of the <see cref="IHypermediaContainer" />.</returns>

@@ -14,7 +14,6 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class
 {
     public abstract class JsonLdHypermediaProcessorTest
     {
-
         protected Mock<IOntologyProvider> OntologyProvider { get; private set; }
 
         protected Mock<IHttpInfrastructure> HttpCall { get; private set; }
@@ -54,6 +53,10 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class
             await TheTest();
         }
 
+        public virtual void ScenarioSetup()
+        {
+        }
+
         protected static Stream GetResourceNamed(string resourceName)
         {
             var result = (
@@ -62,10 +65,6 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class
                 select typeof(JsonLdHypermediaProcessorTest).Assembly.GetManifestResourceStream(resource)).First();
             result.Seek(0, SeekOrigin.Begin);
             return result;
-        }
-
-        protected virtual void ScenarioSetup()
-        {
         }
     }
 }

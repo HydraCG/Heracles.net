@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Mime;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -201,6 +200,16 @@ namespace Heracles.Rdf
         /// <returns>Instance of the <see cref="IRdfWriter" />.</returns>
         protected abstract IRdfWriter CreateRdfWriter();
 
+        private static IEntityContextFactory CreateEntityContextFactory()
+        {
+            return RDeF.Entities.EntityContextFactory
+                .FromConfiguration("heracles.net")
+                .WithQIri("hydra", hydra.Namespace)
+                .WithQIri("rdf", rdf.Namespace)
+                .WithQIri("rdfs", rdfs.Namespace)
+                .WithMappings(_ => _.FromAssemblyOf<HypermediaProcessorBase>());
+        }
+
         private async Task<IResource> ProcessResources(
             ProcessingState processingState,
             IHydraClient hydraClient,
@@ -239,16 +248,6 @@ namespace Heracles.Rdf
             }
 
             return resource;
-        }
-
-        private static IEntityContextFactory CreateEntityContextFactory()
-        {
-            return RDeF.Entities.EntityContextFactory
-                .FromConfiguration("heracles.net")
-                .WithQIri("hydra", hydra.Namespace)
-                .WithQIri("rdf", rdf.Namespace)
-                .WithQIri("rdfs", rdfs.Namespace)
-                .WithMappings(_ => _.FromAssemblyOf<HypermediaProcessorBase>());
         }
 
         private IResource EnsureTypeCastedFor(IResource resource)

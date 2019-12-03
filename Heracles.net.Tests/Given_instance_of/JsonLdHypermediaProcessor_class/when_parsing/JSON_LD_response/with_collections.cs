@@ -19,6 +19,13 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing.JSON_LD
         {
             get { return _inputJsonLd; }
         }
+        
+        public override void ScenarioSetup()
+        {
+            _inputJsonLd = GetResourceNamed("collectionsInput.json");
+            Response.SetupGet(_ => _.Url).Returns(new Uri("http://temp.uri/api"));
+            base.ScenarioSetup();
+        }
 
         [Test]
         public void should_trim_collections_expecting_schem_Person_to_people()
@@ -40,13 +47,6 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing.JSON_LD
         {
             Result.Collections.WithMembersInRelationWith(Api.People.Karol, schema.knows).First().Iri
                 .Should().Be(new Iri("http://temp.uri/api/people/karol/knows"));
-        }
-
-        protected override void ScenarioSetup()
-        {
-            _inputJsonLd = GetResourceNamed("collectionsInput.json");
-            Response.SetupGet(_ => _.Url).Returns(new Uri("http://temp.uri/api"));
-            base.ScenarioSetup();
         }
     }
 }

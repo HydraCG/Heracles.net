@@ -93,7 +93,8 @@ namespace Heracles
                 requests++;
                 visitedPages.Add(iterator.CurrentPartIri);
                 AddWithLimitReached(result, part, memberLimit);
-            } while (requests < (options?.RequestLimit ?? Int32.MaxValue) && result.Count < memberLimit);
+            }
+            while (requests < (options?.RequestLimit ?? Int32.MaxValue) && result.Count < memberLimit);
 
             return result;
         }

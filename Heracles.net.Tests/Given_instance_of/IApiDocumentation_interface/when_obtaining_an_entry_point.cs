@@ -31,7 +31,9 @@ namespace Given_instance_of.IApiDocumentation_interface
             var proxy = new MulticastObject();
             proxy.SetProperty(HypermediaProcessorBase.ClientPropertyInfo, Client.Object);
             ApiDocumentation = proxy.ActLike<IApiDocumentation>();
-            ApiDocumentation.EntryPoint = Resource.Of<IResource>(new Uri("http://temp.uri/api")).Object;
+            proxy.SetProperty(
+                typeof(IApiDocumentation).GetProperty(nameof(IApiDocumentation.EntryPoint)),
+                Resource.Of<IResource>(new Uri("http://temp.uri/api")).Object);
             await TheTest();
         }
 

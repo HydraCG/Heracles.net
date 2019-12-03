@@ -4,7 +4,7 @@ using RDeF.Mapping.Attributes;
 namespace Heracles.DataModel
 {
     /// <summary>Describes a deferencable link to another resource.</summary>
-    public interface IDerefencableLink : IPointingResource
+    public interface IDereferencableLink : IPointingResource
     {
         /// <summary>Gets a relation of the link.</summary>
         string Relation { get; }

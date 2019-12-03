@@ -64,7 +64,7 @@ namespace Given_instance_of.BodyResourceBoundIriTemplateExpansionStrategy_class
             TheTest();
         }
 
-        protected virtual void ScenarioSetup()
+        public virtual void ScenarioSetup()
         {
         }
 

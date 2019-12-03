@@ -15,15 +15,15 @@ namespace Heracles.DataModel
         [Collection("hydra", "expects")]
         ISet<IClass> Expects { get; }
         
-        ///Gets the returned classes.
+        /// <summary>Gets the returned classes.</summary>
         [Collection("hydra", "returns")]
         ISet<IClass> Returns { get; }
 
-        ///Gets the expected headers.
+        /// <summary>Gets the expected headers.</summary>
         [Collection("hydra", "expectsHeader")]
         ISet<string> ExpectedHeaders { get; }
 
-        ///Gets the returned headers.
+        /// <summary>Gets the returned headers.</summary>
         [Collection("hydra", "returnsHeader")]
         ISet<string> ReturnedHeaders { get; }
 

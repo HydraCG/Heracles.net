@@ -119,7 +119,7 @@ namespace Heracles.Rdf
             IHydraResource hydraResource,
             CancellationToken cancellationToken)
         {
-            var relationResource = await resource.Context.Load<IDerefencableLink>(statement.Predicate, cancellationToken);
+            var relationResource = await resource.Context.Load<IDereferencableLink>(statement.Predicate, cancellationToken);
             var @object = await resource.Context.Load<IResource>(statement.Object, cancellationToken);
             var linkType = relationResource.GetLinkType() ?? @object.GetLinkType(processingState.LinksPolicy, processingState.Root);
             if (linkType != null)
@@ -148,7 +148,7 @@ namespace Heracles.Rdf
         private static void CreateRelationHandler(
             ProcessingState processingState,
             IHydraResource owner,
-            IDerefencableLink relationResource,
+            IDereferencableLink relationResource,
             IResource @object,
             Iri type)
         {
@@ -163,9 +163,9 @@ namespace Heracles.Rdf
             }
         }
 
-        private static IEnumerable<IDerefencableLink> CreateLink(
+        private static IEnumerable<IDereferencableLink> CreateLink(
             IHydraResource owner,
-            IDerefencableLink relationResource,
+            IDereferencableLink relationResource,
             IResource @object,
             Iri type)
         {
@@ -187,7 +187,7 @@ namespace Heracles.Rdf
 
         private static IEnumerable<IOperation> CreateTemplatedOperation(
             IHydraResource owner,
-            IDerefencableLink relationResource,
+            IDereferencableLink relationResource,
             IEntity @object,
             Iri type)
         {

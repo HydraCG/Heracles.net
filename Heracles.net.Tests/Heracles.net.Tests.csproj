@@ -1,42 +1,69 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp2.0</TargetFramework>
+        <TargetFrameworks>net461;netcoreapp2.0</TargetFrameworks>
         <RootNamespace>Heracles</RootNamespace>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <ApplicationIcon />
-        <OutputType>Exe</OutputType>
+        <OutputType>Library</OutputType>
         <StartupObject />
+        <CodeAnalysisRuleSet>.\..\Heracles.net.Tests.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\collectionsInput.json" />
-      <None Remove="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\context.json" />
-      <None Remove="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\input.json" />
-      <None Remove="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\nestedResourcesInput.json" />
-      <None Remove="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\operationInput.json" />
+        <None Remove="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\collectionsInput.json" />
+        <None Remove="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\context.json" />
+        <None Remove="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\input.json" />
+        <None Remove="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\nestedResourcesInput.json" />
+        <None Remove="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\operationInput.json" />
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\collectionsInput.json" />
-      <EmbeddedResource Include="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\context.json" />
-      <EmbeddedResource Include="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\input.json" />
-      <EmbeddedResource Include="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\nestedResourcesInput.json" />
-      <EmbeddedResource Include="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\operationInput.json" />
+        <EmbeddedResource Include="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\collectionsInput.json" />
+        <EmbeddedResource Include="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\context.json" />
+        <EmbeddedResource Include="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\input.json" />
+        <EmbeddedResource Include="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\nestedResourcesInput.json" />
+        <EmbeddedResource Include="Given_instance_of\JsonLdHypermediaProcessor_class\when_parsing\operationInput.json" />
     </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.2" />
         <PackageReference Include="NUnit" Version="3.12.0" />
-        <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
         <PackageReference Include="Castle.Core" Version="4.4.0" />
-        <PackageReference Include="FluentAssertions" Version="5.7.0" />
-        <PackageReference Include="Moq" Version="4.12.0" />
+        <PackageReference Include="FluentAssertions" Version="5.9.0" />
+        <PackageReference Include="Moq" Version="4.13.1" />
         <PackageReference Include="RDeF.Contracts" Version="1.0.0" />
         <PackageReference Include="RDeF.Serialization" Version="1.0.0" />
         <PackageReference Include="Tavis.UriTemplates" Version="1.1.1" />
     </ItemGroup>
 
+    <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.2" />
+        <PackageReference Include="NUnit" Version="3.12.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
+        <PackageReference Include="Castle.Core" Version="4.4.0" />
+        <PackageReference Include="FluentAssertions" Version="5.9.0" />
+        <PackageReference Include="Moq" Version="4.13.1" />
+        <PackageReference Include="RDeF.Contracts" Version="1.0.0" />
+        <PackageReference Include="RDeF.Serialization" Version="1.0.0" />
+        <PackageReference Include="Tavis.UriTemplates" Version="1.1.1" />
+    </ItemGroup>
+
+    <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
+        <Reference Include="System" />
+        <Reference Include="System.Runtime" />
+        <Reference Include="System.Threading.Tasks" />
+        <Reference Include="System.Net.Http" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+    
     <ItemGroup>
         <ProjectReference Include="..\Heracles.net\Heracles.net.csproj" />
     </ItemGroup>

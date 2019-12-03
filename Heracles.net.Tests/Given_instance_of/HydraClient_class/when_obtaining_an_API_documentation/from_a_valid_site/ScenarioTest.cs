@@ -11,7 +11,7 @@ namespace Given_instance_of.HydraClient_class.when_obtaining_an_API_documentatio
     {
         protected IResponse UrlResponse { get; private set; }
 
-        protected override void ScenarioSetup()
+        public override void ScenarioSetup()
         {
             base.ScenarioSetup();
             HttpCall.Setup(_ => _.HttpCall(BaseUrl, It.IsAny<IHttpOptions>(), It.IsAny<CancellationToken>()))

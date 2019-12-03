@@ -10,9 +10,7 @@ namespace Heracles
     {
         /// <summary>Gets a hypermedia provider suitable for a given response.</summary>
         /// <param name="response">Raw response to find hypermedia processor for.</param>
-        /// <returns>
-        /// Hypermedia processor capable of processing given <paramref name="response" /> or <b>null</b>.
-        /// </returns>
+        /// <returns>Hypermedia processor capable of processing given <paramref name="response" /> or <b>null</b>.</returns>
         IHypermediaProcessor GetHypermediaProcessor(IResponse response);
 
         /// <summary>Obtains an API documentation.</summary>
@@ -39,48 +37,52 @@ namespace Heracles
 
         /// <summary>Obtains a representation of a resource.</summary>
         /// <param name="resource">Resource carrying an IRI of the resource to be obtained.</param>
+        /// <returns>Hypermedia container carrying a resulting resource and it's hypermedia controls.</returns>
         Task<IHypermediaContainer> GetResource(IResource resource);
 
         /// <summary>Obtains a representation of a resource.</summary>
         /// <param name="resource">Resource carrying an IRI of the resource to be obtained.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Hypermedia container carrying a resulting resource and it's hypermedia controls.</returns>
         Task<IHypermediaContainer> GetResource(IResource resource, CancellationToken cancellationToken);
 
         /// <summary>Obtains a representation of a resource.</summary>
         /// <param name="url">URL carrying an IRI of the resource to be obtained.</param>
+        /// <returns>Hypermedia container carrying a resulting resource and it's hypermedia controls.</returns>
         Task<IHypermediaContainer> GetResource(Uri url);
 
         /// <summary>Obtains a representation of a resource.</summary>
         /// <param name="url">URL carrying an IRI of the resource to be obtained.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Hypermedia container carrying a resulting resource and it's hypermedia controls.</returns>
         Task<IHypermediaContainer> GetResource(Uri url, CancellationToken cancellationToken);
         
-        ///<summary>Invokes a given operation.</summary>
-        ///<param name="operation">Operation descriptor to be invoked.</param>
-        ///<param name="body">Optional resource to be used as a body of the operation.</param>
-        ///<param name="parameters">Optional auxiliary parameters.</param>
-        ///<returns>Response with the obtained resource</returns>
+        /// <summary>Invokes a given operation.</summary>
+        /// <param name="operation">Operation descriptor to be invoked.</param>
+        /// <param name="body">Optional resource to be used as a body of the operation.</param>
+        /// <param name="parameters">Optional auxiliary parameters.</param>
+        /// <returns>Response with the obtained resource.</returns>
         Task<IResponse> Invoke(IOperation operation, IResource body = null, IResource parameters = null);
         
-        ///<summary>Invokes a given operation.</summary>
-        ///<param name="operation">Operation descriptor to be invoked.</param>
+        /// <summary>Invokes a given operation.</summary>
+        /// <param name="operation">Operation descriptor to be invoked.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        ///<returns>Response with the obtained resource</returns>
+        /// <returns>Response with the obtained resource.</returns>
         Task<IResponse> Invoke(IOperation operation, CancellationToken cancellationToken);
         
-        ///<summary>Invokes a given operation.</summary>
-        ///<param name="operation">Operation descriptor to be invoked.</param>
-        ///<param name="body">Optional resource to be used as a body of the operation.</param>
+        /// <summary>Invokes a given operation.</summary>
+        /// <param name="operation">Operation descriptor to be invoked.</param>
+        /// <param name="body">Optional resource to be used as a body of the operation.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        ///<returns>Response with the obtained resource</returns>
+        /// <returns>Response with the obtained resource.</returns>
         Task<IResponse> Invoke(IOperation operation, IResource body, CancellationToken cancellationToken);
         
-        ///<summary>Invokes a given operation.</summary>
-        ///<param name="operation">Operation descriptor to be invoked.</param>
-        ///<param name="body">Optional resource to be used as a body of the operation.</param>
-        ///<param name="parameters">Optional auxiliary parameters.</param>
+        /// <summary>Invokes a given operation.</summary>
+        /// <param name="operation">Operation descriptor to be invoked.</param>
+        /// <param name="body">Optional resource to be used as a body of the operation.</param>
+        /// <param name="parameters">Optional auxiliary parameters.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        ///<returns>Response with the obtained resource</returns>
+        /// <returns>Response with the obtained resource.</returns>
         Task<IResponse> Invoke(IOperation operation, IResource body, IResource parameters, CancellationToken cancellationToken);
     }
 }

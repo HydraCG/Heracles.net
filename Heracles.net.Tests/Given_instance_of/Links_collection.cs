@@ -23,7 +23,7 @@ namespace Given_instance_of
 
         protected Mock<ILink> Link4 { get; private set; }
 
-        protected ICollection<IDerefencableLink> Links { get; private set; }
+        protected ICollection<IDereferencableLink> Links { get; private set; }
 
         [Test]
         public void should_provide_only_links_matching_required_relation()
@@ -56,7 +56,7 @@ namespace Given_instance_of
                 .With(_ => _.Relation, "yet:another-other-url")
                 .With<ILink, IPointingResource, IResource>(_ => _.Target, Target.Object)
                 .With(_ => _.Type, new HashSet<Iri>() { hydra.Link });
-            Links = new List<IDerefencableLink>() { Link1.Object, Link2.Object, Link3.Object, Link4.Object };
+            Links = new List<IDereferencableLink>() { Link1.Object, Link2.Object, Link3.Object, Link4.Object };
         }
     }
 }

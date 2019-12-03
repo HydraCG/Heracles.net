@@ -12,6 +12,7 @@ using UriTemplate = Tavis.UriTemplates.UriTemplate;
 namespace Heracles.DataModel
 {
     /// <summary>Provides a default implementation of the <see cref="ITemplatedResource{T}" /> interface.</summary>
+    /// <typeparam name="T">Type of the resource described.</typeparam>
     public static class TemplatedResource<T> where T : IPointingResource
     {
         private static readonly PropertyInfo TargetPropertyInfo = typeof(IPointingResource).GetProperty(nameof(IPointingResource.Target));
@@ -49,7 +50,5 @@ namespace Heracles.DataModel
             mappedVariables(builder);
             return ExpandTarget(pointingResource, builder.Complete(), iri);
         }
-
-
     }
 }

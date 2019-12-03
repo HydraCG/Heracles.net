@@ -18,9 +18,7 @@ namespace Heracles
         {
             if (operation is ITemplatedOperation templatedOperation)
             {
-                return templatedOperation.ExpandTarget(builder =>
-                    WithResourceVariables(builder, body, auxResource)
-                );
+                return templatedOperation.ExpandTarget(builder => WithResourceVariables(builder, body, auxResource));
             }
 
             return operation;

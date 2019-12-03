@@ -11,7 +11,7 @@ namespace Heracles.DataModel
         private readonly IEnumerable<IIriTemplateMapping> _mappings;
         private readonly IDictionary<string, string> _result;
 
-        /// <summary>Initializes a new instance of the {@link MappingBuilder} class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="MappingsBuilder" /> class.</summary>
         /// <param name="mappings">IRI template variable mappings collection.</param>
         public MappingsBuilder(IEnumerable<IIriTemplateMapping> mappings)
         {

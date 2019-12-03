@@ -7,6 +7,7 @@ namespace Heracles.DataModel
     public static class Collection
     {
         /// <summary>Gets a partial collection iterator associated in case it is a partial one.</summary>
+        /// <param name="collection">Collection to iterate.</param>
         /// <returns>Instance of the <see cref="IPartialCollectionIterator" />.</returns>
         public static IPartialCollectionIterator GetIterator(ICollection collection)
         {

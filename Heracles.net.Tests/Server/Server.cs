@@ -26,7 +26,7 @@ namespace Heracles.Server
             { ".ttl", "text/turtle" }
         };
 
-        private static JsonSerializer Json = JsonSerializer.CreateDefault();
+        private static readonly JsonSerializer Json = JsonSerializer.CreateDefault();
 
         private readonly HttpListener _listener;
         private TaskCompletionSource<bool> _task;
@@ -36,6 +36,11 @@ namespace Heracles.Server
         {
             _listener = new HttpListener();
             _listener.Prefixes.Add($"http://localhost:{ServerPort}/");
+        }
+        
+        ~Server()
+        {
+            _listener.Stop();
         }
 
         public Task Start(CancellationToken cancellationToken)
@@ -49,59 +54,6 @@ namespace Heracles.Server
             }
 
             return _task.Task;
-        }
-
-        private async void Listen(CancellationToken cancellationToken)
-        {
-            _listener.Start();
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                HttpListenerContext context = null;
-                try
-                {
-                    context = await _listener.GetContextAsync();
-                }
-                catch
-                {
-                }
-
-                if (context != null)
-                {
-                    switch (context.Request.HttpMethod)
-                    {
-                        case "OPTIONS":
-                            SetCorsHeader(context.Response);
-                            context.Response.StatusCode = 200;
-                            break;
-                        case "GET":
-                            var path = context.Request.Url.AbsolutePath == "/" ? "/root" : context.Request.Url.AbsolutePath;
-                            var output = LoadBody(context.Request.Url, path, context.Request.Url.Query);
-                            if (SetHeaders(path, context.Response, output.MediaType) || output.Body != null)
-                            {
-                                context.Response.StatusCode = 200;
-                                output.Body?.CopyTo(context.Response.OutputStream);
-                            }
-                            else
-                            {
-                                context.Response.StatusCode = 404;
-                            }
-
-                            break;
-                        case "POST":
-                            SetCorsHeader(context.Response);
-                            var hash = MD5.Create().ComputeHash(context.Request.InputStream);
-                            context.Response.Headers["Location"] = context.Request.Url + "/" + Convert.ToBase64String(hash);
-                            context.Response.StatusCode = 201;
-                            break;
-                        case "PUT":
-                            SetCorsHeader(context.Response);
-                            context.Response.StatusCode = 201;
-                            break;
-                    }
-
-                    context.Response.Close();
-                }
-            }
         }
 
         private static void SetCorsHeader(HttpListenerResponse response)
@@ -208,15 +160,63 @@ namespace Heracles.Server
             return result;
         }
 
+        private async void Listen(CancellationToken cancellationToken)
+        {
+            _listener.Start();
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                HttpListenerContext context = null;
+                try
+                {
+                    context = await _listener.GetContextAsync();
+                }
+                catch
+                {
+                }
+
+                if (context != null)
+                {
+                    switch (context.Request.HttpMethod)
+                    {
+                        case "OPTIONS":
+                            SetCorsHeader(context.Response);
+                            context.Response.StatusCode = 200;
+                            break;
+                        case "GET":
+                            var path = context.Request.Url.AbsolutePath == "/" ? "/root" : context.Request.Url.AbsolutePath;
+                            var output = LoadBody(context.Request.Url, path, context.Request.Url.Query);
+                            if (SetHeaders(path, context.Response, output.MediaType) || output.Body != null)
+                            {
+                                context.Response.StatusCode = 200;
+                                output.Body?.CopyTo(context.Response.OutputStream);
+                            }
+                            else
+                            {
+                                context.Response.StatusCode = 404;
+                            }
+
+                            break;
+                        case "POST":
+                            SetCorsHeader(context.Response);
+                            var hash = MD5.Create().ComputeHash(context.Request.InputStream);
+                            context.Response.Headers["Location"] = context.Request.Url + "/" + Convert.ToBase64String(hash);
+                            context.Response.StatusCode = 201;
+                            break;
+                        case "PUT":
+                            SetCorsHeader(context.Response);
+                            context.Response.StatusCode = 201;
+                            break;
+                    }
+
+                    context.Response.Close();
+                }
+            }
+        }
+
         private void Stop()
         {
             _listener.Stop();
             _registration.Dispose();
-        }
-
-        ~Server()
-        {
-            _listener.Stop();
         }
 
         private class Output

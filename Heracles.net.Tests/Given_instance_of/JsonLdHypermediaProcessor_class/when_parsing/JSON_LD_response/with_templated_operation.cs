@@ -23,6 +23,13 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing.JSON_LD
         }
 
         private IOperation AddPerson { get; set; }
+        
+        public override void ScenarioSetup()
+        {
+            _inputJsonLd = GetResourceNamed("operationInput.json");
+            Response.SetupGet(_ => _.Url).Returns(new Uri("http://temp.uri/api/people", UriKind.Absolute));
+            base.ScenarioSetup();
+        }
 
         public override async Task TheTest()
         {
@@ -35,13 +42,6 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing.JSON_LD
         {
             AddPerson.ActLike<ITemplatedOperation>().ExpandTarget(new Dictionary<string, string>() { { "name", "test" } })
                 .Target.Iri.Should().Be(new Iri("http://temp.uri/api/people/test"));
-        }
-
-        protected override void ScenarioSetup()
-        {
-            _inputJsonLd = GetResourceNamed("operationInput.json");
-            Response.SetupGet(_ => _.Url).Returns(new Uri("http://temp.uri/api/people", UriKind.Absolute));
-            base.ScenarioSetup();
         }
     }
 }

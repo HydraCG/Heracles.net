@@ -18,6 +18,13 @@ namespace Given_instance_of.HydraClient_class.when_invoking_an_operation
         {
             await Client.Invoke(Operation.Object, Body.Object, Parameters.Object);
         }
+        
+        public override void ScenarioSetup()
+        {
+            base.ScenarioSetup();
+            HypermediaProcessor.SetupGet(_ => _.SupportedMediaTypes).Returns(new[] { "application/ld+json" });
+            HypermediaProcessor.Setup(_ => _.Serialize(It.IsAny<IResource>(), It.IsAny<CancellationToken>())).ReturnsAsync(SerializedBody);
+        }
 
         [Test]
         public void should_create_a_request_operation_with_the_strategy_provided()
@@ -45,13 +52,6 @@ namespace Given_instance_of.HydraClient_class.when_invoking_an_operation
             HttpCall.Verify(
                 _ => _.HttpCall(It.IsAny<Uri>(), It.Is<IHttpOptions>(options => options.Body == SerializedBody), It.IsAny<CancellationToken>()),
                 Times.Once);
-        }
-
-        protected override void ScenarioSetup()
-        {
-            base.ScenarioSetup();
-            HypermediaProcessor.SetupGet(_ => _.SupportedMediaTypes).Returns(new[] { "application/ld+json" });
-            HypermediaProcessor.Setup(_ => _.Serialize(It.IsAny<IResource>(), It.IsAny<CancellationToken>())).ReturnsAsync(SerializedBody);
         }
     }
 }

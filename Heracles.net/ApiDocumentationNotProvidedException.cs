@@ -12,25 +12,25 @@ namespace Heracles
     {
         private const string DefaultMessage = "API documentation not provided.";
         
-        /// <summary>Initializes a new instance of the <see cref="NoEntrypointDefinedException" /> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="ApiDocumentationNotProvidedException" /> class.</summary>
         public ApiDocumentationNotProvidedException() : base(DefaultMessage)
         {
         }
 
-        /// <summary>Initializes a new instance of the <see cref="NoEntrypointDefinedException" /> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="ApiDocumentationNotProvidedException" /> class.</summary>
         /// <param name="message">Message of the exception.</param>
         public ApiDocumentationNotProvidedException(string message) : base(message)
         {
         }
 
-        /// <summary>Initializes a new instance of the <see cref="NoEntrypointDefinedException" /> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="ApiDocumentationNotProvidedException" /> class.</summary>
         /// <param name="message">Message of the exception.</param>
         /// <param name="innerException">Inner exception.</param>
         public ApiDocumentationNotProvidedException(string message, Exception innerException) : base(message, innerException)
         {
         }
 
-        /// <summary>Initializes a new instance of the <see cref="NoEntrypointDefinedException" /> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="ApiDocumentationNotProvidedException" /> class.</summary>
         /// <param name="info">Serialization info.</param>
         /// <param name="context">Streaming context.</param>
         protected ApiDocumentationNotProvidedException(SerializationInfo info, StreamingContext context)

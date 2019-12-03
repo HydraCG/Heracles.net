@@ -14,7 +14,7 @@ namespace Given_instance_of.HydraClient_class.when_invoking_an_operation
 
         protected Mock<IResource> Parameters { get; private set; }
 
-        protected override void ScenarioSetup()
+        public override void ScenarioSetup()
         {
             base.ScenarioSetup();
             var target = new Mock<IResource>(MockBehavior.Strict);

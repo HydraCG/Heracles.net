@@ -35,7 +35,7 @@ namespace Given_instance_of.InvalidResponseException_class
         public void Setup()
         {
             Info = new SerializationInfo(typeof(InvalidResponseException), new FormatterConverter());
-            Context = new StreamingContext();
+            Context = default(StreamingContext);
             TheTest();
         }
     }

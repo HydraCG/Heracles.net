@@ -12,7 +12,7 @@ namespace Given_instance_of.HydraClient_class.when_fetching_a_resource
     [TestFixture]
     public class and_that_resource_was_provided_in_an_unsupported_format : ScenarioTest
     {
-        protected override void ScenarioSetup()
+        public override void ScenarioSetup()
         {
             base.ScenarioSetup();
             HttpCall.Setup(_ => _.HttpCall(ResourceUrl, It.IsAny<IHttpOptions>(), It.IsAny<CancellationToken>()))

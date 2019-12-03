@@ -26,6 +26,5 @@ namespace Heracles.Net.Http
             var httpResponse = await Client.SendAsync(httpRequest, HttpCompletionOption.ResponseContentRead, cancellationTokenn);
             return new HttpResponse(url, httpResponse);
         }
-
     }
 }

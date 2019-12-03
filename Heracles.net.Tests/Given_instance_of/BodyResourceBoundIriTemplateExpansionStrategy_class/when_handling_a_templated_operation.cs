@@ -16,7 +16,7 @@ namespace Given_instance_of.BodyResourceBoundIriTemplateExpansionStrategy_class
 
         private IOperation Result { get; set; }
 
-        protected override void ScenarioSetup()
+        public override void ScenarioSetup()
         {
             base.ScenarioSetup();
             Operation = new Mock<ITemplatedOperation>(MockBehavior.Strict);

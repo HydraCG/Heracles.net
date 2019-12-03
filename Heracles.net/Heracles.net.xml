@@ -1,0 +1,1660 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Heracles.net</name>
+    </assembly>
+    <members>
+        <member name="T:Heracles.ApiDocumentationNotProvidedException">
+            <summary>Exception raised when no <see cref="F:Heracles.Namespaces.hydra.ApiDocumentation" /> is defined.</summary>
+        </member>
+        <member name="M:Heracles.ApiDocumentationNotProvidedException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.ApiDocumentationNotProvidedException" /> class.</summary>
+        </member>
+        <member name="M:Heracles.ApiDocumentationNotProvidedException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.ApiDocumentationNotProvidedException" /> class.</summary>
+            <param name="message">Message of the exception.</param>
+        </member>
+        <member name="M:Heracles.ApiDocumentationNotProvidedException.#ctor(System.String,System.Exception)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.ApiDocumentationNotProvidedException" /> class.</summary>
+            <param name="message">Message of the exception.</param>
+            <param name="innerException">Inner exception.</param>
+        </member>
+        <member name="M:Heracles.ApiDocumentationNotProvidedException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.ApiDocumentationNotProvidedException" /> class.</summary>
+            <param name="info">Serialization info.</param>
+            <param name="context">Streaming context.</param>
+        </member>
+        <member name="T:Heracles.BodyResourceBoundIriTemplateExpansionStrategy">
+            <summary>
+            Provides a simple implementation of the <see cref="T:Heracles.IIriTemplateExpansionStrategy" /> interface where an input resource
+            is used to fill the possible <see cref="T:Heracles.DataModel.IIriTemplate" /> with values.
+            </summary>
+        </member>
+        <member name="M:Heracles.BodyResourceBoundIriTemplateExpansionStrategy.CreateRequest(Heracles.DataModel.IOperation,Heracles.DataModel.IResource,Heracles.DataModel.IResource)">
+            <inheritdoc />
+        </member>
+        <member name="T:Heracles.CrawlingDirection">
+            <summary>Defines possible partial collection view crawling directions.</summary>
+        </member>
+        <member name="F:Heracles.CrawlingDirection.Forward">
+            <summary>Defines a forward direction that consumes hydra:next link.</summary>
+        </member>
+        <member name="F:Heracles.CrawlingDirection.Backward">
+            <summary>Defines a forward direction that consumes hydra:previous link.</summary>
+        </member>
+        <member name="T:Heracles.DataModel.ApiDocumentation">
+            <summary>Provides a default implementation of the <see cref="M:Heracles.DataModel.IApiDocumentation.GetEntryPoint" /> method.</summary>
+        </member>
+        <member name="M:Heracles.DataModel.ApiDocumentation.GetEntryPoint(Heracles.DataModel.IApiDocumentation)">
+            <summary>Retrieves an API's entry point resource.</summary>
+            <param name="apiDocumentation">API documentation.</param>
+            <returns>Task with entry point obtained as an instance of the <see cref="T:Heracles.DataModel.IHypermediaContainer" />.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.ApiDocumentation.GetEntryPoint(Heracles.DataModel.IApiDocumentation,System.Threading.CancellationToken)">
+            <summary>Retrieves an API's entry point resource.</summary>
+            <param name="apiDocumentation">API documentation.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Task with entry point obtained as an instance of the <see cref="T:Heracles.DataModel.IHypermediaContainer" />.</returns>
+        </member>
+        <member name="T:Heracles.DataModel.Collection">
+            <summary>Provides a default implementation of the <see cref="M:Heracles.DataModel.ICollection.GetIterator" /> interface.</summary>
+        </member>
+        <member name="M:Heracles.DataModel.Collection.GetIterator(Heracles.DataModel.ICollection)">
+            <summary>Gets a partial collection iterator associated in case it is a partial one.</summary>
+            <param name="collection">Collection to iterate.</param>
+            <returns>Instance of the <see cref="T:Heracles.DataModel.IPartialCollectionIterator" />.</returns>
+        </member>
+        <member name="T:Heracles.DataModel.Collections.CollectionsCollectionExtensions">
+            <summary>Provides a convenient collection for <see cref="T:System.Collections.Generic.IEnumerable`1" />s.</summary>
+        </member>
+        <member name="M:Heracles.DataModel.Collections.CollectionsCollectionExtensions.WithMembersInRelationWith(System.Collections.Generic.IEnumerable{Heracles.DataModel.ICollection},RDeF.Entities.Iri,RDeF.Entities.Iri)">
+            <summary>
+            Obtains those collections that defines a hydra:manages block matching a given property and object.
+            </summary>
+            <param name="collections">Collection to be filtered.</param>
+            <param name="subject">Subject to match in the hydra:manages block.</param>
+            <param name="property">Property to match in the hydra:manages block.</param>
+            <returns>Filtered collection.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.Collections.CollectionsCollectionExtensions.WithMembersMatching(System.Collections.Generic.IEnumerable{Heracles.DataModel.ICollection},RDeF.Entities.Iri,RDeF.Entities.Iri)">
+            <summary>
+            Obtains those collections that defines a hydra:manages block matching a given property and object.
+            </summary>
+            <param name="collections">Collection to be filtered.</param>
+            <param name="property">Property to match in the hydra:manages block.</param>
+            <param name="object">Object to match in the hydra:manages block.</param>
+            <returns>Filtered collection.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.Collections.CollectionsCollectionExtensions.WithMembersOfType(System.Collections.Generic.IEnumerable{Heracles.DataModel.ICollection},RDeF.Entities.Iri)">
+            <summary>
+            Obtains those collections that defines a hydra:manages block matching a given type and type IRI.
+            </summary>
+            <param name="collections">Collection to be filtered.</param>
+            <param name="type">Type to match in the hydra:manages block.</param>
+            <returns>Filtered collection.</returns>
+        </member>
+        <member name="T:Heracles.DataModel.Collections.LinksCollectionExtensions">
+            <summary>Provides a collection of <see cref="T:Heracles.DataModel.IDereferencableLink" /> that can be filtered with relevant criteria.</summary>
+        </member>
+        <member name="M:Heracles.DataModel.Collections.LinksCollectionExtensions.WithRelationOf(System.Collections.Generic.IEnumerable{Heracles.DataModel.IDereferencableLink},RDeF.Entities.Iri)">
+            <summary>Obtains a collection of links of a given relation type.</summary>
+            <param name="links">Collection to be filteded.</param>
+            <param name="iri">Expected relation type.</param>
+            <returns>Filtered collection.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.Collections.LinksCollectionExtensions.WithTemplate(System.Collections.Generic.IEnumerable{Heracles.DataModel.IDereferencableLink})">
+            <summary>Obtains a collection of operations being an Hydra TemplatedLink.</summary>
+            <param name="links">Collection to be filteded.</param>
+            <returns>Filtered collection.</returns>
+        </member>
+        <member name="T:Heracles.DataModel.Collections.MappingsCollectionExtensions">
+            <summary>
+            Provides extensions methods of <see cref="T:System.Collections.Generic.IEnumerable`1" />
+            that can be filtered with relevant criteria.
+            </summary>
+        </member>
+        <member name="M:Heracles.DataModel.Collections.MappingsCollectionExtensions.OfVariableName(System.Collections.Generic.IEnumerable{Heracles.DataModel.IIriTemplateMapping},System.String)">
+            <summary>Obtains a collection of mappings for a given variable name.</summary>
+            <param name="mappings">Collection to be filtered.</param>
+            <param name="variableName">Variable name.</param>
+            <returns>Filtered collection.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.Collections.MappingsCollectionExtensions.OfProperty(System.Collections.Generic.IEnumerable{Heracles.DataModel.IIriTemplateMapping},RDeF.Entities.Iri)">
+            <summary>Obtains a collection of mappings for a given predicate.</summary>
+            <param name="mappings">Collection to be filtered.</param>
+            <param name="property">Predicate IRI.</param>
+            <returns>Filtered collection.</returns>
+        </member>
+        <member name="T:Heracles.DataModel.Collections.OperationsCollectionExtensions">
+            <summary>
+            Provides extensions methods of <see cref="T:System.Collections.Generic.IEnumerable`1" />
+            that can be filtered with relevant criteria.
+            </summary>
+        </member>
+        <member name="M:Heracles.DataModel.Collections.OperationsCollectionExtensions.OfMethod(System.Collections.Generic.IEnumerable{Heracles.DataModel.IOperation},System.String)">
+            <summary>Obtains a collection of operations using a given method.</summary>
+            <param name="operations">Collection to be filtered.</param>
+            <param name="method">Method to match.</param>
+            <returns>Filtered collection.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.Collections.OperationsCollectionExtensions.Expecting(System.Collections.Generic.IEnumerable{Heracles.DataModel.IOperation},RDeF.Entities.Iri)">
+            <summary>Obtains a collection of operations expecting a given type.</summary>
+            <param name="operations">Collection to be filtered.</param>
+            <param name="iri">Expected type.</param>
+            <returns>Filtered collection.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.Collections.OperationsCollectionExtensions.Returning(System.Collections.Generic.IEnumerable{Heracles.DataModel.IOperation},RDeF.Entities.Iri)">
+            <summary>Obtains a collection of operations returning a given type.</summary>
+            <param name="operations">Collection to be filtered.</param>
+            <param name="iri">Returned type.</param>
+            <returns>Filtered collection.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.Collections.OperationsCollectionExtensions.ExpectingHeader(System.Collections.Generic.IEnumerable{Heracles.DataModel.IOperation},System.String)">
+            <summary>Obtains a collection of operations returning a given type.</summary>
+            <param name="operations">Collection to be filtered.</param>
+            <param name="name">Expected header name.</param>
+            <returns>Filtered collection.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.Collections.OperationsCollectionExtensions.ReturningHeader(System.Collections.Generic.IEnumerable{Heracles.DataModel.IOperation},System.String)">
+            <summary>Obtains a collection of operations returning a header.</summary>
+            <param name="operations">Collection to be filtered.</param>
+            <param name="name">Returned header name.</param>
+            <returns>Filtered collection.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.Collections.OperationsCollectionExtensions.WithTemplate(System.Collections.Generic.IEnumerable{Heracles.DataModel.IOperation})">
+            <summary>Obtains a collection of operations being an hydra:IriTemplate.</summary>
+            <param name="operations">Operation to iterate through.</param>
+            <returns>Filtered collection.</returns>
+        </member>
+        <member name="T:Heracles.DataModel.Collections.ResourceCollectionExtensions">
+            <summary>
+            Provides extensions methods of <see cref="T:System.Collections.Generic.IEnumerable`1" />
+            that can be filtered with relevant criteria.
+            </summary>
+        </member>
+        <member name="M:Heracles.DataModel.Collections.ResourceCollectionExtensions.OfType``1(System.Collections.Generic.IEnumerable{``0},RDeF.Entities.Iri)">
+            <summary>Obtains a collection of resources of a given type.</summary>
+            <typeparam name="T">Type of the resource.</typeparam>
+            <param name="resources">Collection to be filtered.</param>
+            <param name="iri">Expected type.</param>
+            <returns>Filtered collection.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.Collections.ResourceCollectionExtensions.OfIri``1(System.Collections.Generic.IEnumerable{``0},RDeF.Entities.Iri)">
+            <summary>Obtains a collection of resources of a given Iri.</summary>
+            <typeparam name="T">Type of the resource.</typeparam>
+            <param name="resources">Collection to be filtered.</param>
+            <param name="iri"> Iri of the resources.</param>
+            <returns>Filtered collection.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.Collections.ResourceCollectionExtensions.NonBlank``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>Obtains a collection of resources being non blank nodes.</summary>
+            <typeparam name="T">Type of the resource.</typeparam>
+            <param name="resources">Collection to be filtered.</param>
+            <returns>Filtered collection.</returns>
+        </member>
+        <member name="T:Heracles.DataModel.Collections.TypesCollectionExtensions">
+            <summary>Provides a collection of types that can be filtered with relevant criteria.</summary>
+        </member>
+        <member name="M:Heracles.DataModel.Collections.TypesCollectionExtensions.IsCollection(System.Collections.Generic.IEnumerable{RDeF.Entities.Iri})">
+            <summary>
+            Gets a value indicating that resource owning this type's collection has hydra:Collection type.
+            </summary>
+            <param name="types">Collection to be checked.</param>
+            <returns>
+            <i>true</i> in case hydra:Collection is within the given <paramref name="types" />;
+            otherwise <i>false</i>.
+            </returns>
+        </member>
+        <member name="M:Heracles.DataModel.Collections.TypesCollectionExtensions.Except(System.Collections.Generic.IEnumerable{RDeF.Entities.Iri},RDeF.Entities.Iri)">
+            <summary>Excludes a given <paramref name="types" />.</summary>
+            <param name="types">Collection to be filtered.</param>
+            <param name="type">Type to be excluded.</param>
+            <returns>Filtered collection.</returns>
+        </member>
+        <member name="T:Heracles.DataModel.HypermediaContainer">
+            <summary>Provides a default implementation of the <see cref="T:Heracles.IHypermediaProcessor" />.</summary>
+        </member>
+        <member name="M:Heracles.DataModel.HypermediaContainer.#ctor(Heracles.IResponse,Heracles.DataModel.IResource,System.Collections.Generic.IEnumerable{Heracles.DataModel.IResource})">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.DataModel.HypermediaContainer" /> class.</summary>
+            <param name="response">The response.</param>
+            <param name="rootResource">Main resource associated with the requested Url.</param>
+            <param name="hypermedia">All hypermedia controls discovered with the payload of the resource owning this container.</param>
+        </member>
+        <member name="P:Heracles.DataModel.HypermediaContainer.Headers">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.HypermediaContainer.Status">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.HypermediaContainer.Url">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.HypermediaContainer.Iri">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.HypermediaContainer.Type">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.HypermediaContainer.DisplayName">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.HypermediaContainer.TextDescription">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.HypermediaContainer.Label">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.HypermediaContainer.Comment">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.HypermediaContainer.UnmappedRelations">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.HypermediaContainer.TotalItems">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.HypermediaContainer.View">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.HypermediaContainer.Members">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.HypermediaContainer.Manages">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.HypermediaContainer.Collections">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.HypermediaContainer.Operations">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.HypermediaContainer.Links">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.DataModel.HypermediaContainer.GetBody">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.DataModel.HypermediaContainer.GetBody(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.DataModel.HypermediaContainer.GetIterator">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.DataModel.HypermediaContainer.GetEnumerator">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.DataModel.HypermediaContainer.System#Collections#IEnumerable#GetEnumerator">
+            <inheritdoc />
+        </member>
+        <member name="T:Heracles.DataModel.IApiDocumentation">
+            <summary>Represents an abstract API documentation.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IApiDocumentation.Title">
+            <summary>Gets a title of this API documentation.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IApiDocumentation.Description">
+            <summary>Gets a description of this API documentation.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IApiDocumentation.SupportedClasses">
+            <summary>Gets the supported classes by this API.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IApiDocumentation.EntryPoint">
+            <summary>Gets the Url of the entry point of the API.</summary>
+        </member>
+        <member name="M:Heracles.DataModel.IApiDocumentation.GetEntryPoint">
+            <summary>Retrieves an API's entry point resource.</summary>
+            <returns>Task with entry point obtained as an instance of the <see cref="T:Heracles.DataModel.IHypermediaContainer" />.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.IApiDocumentation.GetEntryPoint(System.Threading.CancellationToken)">
+            <summary>Retrieves an API's entry point resource.</summary>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Task with entry point obtained as an instance of the <see cref="T:Heracles.DataModel.IHypermediaContainer" />.</returns>
+        </member>
+        <member name="T:Heracles.DataModel.IClass">
+            <summary>Represents a Hydra class.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IClass.Title">
+            <summary>Gets the class' display name.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IClass.Description">
+            <summary>Gets the class' description.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IClass.SupportedOperations">
+            <summary>Gets the class' supported operations. </summary>
+        </member>
+        <member name="P:Heracles.DataModel.IClass.SupportedProperties">
+            <summary>Gets the class' supported properties.</summary>
+        </member>
+        <member name="T:Heracles.DataModel.ICollection">
+            <summary>Describes an abstract Hydra collection.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.ICollection.Members">
+            <summary>Gets the collection's member resources.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.ICollection.Manages">
+            <summary>Gets the statements defining the hydra:manages blocks.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.ICollection.TotalItems">
+            <summary>Gets the total items in the collection.</summary>
+        </member>
+        <member name="M:Heracles.DataModel.ICollection.GetIterator">
+            <summary>Gets a partial collection iterator associated in case it is a partial one.</summary>
+            <returns>Instance of the <see cref="T:Heracles.DataModel.IPartialCollectionIterator" />.</returns>
+        </member>
+        <member name="T:Heracles.DataModel.IDereferencableLink">
+            <summary>Describes a deferencable link to another resource.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IDereferencableLink.Relation">
+            <summary>Gets a relation of the link.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IDereferencableLink.SupportedOperations">
+            <summary>Gets a link's supported operations.</summary>
+        </member>
+        <member name="T:Heracles.DataModel.IHeaders">
+            <summary>Provides an abstraction layer over HTTP headers.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IHeaders.Item(System.String)">
+            <summary>Gets the values of a header <paramref name="name" />.</summary>
+            <param name="name">Name of the header to obtain values of.</param>
+            <returns>Collection of values.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.IHeaders.Has(System.String)">
+            <summary>Checks whether the collection has a header of a given name.</summary>
+            <param name="name">Name of the header to check for existence.</param>
+            <returns>
+            <b>true</b> in case there is a header of the given <paramref name="name" />; otherwise <b>false</b>.
+            </returns>
+        </member>
+        <member name="T:Heracles.DataModel.IHydraResource">
+            <summary>Describes an abstract Hydra resource.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IHydraResource.Collections">
+            <summary>Gets collections exposed by that resource.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IHydraResource.Operations">
+            <summary>Gets operations that can be performed on that resource.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IHydraResource.Links">
+            <summary>Gets links related to that resource.</summary>
+        </member>
+        <member name="T:Heracles.DataModel.IHypermediaContainer">
+            <summary>Provides an abstraction layer over hypermedia container.</summary>
+        </member>
+        <member name="T:Heracles.DataModel.IIriTemplate">
+            <summary>Describes an abstract Hydra IRI template.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IIriTemplate.Template">
+            <summary>Gets an URI template.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IIriTemplate.VariableRepresentation">
+            <summary>Gets a variable representation type.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IIriTemplate.Mappings">
+            <summary>Gets the variable mappings.</summary>
+        </member>
+        <member name="T:Heracles.DataModel.IIriTemplateMapping">
+            <summary>Describes an abstract Hydra IRI template mapping.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IIriTemplateMapping.Variable">
+            <summary>Gets a variable name being mapped.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IIriTemplateMapping.Property">
+            <summary>Gets a property used for this variable mapping.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IIriTemplateMapping.Required">
+            <summary>Gets a value indicating whether the mapping is required or no.</summary>
+        </member>
+        <member name="T:Heracles.DataModel.ILink">
+            <summary>Describes a link to another resource.</summary>
+        </member>
+        <member name="T:Heracles.DataModel.IOperation">
+            <summary>Describes an abstract Hydra operation.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IOperation.Method">
+            <summary>Gets a method to be used for the call.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IOperation.Expects">
+            <summary>Gets the expected classes.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IOperation.Returns">
+            <summary>Gets the returned classes.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IOperation.ExpectedHeaders">
+            <summary>Gets the expected headers.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IOperation.ReturnedHeaders">
+            <summary>Gets the returned headers.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IOperation.OriginatingMediaType">
+            <summary>Gets the media type of a resource that provided this operation.</summary>
+        </member>
+        <member name="T:Heracles.DataModel.IPartialCollectionIterator">
+            <summary>
+            Describes an abstract view of a partial collection.
+            This is an iterator-like pattern that once obtained from it's owning <see cref="T:Heracles.DataModel.ICollection"/>
+            should maintain it's state between consecutive next/previous page calls.
+            </summary>
+        </member>
+        <member name="P:Heracles.DataModel.IPartialCollectionIterator.CurrentPartIri">
+            <summary>Gets the IRI of current part.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IPartialCollectionIterator.FirstPartIri">
+            <summary>Gets the IRI to the first part.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IPartialCollectionIterator.NextPartIri">
+            <summary>Gets the IRI to the next part.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IPartialCollectionIterator.PreviousPartIri">
+            <summary>Gets the IRI to the previous part.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IPartialCollectionIterator.LastPartIri">
+            <summary>Gets the IRI to the last part.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IPartialCollectionIterator.HasNextPart">
+            <summary>Gets a value indicating whether the view has a next part available.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IPartialCollectionIterator.HasPreviousPart">
+            <summary>Gets a value indicating whether the view has a previous part available.</summary>
+        </member>
+        <member name="M:Heracles.DataModel.IPartialCollectionIterator.GetFirstPart">
+            <summary>Retrieves a first part of the partial collection view.</summary>
+            <returns>Collection of resources.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.IPartialCollectionIterator.GetFirstPart(System.Threading.CancellationToken)">
+            <summary>Retrieves a first part of the partial collection view.</summary>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Collection of resources.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.IPartialCollectionIterator.GetNextPart">
+            <summary>Retrieves a next part of the partial collection view.</summary>
+            <returns>Collection of resources.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.IPartialCollectionIterator.GetNextPart(System.Threading.CancellationToken)">
+            <summary>Retrieves a next part of the partial collection view.</summary>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Collection of resources.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.IPartialCollectionIterator.GetPreviousPart">
+            <summary>Retrieves a previous part of the partial collection view.</summary>
+            <returns>Collection of resources.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.IPartialCollectionIterator.GetPreviousPart(System.Threading.CancellationToken)">
+            <summary>Retrieves a previous part of the partial collection view.</summary>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Collection of resources.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.IPartialCollectionIterator.GetLastPart">
+            <summary>Retrieves a last part of the partial collection view.</summary>
+            <returns>Collection of resources.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.IPartialCollectionIterator.GetLastPart(System.Threading.CancellationToken)">
+            <summary>Retrieves a last part of the partial collection view.</summary>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Collection of resources.</returns>
+        </member>
+        <member name="T:Heracles.DataModel.IPartialCollectionView">
+            <summary>Describes an abstract partial collection view with links to other collection parts.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IPartialCollectionView.First">
+            <summary>Gets the link to the first part of the collection, if any.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IPartialCollectionView.Next">
+            <summary>Gets the link to the next part of the collection, if any.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IPartialCollectionView.Previous">
+            <summary>Gets the link to the previous part of the collection, if any.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IPartialCollectionView.Last">
+            <summary>Gets the link to the last part of the collection, if any.</summary>
+        </member>
+        <member name="T:Heracles.DataModel.IPointingResource">
+            <summary>Provides an abstract description of a resource that points to another one.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IPointingResource.BaseUrl">
+            <summary>Gets a base URL that can be used to resolve target in case it is relative.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IPointingResource.Target">
+            <summary>Gets a target URL to be called.</summary>
+        </member>
+        <member name="T:Heracles.DataModel.IProperty">
+            <summary> Describes an abstract property.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IProperty.Title">
+            <summary>Gets the property' display name.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IProperty.Description">
+            <summary>Gets the property's description.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IProperty.ValuesOfType">
+            <summary>Gets the types of values this property can have.</summary>
+        </member>
+        <member name="T:Heracles.DataModel.IResource">
+            <summary>Describes an abstract RDF resource.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IResource.DisplayName">
+            <summary>Gets the display name of the resource.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IResource.TextDescription">
+            <summary>Gets the description of the resource.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IResource.Label">
+            <summary>Gets the resource's label.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IResource.Comment">
+            <summary>Gets the resource's description.</summary>
+        </member>
+        <member name="T:Heracles.DataModel.IResourceView">
+            <summary>Provides an abstraction over a resouce that has a view.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IResourceView.View">
+            <summary>Gets the optional partial collection view.</summary>
+        </member>
+        <member name="T:Heracles.DataModel.IStatement">
+            <summary>Describes an abstract statement.</summary>
+            <remarks>
+            While all properties are optional, it is recommended to provide at least two of the properties.
+            </remarks>
+        </member>
+        <member name="P:Heracles.DataModel.IStatement.Subject">
+            <summary>Gets the IRI of the statement's subject.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IStatement.Property">
+            <summary>Gets the IRI of the statement's predicate.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.IStatement.Object">
+            <summary>Gets the IRI of the statement's object.</summary>
+        </member>
+        <member name="T:Heracles.DataModel.ISupportedProperty">
+            <summary>Describes an abstract Hydra property.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.ISupportedProperty.Property">
+            <summary>Gets the actual property.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.ISupportedProperty.Required">
+            <summary>Gets a value indicating whether this property is required.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.ISupportedProperty.Readable">
+            <summary>Gets a value indicating whether this property is readable.</summary>
+        </member>
+        <member name="P:Heracles.DataModel.ISupportedProperty.Writable">
+            <summary>Gets a value indicating whether this property is writable.</summary>
+        </member>
+        <member name="T:Heracles.DataModel.ITemplatedLink">
+            <summary>Provides a link that can has an URI template.</summary>
+        </member>
+        <member name="T:Heracles.DataModel.ITemplatedOperation">
+            <summary>
+            Describes an <see cref="T:Heracles.DataModel.IOperation" /> that uses an URI template to point to the target of the request.
+            </summary>
+        </member>
+        <member name="T:Heracles.DataModel.ITemplatedResource`1">
+            <summary>Provides an abstract description of a resource with expandable template.</summary>
+            <typeparam name="T">Type of the resource with template.</typeparam>
+        </member>
+        <member name="M:Heracles.DataModel.ITemplatedResource`1.ExpandTarget(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>Expands an URI template with given variables.</summary>
+            <param name="mappedVariables">Template variables with value.</param>
+            <returns>Expanded templated resource.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.ITemplatedResource`1.ExpandTarget(System.Action{Heracles.DataModel.MappingsBuilder})">
+            <summary>Expands an URI template with given variables.</summary>
+            <param name="mappedVariables">Template variables mapping builder.</param>
+            <returns>Expanded templated resource.</returns>
+        </member>
+        <member name="T:Heracles.DataModel.MappingsBuilder">
+            <summary>Provides a builder for <see cref="T:Heracles.DataModel.IIriTemplate" /> variable mapping values.</summary>
+        </member>
+        <member name="M:Heracles.DataModel.MappingsBuilder.#ctor(System.Collections.Generic.IEnumerable{Heracles.DataModel.IIriTemplateMapping})">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.DataModel.MappingsBuilder" /> class.</summary>
+            <param name="mappings">IRI template variable mappings collection.</param>
+        </member>
+        <member name="P:Heracles.DataModel.MappingsBuilder.VariableMappings">
+            <summary>Gets variable mappings in form of variable name - property IRI pairs.</summary>
+        </member>
+        <member name="M:Heracles.DataModel.MappingsBuilder.WithProperty(RDeF.Entities.Iri)">
+            <summary>Allows to add an IRI property value.</summary>
+            <param name="property">IRI of the property to be filled with value.</param>
+            <returns>Property mapping.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.MappingsBuilder.WithVariable(System.String)">
+            <summary>Allows to add a direct variable value.</summary>
+            <param name="variableName">IRI of the property to be filled with value.</param>
+            <returns>Property mapping.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.MappingsBuilder.Complete">
+            <summary>Completes the variable values mappings in form of variable name - serialized value pairs.</summary>
+            <returns>Variable mappings.</returns>
+        </member>
+        <member name="P:Heracles.DataModel.PartialCollectionIterator.CurrentPartIri">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.PartialCollectionIterator.FirstPartIri">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.PartialCollectionIterator.NextPartIri">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.PartialCollectionIterator.PreviousPartIri">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.PartialCollectionIterator.LastPartIri">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.PartialCollectionIterator.HasNextPart">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.DataModel.PartialCollectionIterator.HasPreviousPart">
+            <inheritdoc />
+        </member>
+        <member name="T:Heracles.DataModel.PropertyMapping">
+            <summary>Provides a property mapping bulding facility.</summary>
+        </member>
+        <member name="M:Heracles.DataModel.PropertyMapping.#ctor(Heracles.DataModel.MappingsBuilder,System.Collections.Generic.IDictionary{System.String,System.String},Heracles.DataModel.IIriTemplateMapping)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.DataModel.PropertyMapping" /> class.</summary>
+            <param name="builder">Mappings builder.</param>
+            <param name="result">Current property mappings.</param>
+            <param name="mapping">IRI template mapping.</param>
+        </member>
+        <member name="M:Heracles.DataModel.PropertyMapping.HavingValueOf(System.String)">
+            <summary>Allows to map a value to a variable mapping.</summary>
+            <param name="value">Value to be used.</param>
+            <returns>Mappings builder.</returns>
+        </member>
+        <member name="T:Heracles.DataModel.ResourceExtensions">
+            <summary>Provides useful <see cref="T:Heracles.DataModel.IResource" /> extensions.</summary>
+        </member>
+        <member name="M:Heracles.DataModel.ResourceExtensions.GetDisplayName(Heracles.DataModel.IResource)">
+            <summary>Gets a display name of the given <paramref name="resource" />.</summary>
+            <returns>This methods searches for <see cref="F:Heracles.Namespaces.hydra.title" /> or <see cref="F:Heracles.Namespaces.rdfs.label" /> occurances.</returns>
+            <param name="resource">Resource for which to obtain a display name.</param>
+            <returns>Display name of the given <paramref name="resource" /> or <i>null</i>.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.ResourceExtensions.GetTextDescription(Heracles.DataModel.IResource)">
+            <summary>Gets a description of the given <paramref name="resource" />.</summary>
+            <param name="resource">Resource for which to obtain a description.</param>
+            <returns>Description of the given <paramref name="resource" /> or <i>null</i>.</returns>
+        </member>
+        <member name="T:Heracles.DataModel.TemplatedLink">
+            <summary>Provides a default implementation of the <see cref="T:Heracles.DataModel.ITemplatedLink"/> interface.</summary>
+        </member>
+        <member name="M:Heracles.DataModel.TemplatedLink.ExpandTarget(Heracles.DataModel.ITemplatedLink,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>Expands an URI template with given variables.</summary>
+            <param name="templatedLink">Templated link.</param>
+            <param name="mappedVariables">Template variables with value.</param>
+            <returns>Expanded templated resource.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.TemplatedLink.ExpandTarget(Heracles.DataModel.ITemplatedLink,System.Action{Heracles.DataModel.MappingsBuilder})">
+            <summary>Expands an URI template with given variables.</summary>
+            <param name="templatedLink">Templated link.</param>
+            <param name="mappedVariables">Template variables mapping builder.</param>
+            <returns>Expanded templated resource.</returns>
+        </member>
+        <member name="T:Heracles.DataModel.TemplatedOperation">
+            <summary>Provides a default implementation of the <see cref="T:Heracles.DataModel.ITemplatedOperation"/> interface.</summary>
+        </member>
+        <member name="M:Heracles.DataModel.TemplatedOperation.ExpandTarget(Heracles.DataModel.ITemplatedOperation,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>Expands an URI template with given variables.</summary>
+            <param name="templatedOperation">Templated operation.</param>
+            <param name="mappedVariables">Template variables with value.</param>
+            <returns>Expanded templated resource.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.TemplatedOperation.ExpandTarget(Heracles.DataModel.ITemplatedOperation,System.Action{Heracles.DataModel.MappingsBuilder})">
+            <summary>Expands an URI template with given variables.</summary>
+            <param name="templatedOperation">Templated operation.</param>
+            <param name="mappedVariables">Template variables mapping builder.</param>
+            <returns>Expanded templated resource.</returns>
+        </member>
+        <member name="T:Heracles.DataModel.TemplatedResource`1">
+            <summary>Provides a default implementation of the <see cref="T:Heracles.DataModel.ITemplatedResource`1" /> interface.</summary>
+            <typeparam name="T">Type of the resource described.</typeparam>
+        </member>
+        <member name="M:Heracles.DataModel.TemplatedResource`1.ExpandTarget(Heracles.DataModel.IPointingResource,System.Collections.Generic.IDictionary{System.String,System.String},RDeF.Entities.Iri)">
+            <summary>Expands an URI template with given variables.</summary>
+            <param name="pointingResource">Pointing resource.</param>
+            <param name="mappedVariables">Template variables with value.</param>
+            <param name="iri">Iri of the newly created instance of <typeparamref name="T" />.</param>
+            <returns>Expanded templated resource.</returns>
+        </member>
+        <member name="M:Heracles.DataModel.TemplatedResource`1.ExpandTarget(Heracles.DataModel.IPointingResource,System.Action{Heracles.DataModel.MappingsBuilder},RDeF.Entities.Iri)">
+            <summary>Expands an URI template with given variables.</summary>
+            <param name="pointingResource">Pointing resource.</param>
+            <param name="mappedVariables">Template variables mapping builder.</param>
+            <param name="iri">Iri of the newly created instance of <typeparamref name="T" />.</param>
+            <returns>Expanded templated resource.</returns>
+        </member>
+        <member name="T:Heracles.Entities.EntityExtensions">
+            <summary>Provides useful <see cref="T:RDeF.Entities.IEntity" /> extensions.</summary>
+        </member>
+        <member name="M:Heracles.Entities.EntityExtensions.GetLinkType(RDeF.Entities.IEntity)">
+            <summary>Obtains a type of the link of the given <paramref name="predicate" />.</summary>
+            <param name="predicate">Predicate for which to obtain a link type.</param>
+            <returns>Determined link type Iri.</returns>
+        </member>
+        <member name="M:Heracles.Entities.EntityExtensions.GetLinkType(RDeF.Entities.IEntity,Heracles.LinksPolicy,RDeF.Entities.Iri)">
+            <summary>Obtains a type of the link of the given <paramref name="entity" />.</summary>
+            <param name="entity">Entity for which to obtain a link type.</param>
+            <param name="linksPolicy">Links policy etermining how far a relation should be considered a link.</param>
+            <param name="root">Root Iri to be used when resolving some of the policies.</param>
+            <returns>Determined link type Iri.</returns>
+        </member>
+        <member name="T:Heracles.HttpCallFacility">
+            <summary>Allows to obtain an HTTP resource.</summary>
+            <param name="url">Url to be called.</param>
+            <param name="options">Additional call options, if any.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Received response.</returns>
+        </member>
+        <member name="T:Heracles.HttpOptions">
+            <summary>Provides a default implementation of the <see cref="T:Heracles.IHttpOptions" />.</summary>
+        </member>
+        <member name="M:Heracles.HttpOptions.#ctor(System.String,System.IO.Stream,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.HttpOptions" /> class.</summary>
+            <param name="method">Request method.</param>
+            <param name="body">Request body.</param>
+            <param name="headers">Request headers.</param>
+        </member>
+        <member name="P:Heracles.HttpOptions.Headers">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.HttpOptions.Body">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.HttpOptions.Method">
+            <inheritdoc />
+        </member>
+        <member name="T:Heracles.HydraClient">
+            <summary>HydraClient, also known as Heracles.ts, is a generic client for Hydra-powered Web APIs.</summary>
+            <remarks>
+            To learn more about Hydra please refer to
+            <a href="https://www.hydra-cg.com/spec/latest/core/">Hydra Core Vocabulary</a>.
+            </remarks>
+        </member>
+        <member name="M:Heracles.HydraClient.#ctor(System.Collections.Generic.IEnumerable{Heracles.IHypermediaProcessor},Heracles.IIriTemplateExpansionStrategy,Heracles.LinksPolicy,Heracles.HttpCallFacility)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.HydraClient" /> class.</summary>
+            <param name="hypermediaProcessors">
+            Hypermedia processors used for response hypermedia controls extraction.
+            </param>
+            <param name="iriTemplateExpansionStrategy">IRI template variable expansion strategy.</param>
+            <param name="linksPolicy">Policy defining what is a considered a link.</param>
+            <param name="httpCall">HTTP facility used to call remote server.</param>
+        </member>
+        <member name="M:Heracles.HydraClient.GetHypermediaProcessor(Heracles.IResponse)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.HydraClient.GetApiDocumentation(Heracles.DataModel.IResource)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.HydraClient.GetApiDocumentation(Heracles.DataModel.IResource,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.HydraClient.GetApiDocumentation(System.Uri)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.HydraClient.GetApiDocumentation(System.Uri,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.HydraClient.GetResource(Heracles.DataModel.IResource)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.HydraClient.GetResource(Heracles.DataModel.IResource,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.HydraClient.Invoke(Heracles.DataModel.IOperation,Heracles.DataModel.IResource,Heracles.DataModel.IResource)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.HydraClient.Invoke(Heracles.DataModel.IOperation,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.HydraClient.Invoke(Heracles.DataModel.IOperation,Heracles.DataModel.IResource,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.HydraClient.Invoke(Heracles.DataModel.IOperation,Heracles.DataModel.IResource,Heracles.DataModel.IResource,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.HydraClient.GetResource(System.Uri)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.HydraClient.GetResource(System.Uri,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:Heracles.HydraClientException">
+            <summary>Provides a general <see cref="T:Heracles.HydraClient" /> exception.</summary>
+        </member>
+        <member name="M:Heracles.HydraClientException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.HydraClientException" /> class.</summary>
+        </member>
+        <member name="M:Heracles.HydraClientException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.HydraClientException" /> class.</summary>
+            <param name="message">Message of the exception.</param>
+        </member>
+        <member name="M:Heracles.HydraClientException.#ctor(System.String,System.Exception)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.HydraClientException" /> class.</summary>
+            <param name="message">Message of the exception.</param>
+            <param name="innerException">Inner exception.</param>
+        </member>
+        <member name="M:Heracles.HydraClientException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.HydraClientException" /> class.</summary>
+            <param name="info">Serialization info.</param>
+            <param name="context">Streaming context.</param>
+        </member>
+        <member name="T:Heracles.HypermediaProcessorFactory">
+            <summary>Describes a delegate used to create instances of the <see cref="T:Heracles.IHypermediaProcessor" />.</summary>
+            <param name="context">Resolution context.</param>
+            <returns>Instance of the <see cref="T:Heracles.IHypermediaProcessor" />.</returns>
+        </member>
+        <member name="T:Heracles.HydraClientFactory">
+            <summary>Provides a factory of the <see cref="T:Heracles.IHydraClient" />s.</summary>
+        </member>
+        <member name="P:Heracles.HydraClientFactory.Heracles#IHydraClientFactory#CurrentHttpCall">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.HydraClientFactory.Heracles#IHydraClientFactory#CurrentLinksPolicy">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.HydraClientFactory.Heracles#IHydraClientFactory#OntologyProvider">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.HydraClientFactory.Configure">
+            <summary>Starts the factory configuration.</summary>
+            <returns>Instance of the <see cref="T:Heracles.HydraClientFactory" />.</returns>
+        </member>
+        <member name="M:Heracles.HydraClientFactory.WithDefaults">
+            <summary>
+            Configures a future <see cref="T:Heracles.IHydraClient" /> with <see cref="T:Heracles.JsonLd.JsonLdHypermediaProcessor" />,
+            <see cref="T:Heracles.BodyResourceBoundIriTemplateExpansionStrategy" /> and <i><see cref="T:System.Net.Http.HttpClient"/></i> components.
+            </summary>
+            <returns>This instance of the <see cref="T:Heracles.HydraClientFactory" />.</returns>
+        </member>
+        <member name="M:Heracles.HydraClientFactory.WithStrictLinks">
+            <summary>Configures a factory to create a client with explicitly defined links.</summary>
+            <returns>This instance of the <see cref="T:Heracles.HydraClientFactory" />.</returns>
+        </member>
+        <member name="M:Heracles.HydraClientFactory.WithSameRootLinks">
+            <summary>Configures a factory to create a client with links of resources from the same host and port.</summary>
+            <returns>This instance of the <see cref="T:Heracles.HydraClientFactory" />.</returns>
+        </member>
+        <member name="M:Heracles.HydraClientFactory.WithAllHttpLinks">
+            <summary>Configures a factory to create a client with all resources from HTTP/HTTPS considered links.</summary>
+            <returns>This instance of the <see cref="T:Heracles.HydraClientFactory" />.</returns>
+        </member>
+        <member name="M:Heracles.HydraClientFactory.WithAllLinks">
+            <summary>Configures a factory to create a client with all resources considered links.</summary>
+            <returns>This instance of the <see cref="T:Heracles.HydraClientFactory" />.</returns>
+        </member>
+        <member name="M:Heracles.HydraClientFactory.WithJsonLd">
+            <summary>Configures a factory with JSON-LD hypermedia processor.</summary>
+            <returns>This instance of the <see cref="T:Heracles.HydraClientFactory" />.</returns>
+        </member>
+        <member name="M:Heracles.HydraClientFactory.WithFactory(Heracles.HypermediaProcessorFactory)">
+            <summary>Adds an another <see cref="T:Heracles.IHypermediaProcessor" /> component via it's factory method.</summary>
+            <param name="hypermediaProcessorFactory">
+            Hypermedia processor factory to be passed to future <see cref="T:Heracles.HydraClient" /> instances.
+            </param>
+            <returns>This instance of the <see cref="T:Heracles.HydraClientFactory" />.</returns>
+        </member>
+        <member name="M:Heracles.HydraClientFactory.With(Heracles.IHypermediaProcessor)">
+            <summary>Adds an another <see cref="T:Heracles.IHypermediaProcessor" /> component.</summary>
+            <param name="hypermediaProcessor">
+            Hypermedia processor to be passed to future <see cref="T:Heracles.HydraClient" /> instances.
+            </param>
+            <returns>This instance of the <see cref="T:Heracles.HydraClientFactory" />.</returns>
+        </member>
+        <member name="M:Heracles.HydraClientFactory.With(Heracles.IIriTemplateExpansionStrategy)">
+            <summary>Sets a <see cref="T:Heracles.IIriTemplateExpansionStrategy" /> component.</summary>
+            <param name="iriTemplateExpansionStrategy">
+            IRI template expansion strategy to be used when an IRI template is encountered.
+            </param>
+            <returns>This instance of the <see cref="T:Heracles.HydraClientFactory" />.</returns>
+        </member>
+        <member name="M:Heracles.HydraClientFactory.With(Heracles.HttpCallFacility)">
+            <summary>Adds an HTTP requests facility component.</summary>
+            <param name="httpCall">HTTP call facility to be used for remote server calls.</param>
+            <returns>This instance of the <see cref="T:Heracles.HydraClientFactory" />.</returns>
+        </member>
+        <member name="M:Heracles.HydraClientFactory.AndCreate">
+            <summary>Creates a new instance of the <see cref="T:Heracles.IHydraClient" />.</summary>
+            <returns>New instance of the <see cref="T:Heracles.IHydraClient" />.</returns>
+        </member>
+        <member name="T:Heracles.HypermediaProcessingOptions">
+            <summary>Provides a default implementation of the <see cref="T:Heracles.IHypermediaProcessingOptions" />.</summary>
+        </member>
+        <member name="M:Heracles.HypermediaProcessingOptions.#ctor(System.Uri,Heracles.LinksPolicy)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.HypermediaProcessingOptions" /> class.</summary>
+            <param name="originalUrl">Original Url.</param>
+            <param name="linksPolicy">Links policy.</param>
+        </member>
+        <member name="M:Heracles.HypermediaProcessingOptions.#ctor(Heracles.IResponse,System.Uri,System.Uri,System.Nullable{Heracles.LinksPolicy})">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.HypermediaProcessingOptions" /> class.</summary>
+            <param name="auxiliaryResponse">Auxiliar response.</param>
+            <param name="auxiliaryOriginalUrl">Original url of the <paramref name="auxiliaryResponse"/>.</param>
+            <param name="originalUrl">Original Url.</param>
+            <param name="linksPolicy">Links policy.</param>
+        </member>
+        <member name="P:Heracles.HypermediaProcessingOptions.LinksPolicy">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.HypermediaProcessingOptions.OriginalUrl">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.HypermediaProcessingOptions.AuxiliaryResponse">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.HypermediaProcessingOptions.AuxiliaryOriginalUrl">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.HypermediaProcessingOptions.MergeWith(Heracles.IHypermediaProcessingOptions)">
+            <summary>Merges options.</summary>
+            <param name="options">Options to merge with.</param>
+            <returns>Merged options where values are taken first from this instance.</returns>
+        </member>
+        <member name="T:Heracles.ICrawlingOptions">
+            <summary>Describes <see cref="M:Heracles.PartialCollectionCrawler.From(Heracles.DataModel.ICollection)" /> crawling options.</summary>
+        </member>
+        <member name="P:Heracles.ICrawlingOptions.Direction">
+            <summary>Gets a crawling direction.</summary>
+        </member>
+        <member name="P:Heracles.ICrawlingOptions.MemberLimit">
+            <summary>Gets a limit of the members to retrieve.</summary>
+        </member>
+        <member name="P:Heracles.ICrawlingOptions.RequestLimit">
+            <summary>Gets a limit of requests to make.</summary>
+        </member>
+        <member name="P:Heracles.ICrawlingOptions.Rewind">
+            <summary>
+            Gets a value indicating whether to rewind back to the beginning (or end) of the collection in case the starting
+            point was not the first (or last) possible view.
+            </summary>
+        </member>
+        <member name="T:Heracles.IHttpOptions">
+            <summary>Defines possible <see cref="T:Heracles.HttpCallFacility" /> options.</summary>
+        </member>
+        <member name="P:Heracles.IHttpOptions.Headers">
+            <summary>Gets request headers.</summary>
+        </member>
+        <member name="P:Heracles.IHttpOptions.Body">
+            <summary>Gets request body.</summary>
+        </member>
+        <member name="P:Heracles.IHttpOptions.Method">
+            <summary>Gets request method.</summary>
+        </member>
+        <member name="T:Heracles.IHydraClient">
+            <summary>Provides an abstraction layer over <see cref="T:Heracles.HydraClient" />.</summary>
+        </member>
+        <member name="M:Heracles.IHydraClient.GetHypermediaProcessor(Heracles.IResponse)">
+            <summary>Gets a hypermedia provider suitable for a given response.</summary>
+            <param name="response">Raw response to find hypermedia processor for.</param>
+            <returns>Hypermedia processor capable of processing given <paramref name="response" /> or <b>null</b>.</returns>
+        </member>
+        <member name="M:Heracles.IHydraClient.GetApiDocumentation(Heracles.DataModel.IResource)">
+            <summary>Obtains an API documentation.</summary>
+            <param name="resource">Resource from which to obtain an API documentation.</param>
+            <returns>API documentation obtained.</returns>
+        </member>
+        <member name="M:Heracles.IHydraClient.GetApiDocumentation(Heracles.DataModel.IResource,System.Threading.CancellationToken)">
+            <summary>Obtains an API documentation.</summary>
+            <param name="resource">Resource from which to obtain an API documentation.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>API documentation obtained.</returns>
+        </member>
+        <member name="M:Heracles.IHydraClient.GetApiDocumentation(System.Uri)">
+            <summary>Obtains an API documentation.</summary>
+            <param name="url">URL from which to obtain an API documentation.</param>
+            <returns>API documentation obtained.</returns>
+        </member>
+        <member name="M:Heracles.IHydraClient.GetApiDocumentation(System.Uri,System.Threading.CancellationToken)">
+            <summary>Obtains an API documentation.</summary>
+            <param name="url">URL from which to obtain an API documentation.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>API documentation obtained.</returns>
+        </member>
+        <member name="M:Heracles.IHydraClient.GetResource(Heracles.DataModel.IResource)">
+            <summary>Obtains a representation of a resource.</summary>
+            <param name="resource">Resource carrying an IRI of the resource to be obtained.</param>
+            <returns>Hypermedia container carrying a resulting resource and it's hypermedia controls.</returns>
+        </member>
+        <member name="M:Heracles.IHydraClient.GetResource(Heracles.DataModel.IResource,System.Threading.CancellationToken)">
+            <summary>Obtains a representation of a resource.</summary>
+            <param name="resource">Resource carrying an IRI of the resource to be obtained.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Hypermedia container carrying a resulting resource and it's hypermedia controls.</returns>
+        </member>
+        <member name="M:Heracles.IHydraClient.GetResource(System.Uri)">
+            <summary>Obtains a representation of a resource.</summary>
+            <param name="url">URL carrying an IRI of the resource to be obtained.</param>
+            <returns>Hypermedia container carrying a resulting resource and it's hypermedia controls.</returns>
+        </member>
+        <member name="M:Heracles.IHydraClient.GetResource(System.Uri,System.Threading.CancellationToken)">
+            <summary>Obtains a representation of a resource.</summary>
+            <param name="url">URL carrying an IRI of the resource to be obtained.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Hypermedia container carrying a resulting resource and it's hypermedia controls.</returns>
+        </member>
+        <member name="M:Heracles.IHydraClient.Invoke(Heracles.DataModel.IOperation,Heracles.DataModel.IResource,Heracles.DataModel.IResource)">
+            <summary>Invokes a given operation.</summary>
+            <param name="operation">Operation descriptor to be invoked.</param>
+            <param name="body">Optional resource to be used as a body of the operation.</param>
+            <param name="parameters">Optional auxiliary parameters.</param>
+            <returns>Response with the obtained resource.</returns>
+        </member>
+        <member name="M:Heracles.IHydraClient.Invoke(Heracles.DataModel.IOperation,System.Threading.CancellationToken)">
+            <summary>Invokes a given operation.</summary>
+            <param name="operation">Operation descriptor to be invoked.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Response with the obtained resource.</returns>
+        </member>
+        <member name="M:Heracles.IHydraClient.Invoke(Heracles.DataModel.IOperation,Heracles.DataModel.IResource,System.Threading.CancellationToken)">
+            <summary>Invokes a given operation.</summary>
+            <param name="operation">Operation descriptor to be invoked.</param>
+            <param name="body">Optional resource to be used as a body of the operation.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Response with the obtained resource.</returns>
+        </member>
+        <member name="M:Heracles.IHydraClient.Invoke(Heracles.DataModel.IOperation,Heracles.DataModel.IResource,Heracles.DataModel.IResource,System.Threading.CancellationToken)">
+            <summary>Invokes a given operation.</summary>
+            <param name="operation">Operation descriptor to be invoked.</param>
+            <param name="body">Optional resource to be used as a body of the operation.</param>
+            <param name="parameters">Optional auxiliary parameters.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Response with the obtained resource.</returns>
+        </member>
+        <member name="T:Heracles.IHydraClientFactory">
+            <summary>Provides an abstraction over facility used for creating Hydra clients.</summary>
+        </member>
+        <member name="P:Heracles.IHydraClientFactory.CurrentHttpCall">
+            <summary>Gets a currently configured facility for HTTP communication.</summary>
+        </member>
+        <member name="P:Heracles.IHydraClientFactory.CurrentLinksPolicy">
+            <summary>Gets a currently configured <see cref="T:Heracles.LinksPolicy" />.</summary>
+        </member>
+        <member name="P:Heracles.IHydraClientFactory.OntologyProvider">
+            <summary>Gets an ontology provider.</summary>
+        </member>
+        <member name="T:Heracles.IHypermediaProcessingOptions">
+            <summary>Describes a <see cref="T:Heracles.IHypermediaProcessor"/> processing options.</summary>
+        </member>
+        <member name="P:Heracles.IHypermediaProcessingOptions.LinksPolicy">
+            <summary>Gets a policy defining which related resources will be added to links collection.</summary>
+        </member>
+        <member name="P:Heracles.IHypermediaProcessingOptions.OriginalUrl">
+            <summary>
+            Gets an originally requested Url.
+            This may be different than the one provided in the Response.url after redirects.
+            </summary>
+        </member>
+        <member name="P:Heracles.IHypermediaProcessingOptions.AuxiliaryResponse">
+            <summary>Gets an auxiliary response that was used to obtain currently processed one.</summary>
+        </member>
+        <member name="P:Heracles.IHypermediaProcessingOptions.AuxiliaryOriginalUrl">
+            <summary>Gets an original auxiliary Url requested that was used to obtain currently processed one.</summary>
+            <remarks>This property should be set in case {@link auxiliaryResponse} is also set.</remarks>
+        </member>
+        <member name="T:Heracles.IHypermediaProcessor">
+            <summary>
+            Describes an abstract meta-data providing facility which translates from a raw <see cref="T:Heracles.IResponse" />
+            to an abstract data model.
+            </summary>
+        </member>
+        <member name="P:Heracles.IHypermediaProcessor.SupportedMediaTypes">
+            <summary>Gets supported media types.</summary>
+        </member>
+        <member name="M:Heracles.IHypermediaProcessor.Supports(Heracles.IResponse)">
+            <summary>Determines level of support of a this {@link IHypermediaProcessor} for given response.</summary>
+            <param name="response">Response to check support for.</param>
+            <returns>Support level of this processor.</returns>
+        </member>
+        <member name="M:Heracles.IHypermediaProcessor.Process(Heracles.IResponse,Heracles.IHydraClient,Heracles.IHypermediaProcessingOptions)">
+            <summary>Parses a given raw response.</summary>
+            <param name="response">Raw fetch response holding data to be parsed.</param>
+            <param name="hydraClient">Hydra client.</param>
+            <param name="options">Optional additional processing options.</param>
+            <returns>Processed hypermedia with embedded response.</returns>
+        </member>
+        <member name="M:Heracles.IHypermediaProcessor.Process(Heracles.IResponse,Heracles.IHydraClient,System.Threading.CancellationToken)">
+            <summary>Parses a given raw response.</summary>
+            <param name="response">Raw fetch response holding data to be parsed.</param>
+            <param name="hydraClient">Hydra client.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Processed hypermedia with embedded response.</returns>
+        </member>
+        <member name="M:Heracles.IHypermediaProcessor.Process(Heracles.IResponse,Heracles.IHydraClient,Heracles.IHypermediaProcessingOptions,System.Threading.CancellationToken)">
+            <summary>Parses a given raw response.</summary>
+            <param name="response">Raw fetch response holding data to be parsed.</param>
+            <param name="hydraClient">Hydra client.</param>
+            <param name="options">Optional additional processing options.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Processed hypermedia with embedded response.</returns>
+        </member>
+        <member name="M:Heracles.IHypermediaProcessor.Serialize(Heracles.DataModel.IResource)">
+            <summary>Serializes a given <paramref name="body" />.</summary>
+            <param name="body">Resource to be serialized.</param>
+            <returns>Stream with serizlied <paramref name="body" />.</returns>
+        </member>
+        <member name="M:Heracles.IHypermediaProcessor.Serialize(Heracles.DataModel.IResource,System.Threading.CancellationToken)">
+            <summary>Serializes a given <paramref name="body" />.</summary>
+            <param name="body">Resource to be serialized.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Stream with serizlied <paramref name="body" />.</returns>
+        </member>
+        <member name="T:Heracles.IIriTemplateExpansionStrategy">
+            <summary>
+            Describes a strategy of <see cref="T:Heracles.DataModel.IOperation" /> and <see cref="T:Heracles.DataModel.IIriTemplate" /> expansion.
+            </summary>
+        </member>
+        <member name="M:Heracles.IIriTemplateExpansionStrategy.CreateRequest(Heracles.DataModel.IOperation,Heracles.DataModel.IResource,Heracles.DataModel.IResource)">
+            <summary>
+            Creates a fully invocable <see cref="T:Heracles.DataModel.IOperation" /> taking into account possible
+            IRI template used by the input operation.
+            </summary>
+            <param name="operation">Source operation describing the request.</param>
+            <param name="body">Optional resource to be placed in the body of the request.</param>
+            <param name="auxResource">Optional auxiliar resource to be used for variable mappings.</param>
+            <returns>Operation that can be invoked.</returns>
+        </member>
+        <member name="T:Heracles.InvalidResponseException">
+            <summary>Exception raised when an invalid response was received.</summary>
+        </member>
+        <member name="M:Heracles.InvalidResponseException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.InvalidResponseException" /> class.</summary>
+        </member>
+        <member name="M:Heracles.InvalidResponseException.#ctor(System.Int32)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.InvalidResponseException" /> class.</summary>
+            <param name="status">Response's status code.</param>
+        </member>
+        <member name="M:Heracles.InvalidResponseException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.InvalidResponseException" /> class.</summary>
+            <param name="message">Message of the exception.</param>
+        </member>
+        <member name="M:Heracles.InvalidResponseException.#ctor(System.String,System.Exception)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.InvalidResponseException" /> class.</summary>
+            <param name="message">Message of the exception.</param>
+            <param name="innerException">Inner exception.</param>
+        </member>
+        <member name="M:Heracles.InvalidResponseException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.InvalidResponseException" /> class.</summary>
+            <param name="info">Serialization info.</param>
+            <param name="context">Streaming context.</param>
+        </member>
+        <member name="P:Heracles.InvalidResponseException.Status">
+            <summary>Gets the response status that caused this exception.</summary>
+        </member>
+        <member name="M:Heracles.InvalidResponseException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>Obtains object data.</summary>
+            <param name="info">Serialization info.</param>
+            <param name="context">Streaming context.</param>
+        </member>
+        <member name="T:Heracles.IResponse">
+            <summary>Provides an abstraction layer over an HTTP responses.</summary>
+        </member>
+        <member name="P:Heracles.IResponse.Url">
+            <summary>Gets the Url of the response.</summary>
+        </member>
+        <member name="P:Heracles.IResponse.Headers">
+            <summary>Gets the response's headers.</summary>
+        </member>
+        <member name="P:Heracles.IResponse.Status">
+            <summary>Gets the response status.</summary>
+        </member>
+        <member name="M:Heracles.IResponse.GetBody">
+            <summary>Gets the body of the response.</summary>
+            <returns>Task of this operation.</returns>
+        </member>
+        <member name="M:Heracles.IResponse.GetBody(System.Threading.CancellationToken)">
+            <summary>Gets the body of the response.</summary>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Task of this operation.</returns>
+        </member>
+        <member name="T:Heracles.JsonLd.JsonLdHypermediaProcessor">
+            <summary>Provides a JSON-LD based implementation of the <see cref="T:Heracles.IHypermediaProcessor" /> interface.</summary>
+        </member>
+        <member name="M:Heracles.JsonLd.JsonLdHypermediaProcessor.#ctor(Heracles.Rdf.IOntologyProvider,Heracles.HttpCallFacility)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.JsonLd.JsonLdHypermediaProcessor" /> class.</summary>
+            <param name="ontologyProvider">Ontology provider.</param>
+            <param name="httpCall">HTTP call facility.</param>
+        </member>
+        <member name="P:Heracles.JsonLd.JsonLdHypermediaProcessor.SupportedMediaTypes">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.JsonLd.JsonLdHypermediaProcessor.Supports(Heracles.IResponse)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.JsonLd.JsonLdHypermediaProcessor.CreateRdfReader(Heracles.IResponse,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.JsonLd.JsonLdHypermediaProcessor.CreateRdfWriter">
+            <inheritdoc />
+        </member>
+        <member name="T:Heracles.Level">
+            <summary>Provides possible {@link IHypermediaProcessor} support levels.</summary>
+        </member>
+        <member name="F:Heracles.Level.None">
+            <summary>Defines a not supported response.</summary>
+        </member>
+        <member name="F:Heracles.Level.FullSupport">
+            <summary>Defines an exact support of the response.</summary>
+        </member>
+        <member name="T:Heracles.LinksPolicy">
+            <summary>Defines possible links policies.</summary>
+        </member>
+        <member name="F:Heracles.LinksPolicy.Strict">
+            <summary>
+            Defines that only predicates that are marked with hydra:Link or hydra:TemplatedLink are considered a link.
+            </summary>
+        </member>
+        <member name="F:Heracles.LinksPolicy.SameRoot">
+            <summary>
+            Defines that all resources in a relation pointing to the same protocol, host and port are considered a link.
+            </summary>
+        </member>
+        <member name="F:Heracles.LinksPolicy.AllHttp">
+            <summary>Defines that all non-blank HTTP/HTTPS resources in a relation are considered a link.</summary>
+        </member>
+        <member name="F:Heracles.LinksPolicy.All">
+            <summary>Defines that all non-blank resources in a relation are considered a link.</summary>
+        </member>
+        <member name="T:Heracles.N3.N3HypermediaProcessor">
+            <summary>Provides an N3 based implementation of the <see cref="T:Heracles.IHypermediaProcessor" /> interface.</summary>
+        </member>
+        <member name="M:Heracles.N3.N3HypermediaProcessor.#ctor(Heracles.Rdf.IOntologyProvider,Heracles.HttpCallFacility)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.N3.N3HypermediaProcessor" /> class.</summary>
+            <param name="ontologyProvider">Ontology provider.</param>
+            <param name="httpCall">HTTP call facility.</param>
+        </member>
+        <member name="P:Heracles.N3.N3HypermediaProcessor.SupportedMediaTypes">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.N3.N3HypermediaProcessor.Supports(Heracles.IResponse)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.N3.N3HypermediaProcessor.CreateRdfReader(Heracles.IResponse,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.N3.N3HypermediaProcessor.CreateRdfWriter">
+            <inheritdoc />
+        </member>
+        <member name="T:Heracles.N3.N3HypermediaProcessorFactory">
+            <summary>Provides a factory method to be registered with Hydra client factory.</summary>
+        </member>
+        <member name="M:Heracles.N3.N3HypermediaProcessorFactory.Instance(Heracles.IHydraClientFactory)">
+            <summary>Provides instances of the <see cref="T:Heracles.N3.N3HypermediaProcessor" />s.</summary>
+            <param name="context">Resolution context.</param>
+            <returns>Instance of the <see cref="T:Heracles.N3.N3HypermediaProcessor" /> class.</returns>
+        </member>
+        <member name="T:Heracles.Namespaces.hydra">
+            <summary>Defines hydra namespace and terms.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.Namespace">
+            <summary>Defines a hydra namespace IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.apiDocumentation">
+            <summary>Defines a hydra:apiDocumentation predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.description">
+            <summary>Defines a hydra:description predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.entrypoint">
+            <summary>Defines a hydra:entrypoint predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.supportedClass">
+            <summary>Defines a hydra:supportedClass predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.title">
+            <summary>Defines a hydra:title predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.ApiDocumentation">
+            <summary>Defines a hydra:ApiDocumentation predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.mapping">
+            <summary>Defines a hydra:mapping predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.object">
+            <summary>Defines a hydra:object predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.property">
+            <summary>Defines a hydra:property predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.subject">
+            <summary>Defines a hydra:subject predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.template">
+            <summary>Defines a hydra:template predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.variable">
+            <summary>Defines a hydra:variable predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.variableRepresentation">
+            <summary>Defines a hydra:variableRepresentation predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.BasicRepresentation">
+            <summary>Defines a hydra:BasicRepresentation predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.IriTemplate">
+            <summary>Defines a hydra:IriTemplate predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.IriTemplateMapping">
+            <summary>Defines a hydra:IriTemplateMapping predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.Link">
+            <summary>Defines a hydra:Link predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.TemplatedLink">
+            <summary>Defines a hydra:TemplatedLink predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.VariableRepresentation">
+            <summary>Defines a hydra:VariableRepresentation predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.collection">
+            <summary>Defines a hydra:collection predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.manages">
+            <summary>Defines a hydra:manages predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.member">
+            <summary>Defines a hydra:member predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.pageIndex">
+            <summary>Defines a hydra:pageIndex predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.pageReference">
+            <summary>Defines a hydra:pageReference predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.totalItems">
+            <summary>Defines a hydra:totalItems predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.Collection">
+            <summary>Defines a hydra:Collection predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.PartialCollectionView">
+            <summary>Defines a hydra:PartialCollectionView predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.readable">
+            <summary>Defines a hydra:readable predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.required">
+            <summary>Defines a hydra:required predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.supportedOperation">
+            <summary>Defines a hydra:supportedOperation predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.supportedProperty">
+            <summary>Defines a hydra:supportedProperty predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.writeable">
+            <summary>Defines a hydra:writeable predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.Class">
+            <summary>Defines a hydra:Class predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.SupportedProperty">
+            <summary>Defines a hydra:SupportedProperty predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.expects">
+            <summary>Defines a hydra:expects predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.expectsHeader">
+            <summary>Defines a hydra:expectsHeader predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.method">
+            <summary>Defines a hydra:method predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.possibleStatus">
+            <summary>Defines a hydra:possibleStatus predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.returns">
+            <summary>Defines a hydra:returns predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.returnsHeader">
+            <summary>Defines a hydra:returnsHeader predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.Operation">
+            <summary>Defines a hydra:Operation predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.Status">
+            <summary>Defines a hydra:Status predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.operation">
+            <summary>Defines a hydra:operation predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.Resource">
+            <summary>Defines a hydra:Resource predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.first">
+            <summary>Defines a hydra:first predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.freetextQuery">
+            <summary>Defines a hydra:freetextQuery predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.last">
+            <summary>Defines a hydra:last predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.next">
+            <summary>Defines a hydra:next predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.previous">
+            <summary>Defines a hydra:previous predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.search">
+            <summary>Defines a hydra:search predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.hydra.view">
+            <summary>Defines a hydra:hydraNamespace predicate IRI.</summary>
+        </member>
+        <member name="T:Heracles.Namespaces.rdf">
+            <summary>Defines rdf namespace and terms.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.rdf.Namespace">
+            <summary>Defines a rdf namespace IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.rdf.Property">
+            <summary>Defines a rdf:Property predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.rdf.type">
+            <summary>Defines a rdf:type predicate IRI.</summary>
+        </member>
+        <member name="T:Heracles.Namespaces.rdfs">
+            <summary>Defines rdfs namespace and terms.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.rdfs.Namespace">
+            <summary>Defines a rdfs namespace IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.rdfs.Resource">
+            <summary>Defines a rdfs:Resource predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.rdfs.comment">
+            <summary>Defines a rdfs:comment predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.rdfs.domain">
+            <summary>Defines a rdfs:domain predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.rdfs.label">
+            <summary>Defines a rdfs:label predicate IRI.</summary>
+        </member>
+        <member name="F:Heracles.Namespaces.rdfs.range">
+            <summary>Defines a rdfs:range predicate IRI.</summary>
+        </member>
+        <member name="T:Heracles.Net.HttpResponse">
+            <summary>Provides a default implementation of the <see cref="T:Heracles.IResponse" />.</summary>
+        </member>
+        <member name="M:Heracles.Net.HttpResponse.#ctor(System.Uri,System.Net.HttpWebResponse)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.Net.HttpResponse" /> class.</summary>
+            <param name="url">Url of the response.</param>
+            <param name="response">HTTP response.</param>
+        </member>
+        <member name="P:Heracles.Net.HttpResponse.Url">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.Net.HttpResponse.Headers">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.Net.HttpResponse.Status">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.Net.HttpResponse.GetBody">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.Net.HttpResponse.GetBody(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.Net.HttpResponse.ResponseHeaders.Item(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.Net.HttpResponse.ResponseHeaders.Has(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:Heracles.Net.Http.HttpResponse">
+            <summary>Provides a default implementation of the <see cref="T:Heracles.IResponse" />.</summary>
+        </member>
+        <member name="M:Heracles.Net.Http.HttpResponse.#ctor(System.Uri,System.Net.Http.HttpResponseMessage)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.Net.Http.HttpResponse" /> class.</summary>
+            <param name="url">Url of the response.</param>
+            <param name="response">HTTP response.</param>
+        </member>
+        <member name="P:Heracles.Net.Http.HttpResponse.Url">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.Net.Http.HttpResponse.Headers">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.Net.Http.HttpResponse.Status">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.Net.Http.HttpResponse.GetBody">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.Net.Http.HttpResponse.GetBody(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.Net.Http.HttpResponse.ResponseHeaders.Item(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.Net.Http.HttpResponse.ResponseHeaders.Has(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:Heracles.NoEntrypointDefinedException">
+            <summary>Exception raised when no <see cref="F:Heracles.Namespaces.hydra.entrypoint" /> is defined.</summary>
+        </member>
+        <member name="M:Heracles.NoEntrypointDefinedException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.NoEntrypointDefinedException" /> class.</summary>
+        </member>
+        <member name="M:Heracles.NoEntrypointDefinedException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.NoEntrypointDefinedException" /> class.</summary>
+            <param name="message">Message of the exception.</param>
+        </member>
+        <member name="M:Heracles.NoEntrypointDefinedException.#ctor(System.String,System.Exception)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.NoEntrypointDefinedException" /> class.</summary>
+            <param name="message">Message of the exception.</param>
+            <param name="innerException">Inner exception.</param>
+        </member>
+        <member name="M:Heracles.NoEntrypointDefinedException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.NoEntrypointDefinedException" /> class.</summary>
+            <param name="info">Serialization info.</param>
+            <param name="context">Streaming context.</param>
+        </member>
+        <member name="T:Heracles.PartialCollectionCrawler">
+            <summary>Provides capability of crawling through partial collection views.</summary>
+        </member>
+        <member name="M:Heracles.PartialCollectionCrawler.From(Heracles.DataModel.ICollection)">
+            <summary>
+            Creates a new instance of the <see cref="T:Heracles.PartialCollectionCrawler" />
+            from a given partial collection view.
+            </summary>
+            <param name="collection">Partial collection view to start with.</param>
+            <returns>Instance of the <see cref="T:Heracles.PartialCollectionCrawler" />.</returns>
+        </member>
+        <member name="M:Heracles.PartialCollectionCrawler.GetMembers(Heracles.ICrawlingOptions)">
+            <summary>Crawls partial collection views starting with a given one.</summary>
+            <param name="options">Crawling options.</param>
+            <returns>Collection of resources from the collection.</returns>
+        </member>
+        <member name="T:Heracles.Rdf.HypermediaProcessorBase">
+            <summary>Contains a <see cref="T:Heracles.IHydraClient" /> initializer.</summary>
+            <summary>Provides a base functionality of the <see cref="T:Heracles.IHypermediaProcessor" /> interface.</summary>
+            <summary>Contains a <see cref="T:Heracles.IHydraClient" /> initializer.</summary>
+            <summary>Contains links initializer.</summary>
+        </member>
+        <member name="M:Heracles.Rdf.HypermediaProcessorBase.#ctor(Heracles.Rdf.IOntologyProvider,Heracles.HttpCallFacility)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.Rdf.HypermediaProcessorBase" /> class.</summary>
+            <param name="ontologyProvider">Ontology provider.</param>
+            <param name="httpCall">HTTP call facility.</param>
+        </member>
+        <member name="P:Heracles.Rdf.HypermediaProcessorBase.SupportedMediaTypes">
+            <inheritdoc />
+        </member>
+        <member name="P:Heracles.Rdf.HypermediaProcessorBase.HttpCall">
+            <summary>Gets an HTTP call facility.</summary>
+        </member>
+        <member name="M:Heracles.Rdf.HypermediaProcessorBase.Supports(Heracles.IResponse)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.Rdf.HypermediaProcessorBase.Process(Heracles.IResponse,Heracles.IHydraClient,Heracles.IHypermediaProcessingOptions)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.Rdf.HypermediaProcessorBase.Process(Heracles.IResponse,Heracles.IHydraClient,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.Rdf.HypermediaProcessorBase.Process(Heracles.IResponse,Heracles.IHydraClient,Heracles.IHypermediaProcessingOptions,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.Rdf.HypermediaProcessorBase.Serialize(Heracles.DataModel.IResource)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.Rdf.HypermediaProcessorBase.Serialize(Heracles.DataModel.IResource,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.Rdf.HypermediaProcessorBase.CreateRdfReader(Heracles.IResponse,System.Threading.CancellationToken)">
+            <summary>Creates a new <see cref="T:RDeF.Serialization.IRdfReader" /> instance.</summary>
+            <param name="response">Original response obtained from the server.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Instance of the <see cref="T:RDeF.Serialization.IRdfReader" />.</returns>
+        </member>
+        <member name="M:Heracles.Rdf.HypermediaProcessorBase.CreateRdfWriter">
+            <summary>Creates a new <see cref="T:RDeF.Serialization.IRdfWriter" /> instance.</summary>
+            <returns>Instance of the <see cref="T:RDeF.Serialization.IRdfWriter" />.</returns>
+        </member>
+        <member name="T:Heracles.Rdf.IOntologyProvider">
+            <summary>Provides an abstraction over ontology.</summary>
+        </member>
+        <member name="M:Heracles.Rdf.IOntologyProvider.GetDomainFor(RDeF.Entities.Iri)">
+            <summary>Gets the domain for a given property.</summary>
+            <param name="predicate">Iri of the predicate for which to obtain a domain.</param>
+            <returns>Domain for a given <paramref name="predicate" /> if defined; otherwise <i>null</i>.</returns>
+        </member>
+        <member name="M:Heracles.Rdf.IOntologyProvider.GetRangeFor(RDeF.Entities.Iri)">
+            <summary>Gets the range for a given property.</summary>
+            <param name="predicate">Iri of the predicate for which to obtain a range.</param>
+            <returns>Range for a given <paramref name="predicate" /> if defined; otherwise <i>null</i>.</returns>
+        </member>
+        <member name="T:Heracles.Rdf.StaticOntologyProvider">
+            <summary>Provides a simple implementation of the RDF predicate range-domain provider that uses statically provided ontology.</summary>
+        </member>
+        <member name="M:Heracles.Rdf.StaticOntologyProvider.#ctor(System.Collections.Generic.IEnumerable{RDeF.Entities.Statement})">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.Rdf.StaticOntologyProvider" /> class.</summary>
+            <param name="rdfSet">RDF data set.</param>
+        </member>
+        <member name="M:Heracles.Rdf.StaticOntologyProvider.GetDomainFor(RDeF.Entities.Iri)">
+            <inheritdoc />
+        </member>
+        <member name="M:Heracles.Rdf.StaticOntologyProvider.GetRangeFor(RDeF.Entities.Iri)">
+            <inheritdoc />
+        </member>
+        <member name="T:Heracles.ResponseFormatNotSupportedException">
+            <summary>Exception raised when a response of an unsupported format was received.</summary>
+        </member>
+        <member name="M:Heracles.ResponseFormatNotSupportedException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.ResponseFormatNotSupportedException" /> class.</summary>
+        </member>
+        <member name="M:Heracles.ResponseFormatNotSupportedException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.ResponseFormatNotSupportedException" /> class.</summary>
+            <param name="message">Message of the exception.</param>
+        </member>
+        <member name="M:Heracles.ResponseFormatNotSupportedException.#ctor(System.String,System.Exception)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.ResponseFormatNotSupportedException" /> class.</summary>
+            <param name="message">Message of the exception.</param>
+            <param name="innerException">Inner exception.</param>
+        </member>
+        <member name="M:Heracles.ResponseFormatNotSupportedException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>Initializes a new instance of the <see cref="T:Heracles.ResponseFormatNotSupportedException" /> class.</summary>
+            <param name="info">Serialization info.</param>
+            <param name="context">Streaming context.</param>
+        </member>
+    </members>
+</doc>

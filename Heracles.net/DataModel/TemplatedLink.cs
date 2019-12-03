@@ -11,7 +11,7 @@ namespace Heracles.DataModel
     /// <summary>Provides a default implementation of the <see cref="ITemplatedLink"/> interface.</summary>
     public static class TemplatedLink
     {
-        private static readonly PropertyInfo RelationPropertyInfo = typeof(IDerefencableLink).GetProperty(nameof(IDerefencableLink.Relation));
+        private static readonly PropertyInfo RelationPropertyInfo = typeof(IDereferencableLink).GetProperty(nameof(IDereferencableLink.Relation));
 
         private static int _id;
 

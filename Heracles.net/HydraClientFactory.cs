@@ -10,6 +10,9 @@ using RDeF.Serialization;
 
 namespace Heracles
 {
+    /// <summary>Describes a delegate used to create instances of the <see cref="IHypermediaProcessor" />.</summary>
+    /// <param name="context">Resolution context.</param>
+    /// <returns>Instance of the <see cref="IHypermediaProcessor" />.</returns>
     public delegate IHypermediaProcessor HypermediaProcessorFactory(IHydraClientFactory context);
 
     /// <summary>Provides a factory of the <see cref="IHydraClient" />s.</summary>
@@ -81,12 +84,6 @@ namespace Heracles
             }
 
             return new HydraClientFactory();
-        }
-        
-        private static IHypermediaProcessor CreateJsonLdHypermediaProcessor(HttpCallFacility httpCall)
-        {
-            Sync.WaitOne();
-            return new JsonLdHypermediaProcessor(_ontologyProvider, httpCall);
         }
 
         /// <summary>
@@ -193,6 +190,12 @@ namespace Heracles
                 _iriTemplateExpansionStrategy,
                 _linksPolicy,
                 _httpCall);
+        }
+                
+        private static IHypermediaProcessor CreateJsonLdHypermediaProcessor(HttpCallFacility httpCall)
+        {
+            Sync.WaitOne();
+            return new JsonLdHypermediaProcessor(_ontologyProvider, httpCall);
         }
 
         private static async void Initialize()

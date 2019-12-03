@@ -108,8 +108,8 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing.JSON_LD
                                                 Property = new
                                                 {
                                                     Collections = new ICollection[0],
-                                                    Description = "",
-                                                    DisplayName = "",
+                                                    Description = String.Empty,
+                                                    DisplayName = String.Empty,
                                                     Iri = hydra.freetextQuery,
                                                     Links = new ILink[0],
                                                     Operations = new IOperation[0],
@@ -174,7 +174,7 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing.JSON_LD
                 _ => _.ExcludingFields().Including(member => RequiredProperties(member)));
         }
 
-        protected override void ScenarioSetup()
+        public override void ScenarioSetup()
         {
             _inputJsonLd = GetResourceNamed("input.json");
             Response.SetupGet(_ => _.Url).Returns(new Uri("http://temp.uri/api", UriKind.Absolute));

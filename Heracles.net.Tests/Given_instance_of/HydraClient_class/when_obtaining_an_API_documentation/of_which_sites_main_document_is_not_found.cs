@@ -12,7 +12,7 @@ namespace Given_instance_of.HydraClient_class.when_obtaining_an_API_documentatio
     [TestFixture]
     public class of_which_sites_main_document_is_not_found : HydraClientTest
     {
-        protected override void ScenarioSetup()
+        public override void ScenarioSetup()
         {
             base.ScenarioSetup();
             HttpCall.Setup(_ => _.HttpCall(It.IsAny<Uri>(), It.IsAny<IHttpOptions>(), It.IsAny<CancellationToken>()))

@@ -87,10 +87,9 @@ namespace Heracles.DataModel.Collections
             return result;
         }
 
-        /**
-         * Obtains a collection of operations being an hydra:IriTemplate.
-         * @returns {OperationsCollection}
-         */
+        /// <summary>Obtains a collection of operations being an hydra:IriTemplate.</summary>
+        /// <param name="operations">Operation to iterate through.</param>
+        /// <returns>Filtered collection.</returns>
         public static IEnumerable<IOperation> WithTemplate(this IEnumerable<IOperation> operations)
         {
             return operations.OfType(hydra.IriTemplate);

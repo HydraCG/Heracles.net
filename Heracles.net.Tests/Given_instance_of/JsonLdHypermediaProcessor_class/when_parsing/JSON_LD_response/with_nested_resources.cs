@@ -23,6 +23,13 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing.JSON_LD
         private IHydraResource Markus { get; set; }
 
         private IHydraResource Karol { get; set; }
+        
+        public override void ScenarioSetup()
+        {
+            _inputJsonLd = GetResourceNamed("nestedResourcesInput.json");
+            Response.SetupGet(_ => _.Url).Returns(Api.People.Markus);
+            base.ScenarioSetup();
+        }
 
         public override async Task TheTest()
         {
@@ -48,13 +55,6 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing.JSON_LD
         public void should_have_a_nested_resources_link()
         {
             Markus.Links.WithRelationOf(schema.knows).First().Target.Should().Be(Karol);
-        }
-
-        protected override void ScenarioSetup()
-        {
-            _inputJsonLd = GetResourceNamed("nestedResourcesInput.json");
-            Response.SetupGet(_ => _.Url).Returns(Api.People.Markus);
-            base.ScenarioSetup();
         }
     }
 }

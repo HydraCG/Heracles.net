@@ -11,6 +11,8 @@ namespace Given_instance_of.PartialCollectionCrawler_class
 {
     public abstract class PartialCollectionCrawlerTest
     {
+        private int _part;
+
         protected PartialCollectionCrawler Crawler { get; set; }
 
         protected Mock<IPartialCollectionIterator> Iterator { get; set; }
@@ -18,8 +20,6 @@ namespace Given_instance_of.PartialCollectionCrawler_class
         protected Mock<ICollection> InitialCollection { get; set; }
 
         protected IEnumerable<IResource> Result { get; set; }
-
-        private int _part;
 
         public abstract Task TheTest();
 

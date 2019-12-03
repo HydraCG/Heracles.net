@@ -31,7 +31,7 @@ namespace Heracles.DataModel
             _response = response ?? throw new ArgumentNullException(nameof(response));
             Collections = hypermedia.DiscoverCollections();
             Operations = new HashSet<IOperation>();
-            Links = new HashSet<IDerefencableLink>();
+            Links = new HashSet<IDereferencableLink>();
             if (rootResource is IHydraResource hydraResource)
             {
                 Operations = hydraResource.Operations;
@@ -131,7 +131,7 @@ namespace Heracles.DataModel
         public ISet<IOperation> Operations { get; }
         
         /// <inheritdoc />
-        public ISet<IDerefencableLink> Links { get; }
+        public ISet<IDereferencableLink> Links { get; }
 
         IEntityContext IEntity.Context
         {

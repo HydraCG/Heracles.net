@@ -19,7 +19,7 @@ namespace Given_instance_of.HydraClient_class.when_fetching_a_resource
 
         private IHypermediaContainer Result { get; set; }
 
-        protected override void ScenarioSetup()
+        public override void ScenarioSetup()
         {
             base.ScenarioSetup();
             Resource = new Mock<IHypermediaContainer>(MockBehavior.Strict);

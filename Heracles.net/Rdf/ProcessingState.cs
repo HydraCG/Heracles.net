@@ -47,6 +47,11 @@ namespace Heracles.Rdf
 
         internal ISet<Iri> AllHypermedia { get; }
 
+        void IDisposable.Dispose()
+        {
+            ProcessingCompleted?.Invoke(this, EventArgs.Empty);
+        }
+
         internal IEnumerable<Statement> StatementsOf(Iri iri)
         {
             return _statements.TryGetValue(iri, out ISet<Statement> result) ? result : (IEnumerable<Statement>)Array.Empty<Statement>();
@@ -72,11 +77,6 @@ namespace Heracles.Rdf
         {
             AllHypermedia.Remove(iri);
             ForbiddenHypermeda.Add(iri);
-        }
-
-        void IDisposable.Dispose()
-        {
-            ProcessingCompleted?.Invoke(this, EventArgs.Empty);
         }
 
         private sealed class StatementGatheringProcessingState : IDisposable
@@ -138,7 +138,6 @@ namespace Heracles.Rdf
                     {
                         Assert(e.Statement.Object, new Statement(e.Statement.Object, rdf.type, type), e);
                     }
-
                 }
             }
 

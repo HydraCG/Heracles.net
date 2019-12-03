@@ -3,9 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heracles.net", "Heracles.net\Heracles.net.csproj", "{503E547A-97B7-489D-987A-F1EBD7F0318C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Heracles.net", "Heracles.net\Heracles.net.csproj", "{503E547A-97B7-489D-987A-F1EBD7F0318C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heracles.net.Tests", "Heracles.net.Tests\Heracles.net.Tests.csproj", "{5395B668-60A1-48B1-BFDA-74F7083D155E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Heracles.net.Tests", "Heracles.net.Tests\Heracles.net.Tests.csproj", "{5395B668-60A1-48B1-BFDA-74F7083D155E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{EC65E00F-626A-43DA-B4EA-2B02ABCACB25}"
+	ProjectSection(SolutionItems) = preProject
+		Heracles.net.ruleset = Heracles.net.ruleset
+		Heracles.net.Tests.ruleset = Heracles.net.Tests.ruleset
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

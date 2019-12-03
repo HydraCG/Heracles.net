@@ -9,11 +9,11 @@ namespace Heracles.DataModel
     {
         /// <summary>Gets an URI template.</summary>
         [Property("hydra", "template")]
-        string Template { get; set; }
+        string Template { get; }
 
         /// <summary>Gets a variable representation type.</summary>
         [Property("hydra", "validRepresentation")]
-        IResource VariableRepresentation { get; set; }
+        IResource VariableRepresentation { get; }
 
         /// <summary>Gets the variable mappings.</summary>
         [Collection("hydra", "mapping")]

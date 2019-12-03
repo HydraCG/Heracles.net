@@ -19,7 +19,6 @@ namespace Having_a_Hydra_client.while_browsing_a_website.and_obtaining_its_API_d
         [Test]
         public void should_have_access_an_entry_point()
         {
-
             ApiDocumentation.EntryPoint.Iri.ToString().Should().MatchRegex(".*/api$");
         }
 
@@ -128,8 +127,7 @@ namespace Having_a_Hydra_client.while_browsing_a_website.and_obtaining_its_API_d
                         },
                         Type = new[] { hydra.Class }
                     }
-                }
-            );
+                });
         }
     }
 }

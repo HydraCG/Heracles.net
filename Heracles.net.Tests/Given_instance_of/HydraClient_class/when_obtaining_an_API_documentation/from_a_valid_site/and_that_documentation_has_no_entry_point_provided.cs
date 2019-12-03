@@ -13,7 +13,7 @@ namespace Given_instance_of.HydraClient_class.when_obtaining_an_API_documentatio
     [TestFixture]
     public class and_that_documentation_has_no_entry_point_provided : ScenarioTest
     {
-        protected override void ScenarioSetup()
+        public override void ScenarioSetup()
         {
             base.ScenarioSetup();
             var hypermedia = new Mock<IHypermediaContainer>(MockBehavior.Strict);

@@ -11,7 +11,7 @@ namespace Heracles.DataModel
     public static class ResourceExtensions
     {
         internal static readonly PropertyInfo BaseUrlPropertyInfo = typeof(IPointingResource).GetProperty(nameof(IPointingResource.BaseUrl));
-        internal static readonly PropertyInfo RelationPropertyInfo = typeof(IDerefencableLink).GetProperty(nameof(IDerefencableLink.Relation));
+        internal static readonly PropertyInfo RelationPropertyInfo = typeof(IDereferencableLink).GetProperty(nameof(IDereferencableLink.Relation));
         internal static readonly PropertyInfo TargetPropertyInfo = typeof(IPointingResource).GetProperty(nameof(IPointingResource.Target));
         internal static readonly PropertyInfo MethodPropertyInfo = typeof(IOperation).GetProperty(nameof(IOperation.Method));
         internal static readonly PropertyInfo OriginatingMediaTypeProperty = typeof(IOperation).GetProperty(nameof(IOperation.OriginatingMediaType));
@@ -43,6 +43,9 @@ namespace Heracles.DataModel
             return resource.GetTextFor(DisplayNameCandidates);
         }
 
+        /// <summary>Gets a description of the given <paramref name="resource" />.</summary>
+        /// <param name="resource">Resource for which to obtain a description.</param>
+        /// <returns>Description of the given <paramref name="resource" /> or <i>null</i>.</returns>
         public static string GetTextDescription(this IResource resource)
         {
             return resource.GetTextFor(TextDescriptionCandidates);
@@ -61,9 +64,9 @@ namespace Heracles.DataModel
             return result;
         }
 
-        internal static IDerefencableLink Copy(this IDerefencableLink source, Iri iri)
+        internal static IDereferencableLink Copy(this IDereferencableLink source, Iri iri)
         {
-            var result = source.Context.Create<IDerefencableLink>(iri);
+            var result = source.Context.Create<IDereferencableLink>(iri);
             var proxy = result.Unwrap();
             proxy.SetProperty(RelationPropertyInfo, source.Iri.ToString());
             result.SupportedOperations.CopyFrom(source.SupportedOperations);

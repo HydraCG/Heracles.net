@@ -14,7 +14,7 @@ namespace Heracles
     /// <summary>HydraClient, also known as Heracles.ts, is a generic client for Hydra-powered Web APIs.</summary>
     /// <remarks>
     /// To learn more about Hydra please refer to
-    /// <a href="https://www.hydra-cg.com/spec/latest/core/">Hydra Core Vocabulary.</a>
+    /// <a href="https://www.hydra-cg.com/spec/latest/core/">Hydra Core Vocabulary</a>.
     /// </remarks>
     public class HydraClient : IHydraClient
     {
@@ -24,7 +24,6 @@ namespace Heracles
         private const string NoOperationProvided = "There was no operation provided.";
         private const string NoIriTemplateExpansionStrategy = "No IRI template expansion strategy was provided.";
         private const string NoHttpFacility = "No HTTP facility provided.";
-
 
         private static readonly Regex LinkHeaderPattern = new Regex($"<([^>]+)>; rel=\"{hydra.apiDocumentation}\"");
 
@@ -223,11 +222,10 @@ namespace Heracles
                 throw new ApiDocumentationNotProvidedException();
             }
 
-            return new ApiDocumentationDetails(
-                response,
-                !Regex.IsMatch(result.Groups[1].Value, "^[a-z][a-z0-9+\\-.]*:")
-                    ? new Uri(url, new Uri(result.Groups[1].Value, UriKind.Relative))
-                    : new Uri(result.Groups[1].Value));
+            var uri = !Regex.IsMatch(result.Groups[1].Value, "^[a-z][a-z0-9+\\-.]*:")
+                ? new Uri(url, new Uri(result.Groups[1].Value, UriKind.Relative))
+                : new Uri(result.Groups[1].Value);
+            return new ApiDocumentationDetails(response, uri);
         }
 
         private async Task<IResponse> MakeRequestTo(Uri url, IHttpOptions options, CancellationToken cancellationToken)
