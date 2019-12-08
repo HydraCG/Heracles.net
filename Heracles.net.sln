@@ -9,8 +9,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Heracles.net.Tests", "Herac
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{EC65E00F-626A-43DA-B4EA-2B02ABCACB25}"
 	ProjectSection(SolutionItems) = preProject
+		.build\CommonAssemblyInfo.cs = .build\CommonAssemblyInfo.cs
 		Heracles.net.ruleset = Heracles.net.ruleset
 		Heracles.net.Tests.ruleset = Heracles.net.Tests.ruleset
+		.build\make.bat = .build\make.bat
+		.build\pack.bat = .build\pack.bat
+		.build\version.bat = .build\version.bat
+		.build\VersionAssemblyInfo.cs = .build\VersionAssemblyInfo.cs
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CF52800A-D887-4E52-A531-0505A3618D7F}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\Heracles.net.nuspec = .nuget\Heracles.net.nuspec
 	EndProjectSection
 EndProject
 Global

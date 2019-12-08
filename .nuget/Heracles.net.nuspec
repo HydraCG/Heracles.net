@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+    <metadata>
+        <id>Heracles.net</id>
+        <version>0.5.0</version>
+        <authors>alien-mcl</authors>
+        <owners>Hydra-CG</owners>
+        <projectUrl>http://github.com/Hydra-CG/Heracles.net</projectUrl>
+        <license type="expression">BSD-3-Clause</license>
+        <icon>Hydra-CG.png</icon>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <releaseNotes>Initial release.</releaseNotes>
+        <description>HydraClient, also known as Heracles.net, is a generic client for Hydra-powered Web APIs.</description>
+        <copyright>Copyright ©2019 Hydra GC</copyright>
+        <tags>hydra rdf hypermedia api</tags>
+        <dependencies>
+            <group targetFramework=".NETStandard2.0">
+                <dependency id="Newtonsoft.Json" version="12.0.2" />
+                <dependency id="RDeF.Contracts" version="1.0.0" />
+                <dependency id="RDeF.Core" version="1.0.0" />
+                <dependency id="RDeF.Mapping.Attributes" version="1.0.0" />
+                <dependency id="RDeF.Serialization" version="1.0.0" />
+                <dependency id="RollerCaster" version="1.3.0" />
+                <dependency id="Tavis.UriTemplates" version="1.1.1" />
+            </group>
+            <group targetFramework=".NETFramework4.6.1">
+                <dependency id="Newtonsoft.Json" version="12.0.2" />
+                <dependency id="RDeF.Contracts" version="1.0.0" />
+                <dependency id="RDeF.Core" version="1.0.0" />
+                <dependency id="RDeF.Mapping.Attributes" version="1.0.0" />
+                <dependency id="RDeF.Serialization" version="1.0.0" />
+                <dependency id="RollerCaster" version="1.3.0" />
+                <dependency id="Tavis.UriTemplates" version="1.1.1" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="Hydra-CG.png" target="" />
+    </files>
+</package>
