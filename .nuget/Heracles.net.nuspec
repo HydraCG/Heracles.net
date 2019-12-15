@@ -5,7 +5,9 @@
         <version>0.5.0</version>
         <authors>alien-mcl</authors>
         <owners>Hydra-CG</owners>
-        <projectUrl>http://github.com/Hydra-CG/Heracles.net</projectUrl>
+        <title>Heracles.net Hydra Reference Client</title>
+        <projectUrl>https://github.com/HydraCG/Heracles.net.git</projectUrl>
+        <repository type="git" url="https://github.com/HydraCG/Heracles.net.git" branch="master" />
         <license type="expression">BSD-3-Clause</license>
         <icon>Hydra-CG.png</icon>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
