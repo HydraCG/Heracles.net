@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Heracles.Rdf;
+using Heracles.Rdf.GraphTransformations;
 using RDeF.Serialization;
 
 namespace Heracles.N3
@@ -19,8 +20,12 @@ namespace Heracles.N3
         /// <summary>Initializes a new instance of the <see cref="N3HypermediaProcessor" /> class.</summary>
         /// <param name="ontologyProvider">Ontology provider.</param>
         /// <param name="httpCall">HTTP call facility.</param>
-        public N3HypermediaProcessor(IOntologyProvider ontologyProvider, HttpCallFacility httpCall)
-            : base(ontologyProvider, httpCall)
+        /// <param name="graphTransformer">Graph transformation facility.</param>
+        public N3HypermediaProcessor(
+            IOntologyProvider ontologyProvider,
+            HttpCallFacility httpCall,
+            IGraphTransformer graphTransformer)
+            : base(ontologyProvider, httpCall, graphTransformer)
         {
         }
 

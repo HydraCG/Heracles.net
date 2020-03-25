@@ -5,7 +5,10 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Heracles.Collections.Generic;
+using Heracles.Entities;
+using Heracles.Namespaces;
 using RDeF.Entities;
+using RollerCaster;
 
 namespace Heracles.DataModel
 {
@@ -32,7 +35,8 @@ namespace Heracles.DataModel
             Collections = hypermedia.DiscoverCollections();
             Operations = new HashSet<IOperation>();
             Links = new HashSet<IDereferencableLink>();
-            if (rootResource is IHydraResource hydraResource)
+            var hydraResource = rootResource.As<IHydraResource>(hydra.Resource);
+            if (hydraResource != null)
             {
                 Operations = hydraResource.Operations;
                 Links = hydraResource.Links;
@@ -43,7 +47,8 @@ namespace Heracles.DataModel
                 View = resourceView.View;
             }
 
-            if (rootResource is ICollection collection)
+            var collection = rootResource.As<ICollection>(hydra.Collection);
+            if (collection != null)
             {
                 Members = collection.Members;
                 TotalItems = collection.TotalItems;

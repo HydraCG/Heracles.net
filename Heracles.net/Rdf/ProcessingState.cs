@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Heracles.DataModel;
 using Heracles.Entities;
 using Heracles.Namespaces;
 using RDeF.Entities;
@@ -16,7 +17,7 @@ namespace Heracles.Rdf
             IEntityContext context,
             IOntologyProvider ontologyProvider,
             Iri rootResource,
-            LinksPolicy linksPolicy,
+            IHypermediaProcessingOptions options,
             string originatingMediaType)
         {
             _ontologyProvider = ontologyProvider;
@@ -27,15 +28,24 @@ namespace Heracles.Rdf
             AllHypermedia = new HashSet<Iri>();
             BaseUrl = rootResource;
             Root = rootResource.ToRoot();
-            LinksPolicy = linksPolicy;
             OriginatingMediaType = originatingMediaType;
+            if (options != null)
+            {
+                LinksPolicy = options.LinksPolicy;
+                ApiDocumentationPolicy = options.ApiDocumentationPolicy;
+                ApiDocumentations = options.ApiDocumentations;
+            }
         }
 
         internal event EventHandler<EventArgs> ProcessingCompleted;
 
         internal IEntityContext Context { get; }
 
-        internal LinksPolicy LinksPolicy { get; }
+        internal LinksPolicy LinksPolicy { get; } = LinksPolicy.Strict;
+
+        internal ApiDocumentationPolicy ApiDocumentationPolicy { get; } = ApiDocumentationPolicy.None;
+
+        internal IEnumerable<IApiDocumentation> ApiDocumentations { get; } = Array.Empty<IApiDocumentation>();
 
         internal Iri BaseUrl { get; }
 

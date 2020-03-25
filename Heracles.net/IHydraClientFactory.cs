@@ -10,6 +10,9 @@ namespace Heracles
 
         /// <summary>Gets a currently configured <see cref="LinksPolicy" />.</summary>
         LinksPolicy CurrentLinksPolicy { get; }
+        
+        /// <summary>Gets a currently configured <see cref="ApiDocumentationPolicy" />.</summary>
+        ApiDocumentationPolicy CurrentApiDocumentationPolicy { get; }
 
         /// <summary>Gets an ontology provider.</summary>
         IOntologyProvider OntologyProvider { get; }

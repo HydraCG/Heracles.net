@@ -6,6 +6,14 @@ namespace Heracles.DataModel
     [Class("hydra", "SupportedProperty")]
     public interface ISupportedProperty : IHydraResource
     {
+        /// <summary>Gets the supported property's title.</summary>
+        [Property("hydra", "title", DefaultValue = "")]
+        string Title { get; }
+
+        /// <summary>Gets the supported property's description.</summary>
+        [Property("hydra", "description", DefaultValue = "")]
+        string Description { get; }
+
         /// <summary>Gets the actual property.</summary>
         [Property("hydra", "property")]
         IProperty Property { get; }

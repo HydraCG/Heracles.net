@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Heracles.DataModel;
 using Heracles.Rdf;
+using Heracles.Rdf.GraphTransformations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RDeF.Serialization;
@@ -38,8 +39,12 @@ namespace Heracles.JsonLd
         /// <summary>Initializes a new instance of the <see cref="JsonLdHypermediaProcessor" /> class.</summary>
         /// <param name="ontologyProvider">Ontology provider.</param>
         /// <param name="httpCall">HTTP call facility.</param>
-        public JsonLdHypermediaProcessor(IOntologyProvider ontologyProvider, HttpCallFacility httpCall)
-            : base(ontologyProvider, httpCall)
+        /// <param name="graphTransformer">Graph transformation facility.</param>
+        public JsonLdHypermediaProcessor(
+            IOntologyProvider ontologyProvider,
+            HttpCallFacility httpCall,
+            IGraphTransformer graphTransformer)
+            : base(ontologyProvider, httpCall, graphTransformer)
         {
         }
 

@@ -20,6 +20,8 @@ namespace Given_instance_of.HydraClient_class
         protected Mock<IIriTemplateExpansionStrategy> IriTemplateExpansionStrategy { get; private set; }
 
         protected Mock<IHttpInfrastructure> HttpCall { get; private set; }
+        
+        protected Mock<IResourceCache> Cache { get; private set; }
 
         protected HydraClient Client { get; private set; }
 
@@ -44,11 +46,14 @@ namespace Given_instance_of.HydraClient_class
             HttpCall = new Mock<IHttpInfrastructure>(MockBehavior.Strict);
             HttpCall.Setup(_ => _.HttpCall(It.IsAny<Uri>(), It.IsAny<IHttpOptions>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Return.Ok());
+            Cache = new Mock<IResourceCache>(MockBehavior.Strict);
             Client = new HydraClient(
                 new[] { HypermediaProcessor.Object },
                 IriTemplateExpansionStrategy.Object,
                 LinksPolicy.Strict,
-                HttpCall.Object.HttpCall);
+                ApiDocumentationPolicy.None,
+                HttpCall.Object.HttpCall,
+                Cache.Object);
             ScenarioSetup();
             await TheTest();
         }

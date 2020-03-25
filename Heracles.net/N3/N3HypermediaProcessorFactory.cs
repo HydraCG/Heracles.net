@@ -1,4 +1,6 @@
-﻿namespace Heracles.N3
+﻿using Heracles.Rdf.GraphTransformations;
+
+namespace Heracles.N3
 {
     /// <summary>Provides a factory method to be registered with Hydra client factory.</summary>
     public class N3HypermediaProcessorFactory
@@ -8,7 +10,8 @@
         /// <returns>Instance of the <see cref="N3HypermediaProcessor" /> class.</returns>
         public static IHypermediaProcessor Instance(IHydraClientFactory context)
         {
-            return new N3HypermediaProcessor(context.OntologyProvider, context.CurrentHttpCall);
+            var graphTransformer = new CompoundGraphTransformer(new[] { new EntryPointCorrectingGraphTransformer() });
+            return new N3HypermediaProcessor(context.OntologyProvider, context.CurrentHttpCall, graphTransformer);
         }
     }
 }

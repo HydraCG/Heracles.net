@@ -58,7 +58,7 @@ namespace Given_instance_of.TemplatedOperation_interface
             var proxy = new MulticastObject();
             proxy.SetProperty(typeof(IPointingResource).GetProperty(nameof(IPointingResource.BaseUrl)), new Uri("http://temp.uri/"));
             proxy.SetProperty(typeof(IPointingResource).GetProperty(nameof(IPointingResource.Target)), target.Object);
-            proxy.SetProperty(JsonLdHypermediaProcessor.IriTemplatePropertyInfo, Template.Object);
+            proxy.SetProperty(ResourceExtensions.IriTemplatePropertyInfo, Template.Object);
             proxy.SetProperty(typeof(IEntity).GetProperty(nameof(IEntity.Context)), context.Object);
             Operation = proxy.ActLike<ITemplatedOperation>();
             Operation.Type.Add(AddAction);

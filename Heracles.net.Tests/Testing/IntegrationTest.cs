@@ -31,7 +31,11 @@ namespace Heracles.Testing
         [SetUp]
         public async Task Setup()
         {
-            Client = ConfigureClient(HydraClientFactory.Configure().WithDefaults()).AndCreate();
+            var hydraClientFactory = HydraClientFactory
+                .Configure()
+                .WithDefaults()
+                .WithApiDocumentationsFetchedAndExtended();
+            Client = ConfigureClient(hydraClientFactory).AndCreate();
             ScenarioSetup();
             await TheTest();
         }

@@ -50,7 +50,13 @@
                         "range": ["http://www.w3.org/2001/XMLSchema#dateTime", "http://www.w3.org/2001/XMLSchema#date"]
                     }
                 }
-            ]
+            ],
+             "supportedOperation": [
+                 {
+                     "@type": ["hydra:Operation", "schema:DeleteAction"],
+                     "method": "DELETE"
+                 }
+             ]
         },
         {
             "@id": "schema:Person",

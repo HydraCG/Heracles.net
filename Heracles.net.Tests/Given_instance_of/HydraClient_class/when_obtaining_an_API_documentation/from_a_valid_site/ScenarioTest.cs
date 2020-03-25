@@ -7,7 +7,7 @@ using Moq;
 
 namespace Given_instance_of.HydraClient_class.when_obtaining_an_API_documentation.from_a_valid_site
 {
-    public abstract class ScenarioTest : HydraClientTest
+    public abstract class ScenarioTest : when_obtaining_an_API_documentation.ScenarioTest
     {
         protected IResponse UrlResponse { get; private set; }
 

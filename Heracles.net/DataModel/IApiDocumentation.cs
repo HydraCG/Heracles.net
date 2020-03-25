@@ -10,11 +10,11 @@ namespace Heracles.DataModel
     public interface IApiDocumentation : IHydraResource
     {
         /// <summary>Gets a title of this API documentation.</summary>
-        [Property("hydra", "title")]
+        [Property("hydra", "title", DefaultValue = "")]
         string Title { get; }
 
         /// <summary>Gets a description of this API documentation.</summary>
-        [Property("hydra", "description")]
+        [Property("hydra", "description", DefaultValue = "")]
         string Description { get; }
 
         /// <summary>Gets the supported classes by this API.</summary>

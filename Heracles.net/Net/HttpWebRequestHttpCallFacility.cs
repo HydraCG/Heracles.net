@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,6 +8,8 @@ namespace Heracles.Net
 {
     internal class HttpWebRequestHttpCallFacility
     {
+        [SuppressMessage("TS0000", "NoUnitTests", Justification = "Strictly bound to physical layer. Unable to unit test.")]
+        [ExcludeFromCodeCoverage]
         public async Task<IResponse> Call(Uri url, IHttpOptions options, CancellationToken cancellationToken)
         {
             var request = WebRequest.Create(url);

@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace Given_instance_of.HydraClient_class.when_obtaining_an_API_documentation
 {
     [TestFixture]
-    public class which_has_no_LINK_header_returned : HydraClientTest
+    public class which_has_no_LINK_header_returned : ScenarioTest
     {
         [Test]
         public void should_throw()

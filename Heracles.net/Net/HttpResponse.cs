@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -10,6 +11,8 @@ using Heracles.DataModel;
 namespace Heracles.Net
 {
     /// <summary>Provides a default implementation of the <see cref="IResponse" />.</summary>
+    [SuppressMessage("TS0000", "NoUnitTests", Justification = "Strictly bound to physical layer. Unable to unit test.")]
+    [ExcludeFromCodeCoverage]
     public class HttpResponse : IResponse
     {
         private readonly HttpWebResponse _response;

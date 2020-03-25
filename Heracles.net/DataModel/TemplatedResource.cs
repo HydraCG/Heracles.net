@@ -15,9 +15,6 @@ namespace Heracles.DataModel
     /// <typeparam name="T">Type of the resource described.</typeparam>
     public static class TemplatedResource<T> where T : IPointingResource
     {
-        private static readonly PropertyInfo TargetPropertyInfo = typeof(IPointingResource).GetProperty(nameof(IPointingResource.Target));
-        private static readonly PropertyInfo BaseUrlPropertyInfo = typeof(IPointingResource).GetProperty(nameof(IPointingResource.BaseUrl));
-
         /// <summary>Expands an URI template with given variables.</summary>
         /// <param name="pointingResource">Pointing resource.</param>
         /// <param name="mappedVariables">Template variables with value.</param>
@@ -25,12 +22,12 @@ namespace Heracles.DataModel
         /// <returns>Expanded templated resource.</returns>
         public static T ExpandTarget(IPointingResource pointingResource, IDictionary<string, string> mappedVariables, Iri iri)
         {
-            var iriTemplate = (IIriTemplate)pointingResource.Unwrap().GetProperty(JsonLdHypermediaProcessor.IriTemplatePropertyInfo);
+            var iriTemplate = (IIriTemplate)pointingResource.Unwrap().GetProperty(ResourceExtensions.IriTemplatePropertyInfo);
             var targetUri = new Uri(pointingResource.BaseUrl, new UriTemplate(iriTemplate.Template).AddParameters(mappedVariables).Resolve());
             var result = pointingResource.Context.Create<T>(iri);
             var proxy = result.Unwrap();
-            proxy.SetProperty(TargetPropertyInfo, pointingResource.Context.Create<IResource>(targetUri));
-            proxy.SetProperty(BaseUrlPropertyInfo, pointingResource.BaseUrl);
+            proxy.SetProperty(ResourceExtensions.TargetPropertyInfo, pointingResource.Context.Create<IResource>(targetUri));
+            proxy.SetProperty(ResourceExtensions.BaseUrlPropertyInfo, pointingResource.BaseUrl);
             result.Type.AddRange(pointingResource.Type.Where(_ => _ != hydra.IriTemplate));
             result.Collections.AddRange(pointingResource.Collections);
             result.Links.AddRange(pointingResource.Links);
@@ -45,7 +42,7 @@ namespace Heracles.DataModel
         /// <returns>Expanded templated resource.</returns>
         public static T ExpandTarget(IPointingResource pointingResource, Action<MappingsBuilder> mappedVariables, Iri iri)
         {
-            var iriTemplate = (IIriTemplate)pointingResource.Unwrap().GetProperty(JsonLdHypermediaProcessor.IriTemplatePropertyInfo);
+            var iriTemplate = (IIriTemplate)pointingResource.Unwrap().GetProperty(ResourceExtensions.IriTemplatePropertyInfo);
             var builder = new MappingsBuilder(iriTemplate.Mappings);
             mappedVariables(builder);
             return ExpandTarget(pointingResource, builder.Complete(), iri);

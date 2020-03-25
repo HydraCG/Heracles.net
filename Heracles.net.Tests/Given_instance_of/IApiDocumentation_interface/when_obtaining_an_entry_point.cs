@@ -25,6 +25,7 @@ namespace Given_instance_of.IApiDocumentation_interface
         [SetUp]
         public async Task Setup()
         {
+            Mappings.For<IApiDocumentation>();
             EntryPoint = new Mock<IHypermediaContainer>(MockBehavior.Strict);
             Client = new Mock<IHydraClient>(MockBehavior.Strict);
             Client.Setup(_ => _.GetResource(It.IsAny<IResource>())).ReturnsAsync(EntryPoint.Object);

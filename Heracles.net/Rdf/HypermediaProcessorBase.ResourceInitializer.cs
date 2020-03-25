@@ -176,8 +176,8 @@ namespace Heracles.Rdf
             result.Type.Remove(type == hydra.TemplatedLink ? hydra.Link : hydra.TemplatedLink);
             if (type == hydra.TemplatedLink && @object != null)
             {
-                var templatedLink = result.ActLike<ITemplatedLink>();
-                proxy.SetProperty(IriTemplatePropertyInfo, @object.ActLike<IIriTemplate>());
+                var templatedLink = result.AssertAs<ITemplatedLink>();
+                proxy.SetProperty(ResourceExtensions.IriTemplatePropertyInfo, @object.AssertAs<IIriTemplate>());
                 result = templatedLink;
             }
 
@@ -196,9 +196,9 @@ namespace Heracles.Rdf
                 var result = operation.Copy(GetNextIri("Operation"));
                 result.Type.AddIfNotExist(type);
                 result.Type.AddIfNotExist(hydra.IriTemplate);
-                var templatedOperation = result.ActLike<ITemplatedOperation>();
+                var templatedOperation = result.AssertAs<ITemplatedOperation>();
                 var proxy = templatedOperation.Unwrap();
-                proxy.SetProperty(IriTemplatePropertyInfo, @object.ActLike<IIriTemplate>());
+                proxy.SetProperty(ResourceExtensions.IriTemplatePropertyInfo, @object.AssertAs<IIriTemplate>());
                 result = templatedOperation;
                 owner.Operations.Add(result);
                 yield return result;

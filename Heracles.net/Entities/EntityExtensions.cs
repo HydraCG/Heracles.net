@@ -2,6 +2,7 @@
 using System.Linq;
 using Heracles.Namespaces;
 using RDeF.Entities;
+using RollerCaster;
 
 namespace Heracles.Entities
 {
@@ -75,6 +76,18 @@ namespace Heracles.Entities
             }
 
             return result;
+        }
+
+        internal static TEntity As<TEntity>(this IEntity entity, Iri type) where TEntity : class, IEntity
+        {
+            TEntity result;
+            if ((result = entity as TEntity) != null
+                || (entity.Is(type) && (result = entity.ActLike<TEntity>()) != null))
+            {
+                return result;
+            }
+
+            return null;
         }
     }
 }
