@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -20,6 +21,8 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing.JSON_LD
             get { return _inputJsonLd; }
         }
 
+        protected override Uri Uri { get; } = Api.People.Markus;
+
         private IHydraResource Markus { get; set; }
 
         private IHydraResource Karol { get; set; }
@@ -27,7 +30,7 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing.JSON_LD
         public override void ScenarioSetup()
         {
             _inputJsonLd = GetResourceNamed("nestedResourcesInput.json");
-            Response.SetupGet(_ => _.Url).Returns(Api.People.Markus);
+            Response.SetupGet(_ => _.Url).Returns(Uri);
             base.ScenarioSetup();
         }
 

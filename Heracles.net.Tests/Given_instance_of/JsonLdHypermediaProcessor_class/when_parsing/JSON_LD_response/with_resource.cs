@@ -1,13 +1,20 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using FluentAssertions;
+using Heracles;
 using Heracles.DataModel;
 using Heracles.Namespaces;
 using Heracles.Testing;
+using Moq;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 using RDeF.Entities;
+using RollerCaster;
+using ICollection = Heracles.DataModel.ICollection;
 
 namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing.JSON_LD_response
 {
@@ -20,7 +27,24 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing.JSON_LD
         {
             get { return _inputJsonLd; }
         }
+        
+        protected override Uri Uri { get; } = new Uri("http://temp.uri/api", UriKind.Absolute);
+        
+        private Mock<IApiDocumentation> ApiDocumentation { get; set; }
+        
+        private IOperation Operation { get; set; }
 
+        [Test]
+        public void should_transform_resources()
+        {
+            GraphTransformer.Verify(
+                _ => _.Transform(
+                    It.IsAny<IEnumerable<ITypedEntity>>(),
+                    HypermediaProcessor,
+                    HypermediaProcessingOptions.Object),
+                Times.Once);
+        }
+        
         [Test]
         public void should_process_data()
         {
@@ -134,7 +158,7 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing.JSON_LD
                                         SupportedOperations = new IOperation[0],
                                         Target = (IResource)null,
                                         Template = "http://temp.uri/api/events{?searchPhrase}",
-                                        Type = new[] { hydra.TemplatedLink }
+                                        Type = new[] { hydra.TemplatedLink, hydra.Resource, rdfs.Resource }
                                     }
                                 },
                                 Manages = new IStatement[0],
@@ -146,7 +170,7 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing.JSON_LD
                                         Type = new Iri[0]
                                     }
                                 },
-                                Operations = new IOperation[0],
+                                Operations = new[] { new { Method = "POST" } },
                                 TotalItems = 1,
                                 Type = new[] { hydra.Collection },
                                 View = new
@@ -177,8 +201,24 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing.JSON_LD
         public override void ScenarioSetup()
         {
             _inputJsonLd = GetResourceNamed("input.json");
-            Response.SetupGet(_ => _.Url).Returns(new Uri("http://temp.uri/api", UriKind.Absolute));
+            Response.SetupGet(_ => _.Url).Returns(Uri);
             base.ScenarioSetup();
+            Operation = new MulticastObject().ActLike<IOperation>();
+            var entityContext = new Mock<IEntityContext>(MockBehavior.Strict);
+            entityContext.Setup(_ => _.Create<IOperation>(It.IsAny<Iri>())).Returns(Operation);
+            var proxy = new MulticastObject();
+            proxy.SetProperty(typeof(IEntity).GetProperty(nameof(IEntity.Context)), entityContext.Object);
+            proxy.SetProperty(typeof(IOperation).GetProperty(nameof(IOperation.Method)), "POST");
+            var operation = proxy.ActLike<IOperation>();
+
+            proxy = new MulticastObject();
+            proxy.SetProperty(typeof(IEntity).GetProperty(nameof(IEntity.Iri)), hydra.Collection);
+            var @class = proxy.ActLike<IClass>();
+            @class.SupportedOperations.Add(operation);
+            ApiDocumentation = new Mock<IApiDocumentation>(MockBehavior.Strict);
+            ApiDocumentation.SetupGet(_ => _.SupportedClasses).Returns(new HashSet<IClass>() { @class });
+            HypermediaProcessingOptions.SetupGet(_ => _.ApiDocumentationPolicy).Returns(ApiDocumentationPolicy.FetchAndExtend);
+            HypermediaProcessingOptions.SetupGet(_ => _.ApiDocumentations).Returns(new[] { ApiDocumentation.Object });
         }
     }
 }

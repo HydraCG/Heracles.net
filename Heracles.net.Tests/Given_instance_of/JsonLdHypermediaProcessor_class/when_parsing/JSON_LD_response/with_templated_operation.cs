@@ -21,13 +21,15 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing.JSON_LD
         {
             get { return _inputJsonLd; }
         }
+        
+        protected override Uri Uri { get; } = new Uri("http://temp.uri/api/people", UriKind.Absolute);
 
         private IOperation AddPerson { get; set; }
         
         public override void ScenarioSetup()
         {
             _inputJsonLd = GetResourceNamed("operationInput.json");
-            Response.SetupGet(_ => _.Url).Returns(new Uri("http://temp.uri/api/people", UriKind.Absolute));
+            Response.SetupGet(_ => _.Url).Returns(Uri);
             base.ScenarioSetup();
         }
 

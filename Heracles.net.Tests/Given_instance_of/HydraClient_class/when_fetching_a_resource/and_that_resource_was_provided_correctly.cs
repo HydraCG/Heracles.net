@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -32,8 +33,10 @@ namespace Given_instance_of.HydraClient_class.when_fetching_a_resource
                 .Setup(_ => _.Process(
                     It.IsAny<IResponse>(),
                     It.IsAny<IHydraClient>(),
-                    It.IsAny<IHypermediaProcessingOptions>()))
+                    It.IsAny<IHypermediaProcessingOptions>(),
+                    It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Resource.Object);
+            Cache.Setup(_ => _.All<IApiDocumentation>()).Returns(Array.Empty<IApiDocumentation>());
         }
         
         public override async Task TheTest()
@@ -45,7 +48,11 @@ namespace Given_instance_of.HydraClient_class.when_fetching_a_resource
         public void should_process_the_response()
         {
             HypermediaProcessor.Verify(
-                _ => _.Process(ResourceResponse, Client, It.IsAny<IHypermediaProcessingOptions>()),
+                _ => _.Process(
+                    ResourceResponse,
+                    Client,
+                    It.IsAny<IHypermediaProcessingOptions>(),
+                    CancellationToken.None),
                 Times.Once);
         }
 
@@ -53,6 +60,12 @@ namespace Given_instance_of.HydraClient_class.when_fetching_a_resource
         public void should_return_a_correct_result()
         {
             Result.As<object>().Should().Be(Resource.Object);
+        }
+
+        [Test]
+        public void should_obtain_all_cached_API_documentations()
+        {
+            Cache.Verify(_ => _.All<IApiDocumentation>(), Times.Once);
         }
     }
 }

@@ -8,38 +8,46 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net461|AnyCPU'">
-      <DocumentationFile>.\bin\Heracles.net.xml</DocumentationFile>
+        <DocumentationFile>.\bin\Heracles.net.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <DocumentationFile>bin\Debug\Heracles.net.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DocumentationFile>bin\Release\Heracles.net.xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="JsonLd\hydra.json" />
+        <None Remove="JsonLd\hydra.json" />
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Include="..\.build\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
-      <Compile Include="..\.build\VersionAssemblyInfo.cs" Link="Properties\VersionAssemblyInfo.cs" />
+        <Compile Include="..\.build\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+        <Compile Include="..\.build\VersionAssemblyInfo.cs" Link="Properties\VersionAssemblyInfo.cs" />
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="JsonLd\hydra.json" />
+        <EmbeddedResource Include="JsonLd\hydra.json" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
         <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-        <PackageReference Include="RDeF.Contracts" Version="1.0.0" />
-        <PackageReference Include="RDeF.Core" Version="1.0.0" />
-        <PackageReference Include="RDeF.Mapping.Attributes" Version="1.0.0" />
-        <PackageReference Include="RDeF.Serialization" Version="1.0.0" />
+        <PackageReference Include="RDeF.Contracts" Version="1.1.0" />
+        <PackageReference Include="RDeF.Core" Version="1.1.0" />
+        <PackageReference Include="RDeF.Mapping.Attributes" Version="1.1.0" />
+        <PackageReference Include="RDeF.Serialization" Version="1.1.0" />
         <PackageReference Include="RollerCaster" Version="1.3.0" />
         <PackageReference Include="Tavis.UriTemplates" Version="1.1.1" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
         <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-        <PackageReference Include="RDeF.Contracts" Version="1.0.0" />
-        <PackageReference Include="RDeF.Core" Version="1.0.0" />
-        <PackageReference Include="RDeF.Mapping.Attributes" Version="1.0.0" />
-        <PackageReference Include="RDeF.Serialization" Version="1.0.0" />
+        <PackageReference Include="RDeF.Contracts" Version="1.1.0" />
+        <PackageReference Include="RDeF.Core" Version="1.1.0" />
+        <PackageReference Include="RDeF.Mapping.Attributes" Version="1.1.0" />
+        <PackageReference Include="RDeF.Serialization" Version="1.1.0" />
         <PackageReference Include="RollerCaster" Version="1.3.0" />
         <PackageReference Include="Tavis.UriTemplates" Version="1.1.1" />
     </ItemGroup>
@@ -52,11 +60,11 @@
     </ItemGroup>
     
     <ItemGroup>
-      <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.4.0" />
-      <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.4.0" />
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
         <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-      </PackageReference>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
 </Project>

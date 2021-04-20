@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using Heracles.DataModel;
 using Heracles.DataModel.Collections;
 using Heracles.Namespaces;
@@ -37,13 +38,30 @@ namespace Having_a_Hydra_client.while_browsing_a_website.and_obtaining_its_API_d
                         Iri = new Iri("http://schema.org/Event"),
                         Links = new ILink[0],
                         Operations = new IOperation[0],
-                        SupportedOperations = new IOperation[0],
+                        SupportedOperations = new object[]
+                        {
+                            new
+                            {
+                                BaseUrl = new Uri("http://localhost:3001/api/documentation"),
+                                Collections = new ICollection[0],
+                                ExpectedHeaders = new string[0],
+                                Expects = new IResource[0],
+                                Iri = new Iri("_:b0"),
+                                Links = new ILink[0],
+                                Method = "DELETE",
+                                Operations = new IOperation[0],
+                                ReturnedHeaders = new string[0],
+                                Returns = new IResource[0],
+                                Target = new { Iri = new Iri("http://schema.org/Event"), Type = new[] { hydra.Class } },
+                                Type = new[] { hydra.Operation, new Iri("http://schema.org/DeleteAction") }
+                            }
+                        },
                         SupportedProperties = new object[]
                         {
                             new
                             {
                                 Collections = new ICollection[0],
-                                Iri = new Iri("_:b0"),
+                                Iri = new Iri("_:b1"),
                                 Links = new ILink[0],
                                 Operations = new IOperation[0],
                                 Property = new
@@ -62,7 +80,7 @@ namespace Having_a_Hydra_client.while_browsing_a_website.and_obtaining_its_API_d
                             new
                             {
                                 Collections = new ICollection[0],
-                                Iri = new Iri("_:b1"),
+                                Iri = new Iri("_:b2"),
                                 Links = new ILink[0],
                                 Operations = new IOperation[0],
                                 Property = new
@@ -81,7 +99,7 @@ namespace Having_a_Hydra_client.while_browsing_a_website.and_obtaining_its_API_d
                             new
                             {
                                 Collections = new ICollection[0],
-                                Iri = new Iri("_:b2"),
+                                Iri = new Iri("_:b3"),
                                 Links = new ILink[0],
                                 Operations = new IOperation[0],
                                 Property = new
@@ -104,7 +122,7 @@ namespace Having_a_Hydra_client.while_browsing_a_website.and_obtaining_its_API_d
                             new
                             {
                                 Collections = new ICollection[0],
-                                Iri = new Iri("_:b3"),
+                                Iri = new Iri("_:b4"),
                                 Links = new ILink[0],
                                 Operations = new IOperation[0],
                                 Property = new

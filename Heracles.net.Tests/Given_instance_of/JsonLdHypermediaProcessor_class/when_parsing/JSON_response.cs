@@ -13,6 +13,8 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing
     [TestFixture]
     public class JSON_response : JsonLdHypermediaProcessorTest
     {
+        protected override Uri Uri { get; } = new Uri("http://temp.uri/api", UriKind.Absolute);
+
         private Stream JsonLdContext { get; set; }
 
         public override void ScenarioSetup()
@@ -28,7 +30,7 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing
                 .Returns(new[] { "<context.jsonld>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\"" });
             var responseBody = new MemoryStream(Encoding.UTF8.GetBytes("{}"));
             responseBody.Seek(0, SeekOrigin.Begin);
-            Response.Setup(_ => _.Url).Returns(new Uri("http://temp.uri/api", UriKind.Absolute));
+            Response.Setup(_ => _.Url).Returns(Uri);
             Response.Setup(_ => _.GetBody(It.IsAny<CancellationToken>())).ReturnsAsync(responseBody);
         }
 

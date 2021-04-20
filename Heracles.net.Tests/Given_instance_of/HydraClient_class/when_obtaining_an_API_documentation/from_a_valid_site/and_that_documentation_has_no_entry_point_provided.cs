@@ -21,8 +21,13 @@ namespace Given_instance_of.HydraClient_class.when_obtaining_an_API_documentatio
             HttpCall.Setup(_ => _.HttpCall(new Uri(BaseUrl, "api/documentation"), It.IsAny<IHttpOptions>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Return.Ok());
             HypermediaProcessor
-                .Setup(_ => _.Process(It.IsAny<IResponse>(), It.IsAny<IHydraClient>(), It.IsAny<IHypermediaProcessingOptions>()))
+                .Setup(_ => _.Process(
+                    It.IsAny<IResponse>(),
+                    It.IsAny<IHydraClient>(),
+                    It.IsAny<IHypermediaProcessingOptions>(),
+                    It.IsAny<CancellationToken>()))
                 .ReturnsAsync(hypermedia.Object);
+            Cache.Setup(_ => _.All<IApiDocumentation>()).Returns(Array.Empty<IApiDocumentation>());
         }
 
         [Test]

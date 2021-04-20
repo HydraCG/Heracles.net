@@ -50,6 +50,27 @@ namespace Given_instance_of
         }
 
         [Test]
+        public void should_create_a_client_fetching_no_API_documentations()
+        {
+            Factory.WithNoApiDocumentations().AndCreate().Should().BeOfType<HydraClient>()
+                .Which.ApiDocumentationPolicy.Should().Be(ApiDocumentationPolicy.None);
+        }
+
+        [Test]
+        public void should_create_a_client_fetching_API_documentations()
+        {
+            Factory.WithApiDocumentationsFetchedOnly().AndCreate().Should().BeOfType<HydraClient>()
+                .Which.ApiDocumentationPolicy.Should().Be(ApiDocumentationPolicy.FetchOnly);
+        }
+
+        [Test]
+        public void should_create_a_client_fetching_and_extending_API_documentations()
+        {
+            Factory.WithApiDocumentationsFetchedAndExtended().AndCreate().Should().BeOfType<HydraClient>()
+                .Which.ApiDocumentationPolicy.Should().Be(ApiDocumentationPolicy.FetchAndExtend);
+        }
+
+        [Test]
         public void should_create_a_client_with_custom_hypermedia_processor()
         {
             Factory.With(Processor.Object).AndCreate().GetHypermediaProcessor(Response.Object)

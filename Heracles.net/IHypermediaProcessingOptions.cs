@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Heracles.DataModel;
 
 namespace Heracles
 {
@@ -7,6 +9,12 @@ namespace Heracles
     {
         /// <summary>Gets a policy defining which related resources will be added to links collection.</summary>
         LinksPolicy LinksPolicy { get; }
+        
+        /// <summary>Gets a policy defining how API documentations should be handled when obtaining resources.</summary>
+        ApiDocumentationPolicy ApiDocumentationPolicy { get; }
+        
+        /// <summary>Gets an API documentations obtained.</summary>
+        IEnumerable<IApiDocumentation> ApiDocumentations { get; }
 
         /// <summary>
         /// Gets an originally requested Url.

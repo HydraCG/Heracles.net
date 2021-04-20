@@ -5,8 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Heracles.Collections.Generic;
 using Heracles.DataModel;
 using Heracles.Namespaces;
+using Heracles.Rdf.GraphTransformations;
 using RDeF.Entities;
 using RDeF.Serialization;
 using RollerCaster;
@@ -18,7 +20,6 @@ namespace Heracles.Rdf
     public abstract partial class HypermediaProcessorBase : IHypermediaProcessor
     {
         internal static readonly HiddenPropertyInfo ClientPropertyInfo = new HiddenPropertyInfo("Client", typeof(IHydraClient), typeof(IResource));
-        internal static readonly HiddenPropertyInfo IriTemplatePropertyInfo = new HiddenPropertyInfo("IriTemplate", typeof(IIriTemplate), typeof(ITemplatedLink));
 
         private static readonly Iri Untyped = new Iri();
 
@@ -37,6 +38,7 @@ namespace Heracles.Rdf
             new Lazy<IEntityContextFactory>(CreateEntityContextFactory);
 
         private readonly IOntologyProvider _ontologyProvider;
+        private readonly IGraphTransformer _graphTransformer;
 
         static HypermediaProcessorBase()
         {
@@ -81,10 +83,15 @@ namespace Heracles.Rdf
         /// <summary>Initializes a new instance of the <see cref="HypermediaProcessorBase" /> class.</summary>
         /// <param name="ontologyProvider">Ontology provider.</param>
         /// <param name="httpCall">HTTP call facility.</param>
-        protected HypermediaProcessorBase(IOntologyProvider ontologyProvider, HttpCallFacility httpCall)
+        /// <param name="graphTransformer">Graph transformation facility.</param>
+        protected HypermediaProcessorBase(
+            IOntologyProvider ontologyProvider, 
+            HttpCallFacility httpCall, 
+            IGraphTransformer graphTransformer)
         {
             _ontologyProvider = ontologyProvider ?? throw new ArgumentNullException(nameof(ontologyProvider)); 
             HttpCall = httpCall ?? throw new ArgumentNullException(nameof(httpCall));
+            _graphTransformer = graphTransformer ?? throw new ArgumentNullException(nameof(graphTransformer));
         }
 
         /// <inheritdoc />
@@ -139,7 +146,7 @@ namespace Heracles.Rdf
                 context,
                 _ontologyProvider,
                 responseIri,
-                options?.LinksPolicy ?? LinksPolicy.Strict,
+                options,
                 response.Headers[HydraClient.ContentType].FirstOrDefault()))
             {
                 var rdfReader = await CreateRdfReader(response, cancellationToken);
@@ -151,9 +158,10 @@ namespace Heracles.Rdf
                 }
 
                 resource = await ProcessResources(processingState, hydraClient, hypermedia, cancellationToken);
+                _graphTransformer.Transform(processingState.Context.AsQueryable<ITypedEntity>(), this, options);
             }
 
-            return new HypermediaContainer(response, resource, hypermedia);
+            return new HypermediaContainer(response, EnsureTypeCastedFor(resource), hypermedia);
         }
 
         /// <inheritdoc />

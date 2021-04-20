@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace Given_instance_of.HydraClient_class.when_obtaining_an_API_documentation
 {
     [TestFixture]
-    public class which_is_not_provided_within_the_LINK_header : HydraClientTest
+    public class which_is_not_provided_within_the_LINK_header : ScenarioTest
     {
         public override void ScenarioSetup()
         {

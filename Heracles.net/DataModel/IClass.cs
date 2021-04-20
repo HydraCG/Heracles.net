@@ -7,12 +7,12 @@ namespace Heracles.DataModel
     [Class("hydra", "Class")]
     public interface IClass : IHydraResource
     {
-        /// <summary>Gets the class' display name.</summary>
-        [Property("hydra", "title")]
+        /// <summary>Gets the class' title.</summary>
+        [Property("hydra", "title", DefaultValue = "")]
         string Title { get; }
 
         /// <summary>Gets the class' description.</summary>
-        [Property("hydra", "description")]
+        [Property("hydra", "description", DefaultValue = "")]
         string Description { get; }
 
         /// <summary>Gets the class' supported operations. </summary>

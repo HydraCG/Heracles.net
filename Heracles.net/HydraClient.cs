@@ -30,6 +30,7 @@ namespace Heracles
         private readonly IEnumerable<IHypermediaProcessor> _hypermediaProcessors;
         private readonly IIriTemplateExpansionStrategy _iriTemplateExpansionStrategy;
         private readonly HttpCallFacility _httpCall;
+        private readonly IResourceCache _resourceCache;
 
         /// <summary>Initializes a new instance of the <see cref="HydraClient" /> class.</summary>
         /// <param name="hypermediaProcessors">
@@ -37,12 +38,16 @@ namespace Heracles
         /// </param>
         /// <param name="iriTemplateExpansionStrategy">IRI template variable expansion strategy.</param>
         /// <param name="linksPolicy">Policy defining what is a considered a link.</param>
+        /// <param name="apiDocumentationPolicy">Policy defining on how to treat API documentation.</param>
         /// <param name="httpCall">HTTP facility used to call remote server.</param>
+        /// <param name="resourceCache">Cache used for storing API documentation fetched.</param>
         public HydraClient(
             IEnumerable<IHypermediaProcessor> hypermediaProcessors,
             IIriTemplateExpansionStrategy iriTemplateExpansionStrategy,
             LinksPolicy linksPolicy,
-            HttpCallFacility httpCall)
+            ApiDocumentationPolicy apiDocumentationPolicy,
+            HttpCallFacility httpCall,
+            IResourceCache resourceCache)
         {
             _hypermediaProcessors = hypermediaProcessors ??
                 throw new ArgumentNullException(nameof(hypermediaProcessors));
@@ -56,9 +61,13 @@ namespace Heracles
             _httpCall = httpCall ??
                 throw new ArgumentNullException(nameof(httpCall), NoHttpFacility);
             LinksPolicy = linksPolicy;
+            ApiDocumentationPolicy = apiDocumentationPolicy;
+            _resourceCache = resourceCache ?? throw new ArgumentNullException(nameof(resourceCache));
         }
 
         internal LinksPolicy LinksPolicy { get; }
+        
+        internal ApiDocumentationPolicy ApiDocumentationPolicy { get; }
 
         /// <inheritdoc />
         public IHypermediaProcessor GetHypermediaProcessor(IResponse response)
@@ -92,18 +101,18 @@ namespace Heracles
         /// <inheritdoc />
         public async Task<IApiDocumentation> GetApiDocumentation(Uri url, CancellationToken cancellationToken)
         {
-            var apiDocumentation = await GetApiDocumentationUrl(
-                url ?? throw new ArgumentNullException(nameof(url), NoUrlProvided),
-                cancellationToken);
-            var options = new HypermediaProcessingOptions(apiDocumentation.Response, url);
-            var resource = await GetResourceFrom(apiDocumentation.Url, options, cancellationToken);
-            var result = resource.OfType(hydra.ApiDocumentation).FirstOrDefault() as IApiDocumentation;
-            if (result == null)
+            if (url == null)
             {
-                throw new NoEntrypointDefinedException();
+                throw new ArgumentNullException(nameof(url), NoUrlProvided);
             }
 
-            return result;
+            var response = await MakeRequestTo(url, null, cancellationToken);
+            if (response.Status != 200)
+            {
+                throw new InvalidResponseException(response.Status);
+            }
+
+            return await GetApiDocumentation(response, url, true, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -183,7 +192,39 @@ namespace Heracles
             return GetResourceFrom(url, null, cancellationToken);
         }
 
-        private async Task<IHypermediaContainer> GetResourceFrom(Uri url, IHypermediaProcessingOptions options, CancellationToken cancellationToken)
+        private async Task<IApiDocumentation> GetApiDocumentation(
+            IResponse response,
+            Uri baseUrl,
+            bool throwIfUnavailable,
+            CancellationToken cancellationToken)
+        {
+            var apiDocumentationUrl = GetApiDocumentationUrl(response, baseUrl);
+            if (apiDocumentationUrl == null)
+            {
+                return Assert<IApiDocumentation, ApiDocumentationNotProvidedException>(null, throwIfUnavailable);
+            }
+
+            IApiDocumentation result = _resourceCache[apiDocumentationUrl] as IApiDocumentation;
+            if (result == null)
+            {
+                var options = new HypermediaProcessingOptions(response, baseUrl);
+                var resource = await GetResourceFrom(apiDocumentationUrl, options, cancellationToken);
+                result = resource.OfType(hydra.ApiDocumentation).FirstOrDefault() as IApiDocumentation;
+                if (result == null)
+                {
+                    return Assert<IApiDocumentation, NoEntrypointDefinedException>(null, throwIfUnavailable);
+                }
+
+                _resourceCache[apiDocumentationUrl] = result;
+            }
+
+            return result;
+        }
+
+        private async Task<IHypermediaContainer> GetResourceFrom(
+            Uri url,
+            IHypermediaProcessingOptions options,
+            CancellationToken cancellationToken)
         {
             var response = await MakeRequestTo(
                 url ?? throw new ArgumentNullException(nameof(url), NoUrlProvided),
@@ -194,38 +235,42 @@ namespace Heracles
                 throw new InvalidResponseException(response.Status);
             }
 
+            if (ApiDocumentationPolicy != ApiDocumentationPolicy.None)
+            {
+                await GetApiDocumentation(response, url, false, cancellationToken);
+            }
+            
             var hypermediaProcessor = GetHypermediaProcessor(response);
             if (hypermediaProcessor == null)
             {
                 throw new ResponseFormatNotSupportedException();
             }
 
-            options = new HypermediaProcessingOptions(url, LinksPolicy).MergeWith(options);
-            return await hypermediaProcessor.Process(response, this, options);
+            options = new HypermediaProcessingOptions(
+                    url,
+                    LinksPolicy,
+                    ApiDocumentationPolicy,
+                    _resourceCache.All<IApiDocumentation>())
+                .MergeWith(options);
+            return await hypermediaProcessor.Process(response, this, options, cancellationToken);
         }
         
-        private async Task<ApiDocumentationDetails> GetApiDocumentationUrl(Uri url, CancellationToken cancellationToken)
+        private Uri GetApiDocumentationUrl(IResponse response, Uri baseUrl)
         {
-            var response = await MakeRequestTo(url, null, cancellationToken);
-            if (response.Status != 200)
-            {
-                throw new InvalidResponseException(response.Status);
-            }
-            
-            var result = (
+            var apiDocumentationLink = (
                 from header in response.Headers["Link"]
                 let match = LinkHeaderPattern.Match(header)
                 where match.Success
                 select match).FirstOrDefault();
-            if (result == null)
+            Uri result = null;
+            if (apiDocumentationLink != null)
             {
-                throw new ApiDocumentationNotProvidedException();
+                result = !Regex.IsMatch(apiDocumentationLink.Groups[1].Value, "^[a-z][a-z0-9+\\-.]*:")
+                    ? new Uri(baseUrl, new Uri(apiDocumentationLink.Groups[1].Value, UriKind.Relative))
+                    : new Uri(apiDocumentationLink.Groups[1].Value);
             }
 
-            var uri = !Regex.IsMatch(result.Groups[1].Value, "^[a-z][a-z0-9+\\-.]*:")
-                ? new Uri(url, new Uri(result.Groups[1].Value, UriKind.Relative))
-                : new Uri(result.Groups[1].Value);
-            return new ApiDocumentationDetails(response, uri);
+            return result;
         }
 
         private async Task<IResponse> MakeRequestTo(Uri url, IHttpOptions options, CancellationToken cancellationToken)
@@ -233,17 +278,18 @@ namespace Heracles
             return await _httpCall(url, options, cancellationToken);
         }
 
-        private class ApiDocumentationDetails
+        private TResource Assert<TResource, TException>(
+            TResource resource,
+            bool throwIfUnabailable)
+            where TResource : class
+            where TException : Exception, new()
         {
-            internal ApiDocumentationDetails(IResponse response, Uri url)
+            if (resource == null && throwIfUnabailable)
             {
-                Response = response;
-                Url = url;
+                throw new TException();
             }
-            
-            internal IResponse Response { get; }
-            
-            internal Uri Url { get; }
+
+            return resource;
         }
     }
 }

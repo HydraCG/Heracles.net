@@ -19,11 +19,13 @@ namespace Given_instance_of.JsonLdHypermediaProcessor_class.when_parsing.JSON_LD
         {
             get { return _inputJsonLd; }
         }
+
+        protected override Uri Uri { get; } = new Uri("http://temp.uri/api", UriKind.Absolute);
         
         public override void ScenarioSetup()
         {
             _inputJsonLd = GetResourceNamed("collectionsInput.json");
-            Response.SetupGet(_ => _.Url).Returns(new Uri("http://temp.uri/api"));
+            Response.SetupGet(_ => _.Url).Returns(Uri);
             base.ScenarioSetup();
         }
 

@@ -7,8 +7,16 @@ namespace Heracles.DataModel
     [Class("hydra", "Operation")]
     public interface IOperation : IPointingResource
     {
+        /// <summary>Gets the operation's display name.</summary>
+        [Property("hydra", "title", DefaultValue = "")]
+        string Title { get; }
+
+        /// <summary>Gets the operation's description.</summary>
+        [Property("hydra", "description", DefaultValue = "")]
+        string Description { get; }
+        
         /// <summary>Gets a method to be used for the call.</summary>
-        [Property("hydra", "method")]
+        [Property("hydra", "method", DefaultValue = "GET")]
         string Method { get; }
 
         /// <summary>Gets the expected classes.</summary>

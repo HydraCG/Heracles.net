@@ -6,6 +6,7 @@ using System.Threading;
 using Heracles.JsonLd;
 using Heracles.Net.Http;
 using Heracles.Rdf;
+using Heracles.Rdf.GraphTransformations;
 using RDeF.Serialization;
 
 namespace Heracles
@@ -18,6 +19,8 @@ namespace Heracles
     /// <summary>Provides a factory of the <see cref="IHydraClient" />s.</summary>
     public sealed class HydraClientFactory : IHydraClientFactory
     {
+        private static readonly SimpleVolatileResourceCache DefaultCache = new SimpleVolatileResourceCache();
+        
         private static readonly string HydraVocabularyResourceName =
             typeof(HydraClientFactory).Assembly.GetManifestResourceNames().First(_ => _.Contains("hydra.json"));
 
@@ -31,17 +34,21 @@ namespace Heracles
         private IIriTemplateExpansionStrategy _iriTemplateExpansionStrategy;
         private HttpCallFacility _httpCall;
         private LinksPolicy _linksPolicy;
+        private ApiDocumentationPolicy _apiDocumentationPolicy;
+        private IResourceCache _cache = DefaultCache;
 
         private HydraClientFactory(
             ICollection<HypermediaProcessorFactory> hypermediaProcessorFactories = null,
             IIriTemplateExpansionStrategy iriTemplateExpansionStrategy = null,
             LinksPolicy? linksPolicy = null,
+            ApiDocumentationPolicy? apiDocumentationPolicy = null,
             HttpCallFacility httpCall = null)
         {
             _hypermediaProcessorInstances = new Dictionary<HypermediaProcessorFactory, IHypermediaProcessor>();
             _hypermediaProcessorFactories = hypermediaProcessorFactories ?? new List<HypermediaProcessorFactory>();
             _iriTemplateExpansionStrategy = iriTemplateExpansionStrategy;
             _linksPolicy = linksPolicy ?? LinksPolicy.Strict;
+            _apiDocumentationPolicy = apiDocumentationPolicy ?? ApiDocumentationPolicy.None;
             _httpCall = httpCall;
         }
 
@@ -55,6 +62,12 @@ namespace Heracles
         LinksPolicy IHydraClientFactory.CurrentLinksPolicy
         {
             get { return _linksPolicy; }
+        }
+
+        /// <inheritdoc />
+        ApiDocumentationPolicy IHydraClientFactory.CurrentApiDocumentationPolicy
+        {
+            get { return _apiDocumentationPolicy; }
         }
 
         /// <inheritdoc />
@@ -95,6 +108,7 @@ namespace Heracles
         {
             return With(new BodyResourceBoundIriTemplateExpansionStrategy())
                 .WithStrictLinks()
+                .WithNoApiDocumentations()
                 .With(new HttpRequestHttpCallFacility().Call)
                 .WithJsonLd();
         }
@@ -130,12 +144,39 @@ namespace Heracles
             _linksPolicy = LinksPolicy.All;
             return this;
         }
+   
+        /// <summary>Configures a factory to create a client that won't fetch API documentations on its own.</summary>
+        /// <returns>This instance of the <see cref="HydraClientFactory" />.</returns>
+        public HydraClientFactory WithNoApiDocumentations()
+        {
+            _apiDocumentationPolicy = ApiDocumentationPolicy.None;
+            return this;
+        }
+   
+        /// <summary>Configures a factory to create a client that will only fetch API documentations.</summary>
+        /// <returns>This instance of the <see cref="HydraClientFactory" />.</returns>
+        public HydraClientFactory WithApiDocumentationsFetchedOnly()
+        {
+            _apiDocumentationPolicy = ApiDocumentationPolicy.FetchOnly;
+            return this;
+        }
+   
+        /// <summary>
+        /// Configures a factory to create a client that will fetch API documentations
+        /// and extend response with additional details.
+        /// </summary>
+        /// <returns>This instance of the <see cref="HydraClientFactory" />.</returns>
+        public HydraClientFactory WithApiDocumentationsFetchedAndExtended()
+        {
+            _apiDocumentationPolicy = ApiDocumentationPolicy.FetchAndExtend;
+            return this;
+        }
 
         /// <summary>Configures a factory with JSON-LD hypermedia processor.</summary>
         /// <returns>This instance of the <see cref="HydraClientFactory" />.</returns>
         public HydraClientFactory WithJsonLd()
         {
-            WithFactory(context => CreateJsonLdHypermediaProcessor(context.CurrentHttpCall));
+            WithFactory(CreateJsonLdHypermediaProcessor);
             return this;
         }
 
@@ -181,6 +222,15 @@ namespace Heracles
             return this;
         }
 
+        /// <summary>Adds a custom <see cref="IResourceCache" /> implementation to use for API documentations.</summary>
+        /// <param name="cache">Cache to use for API documentations.</param>
+        /// <returns>This instance of the <see cref="HydraClientFactory" />.</returns>
+        public HydraClientFactory With(IResourceCache cache)
+        {
+            _cache = cache ?? DefaultCache;
+            return this;
+        }
+
         /// <summary>Creates a new instance of the <see cref="IHydraClient" />.</summary>
         /// <returns>New instance of the <see cref="IHydraClient" />.</returns>
         public IHydraClient AndCreate()
@@ -189,19 +239,32 @@ namespace Heracles
                 ResolveProcessors(),
                 _iriTemplateExpansionStrategy,
                 _linksPolicy,
-                _httpCall);
+                _apiDocumentationPolicy,
+                _httpCall,
+                _cache);
         }
                 
-        private static IHypermediaProcessor CreateJsonLdHypermediaProcessor(HttpCallFacility httpCall)
+        private static IHypermediaProcessor CreateJsonLdHypermediaProcessor(IHydraClientFactory context)
         {
             Sync.WaitOne();
-            return new JsonLdHypermediaProcessor(_ontologyProvider, httpCall);
+            var graphTransformers = new List<IGraphTransformer>()
+            {
+                new EntryPointCorrectingGraphTransformer()
+            };
+            if (context.CurrentApiDocumentationPolicy == ApiDocumentationPolicy.FetchAndExtend)
+            {
+                graphTransformers.Add(new ApiDocumentationExtendingGraphTransformer());
+            }
+            
+            var graphTransformer = new CompoundGraphTransformer(graphTransformers);
+            return new JsonLdHypermediaProcessor(_ontologyProvider, context.CurrentHttpCall, graphTransformer);
         }
 
         private static async void Initialize()
         {
             var jsonLdReader = new JsonLdReader();
-            using (var streamReader = new StreamReader(typeof(HydraClientFactory).Assembly.GetManifestResourceStream(HydraVocabularyResourceName)))
+            using (var resource = typeof(HydraClientFactory).Assembly.GetManifestResourceStream(HydraVocabularyResourceName))
+            using (var streamReader = new StreamReader(resource))
             {
                 _ontologyProvider = new StaticOntologyProvider((await jsonLdReader.Read(streamReader)).First().Statements);
                 Sync.Set();
@@ -219,6 +282,7 @@ namespace Heracles
                         _hypermediaProcessorFactories.Where(_ => _ != factory).ToList(),
                         _iriTemplateExpansionStrategy,
                         _linksPolicy,
+                        _apiDocumentationPolicy,
                         _httpCall);
                     _hypermediaProcessorInstances[factory] = instance = factory(childContext);
                 }
